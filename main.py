@@ -120,6 +120,9 @@ def send_daily_promo(message):
     proof = random.choice(social_proof)
     hashtags = " ".join(random.choice(hashtag_sets))
     video_url = random.choice(video_links)
+    
+    # Debug: Print which video was selected
+    print(f"🎬 Selected video: {video_url}")
 
     # Build rich promo content
     promo = f"""{story['hook']} 🚨
