@@ -203,8 +203,12 @@ def send_daily_promo(message):
     
     promo, story, video_url, image_url = generate_promo_content()
 
+    # Reply to the user who triggered the command
     bot.reply_to(message, promo)
-    print("✅ Manual promo sent to Telegram chat.")
+    
+    # Also send to the @EspaLuz channel
+    bot.send_message(TELEGRAM_CHAT_ID, promo)
+    print("✅ Manual promo sent to Telegram chat and @EspaLuz channel.")
 
     try:
         payload = {
