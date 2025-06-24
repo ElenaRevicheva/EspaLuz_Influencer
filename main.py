@@ -19,6 +19,13 @@ video_links = [
     "https://youtube.com/shorts/drlbgFu68tI?feature=share"
 ]
 
+# Image URLs for Instagram posts
+image_urls = [
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_4x5_second_image.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_image_4x5.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",
+]
+
 # Rich story templates with emotional hooks
 story_templates = [
     {
@@ -124,9 +131,11 @@ def generate_promo_content():
     proof = random.choice(social_proof)
     hashtags = " ".join(random.choice(hashtag_sets))
     video_url = random.choice(video_links)
+    image_url = random.choice(image_urls)
     
-    # Debug: Print which video was selected
+    # Debug: Print which video and image were selected
     print(f"🎬 Selected video: {video_url}")
+    print(f"🖼️ Selected image: {image_url}")
 
     # Build rich promo content
     promo = f"""{story['hook']} 🚨
@@ -161,12 +170,12 @@ def generate_promo_content():
 
 P.S. Your family's Spanish breakthrough is closer than you think. Don't wait—every day without EspaLuz is a missed conversation, a lost connection, a moment your family could be thriving instead of just surviving. Start today. Your future bilingual selves will thank you! 💕"""
 
-    return promo, story, video_url
+    return promo, story, video_url, image_url
 
 def send_automated_daily_promo():
     """Automated version that posts to specific chat and webhook"""
     try:
-        promo, story, video_url = generate_promo_content()
+        promo, story, video_url, image_url = generate_promo_content()
         
         # Send to Telegram channel
         bot.send_message(TELEGRAM_CHAT_ID, promo)
@@ -176,6 +185,7 @@ def send_automated_daily_promo():
         payload = {
             "promoText": promo,
             "videoURL": video_url,
+            "imageURL": image_url,
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": True,
@@ -191,7 +201,7 @@ def send_automated_daily_promo():
 def send_daily_promo(message):
     print("📣 /daily_promo triggered manually...")
     
-    promo, story, video_url = generate_promo_content()
+    promo, story, video_url, image_url = generate_promo_content()
 
     bot.reply_to(message, promo)
     print("✅ Manual promo sent to Telegram chat.")
@@ -200,6 +210,7 @@ def send_daily_promo(message):
         payload = {
             "promoText": promo,
             "videoURL": video_url,
+            "imageURL": image_url,
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": False
