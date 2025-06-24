@@ -4,8 +4,12 @@ import random
 import time
 import threading
 import requests
+import schedule
+from datetime import datetime
+import pytz
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = "@EspaLuz"  # Your channel
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
 MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
@@ -109,10 +113,10 @@ hashtag_sets = [
     ["#LanguageMagic", "#FamilyGoals", "#SpanishMadeEasy", "#ConnectedFamilies", "#CulturalFluency"]
 ]
 
-@bot.message_handler(commands=["daily_promo"])
-def send_daily_promo(message):
-    print("📣 /daily_promo triggered...")
-
+def generate_promo_content():
+    """Generate promo content without needing a message object"""
+    print("🎬 Generating automated daily promo...")
+    
     # Select random elements
     story = random.choice(story_templates)
     benefits = random.sample(benefit_sections, 2)  # Pick 2 benefit sections
@@ -157,15 +161,48 @@ def send_daily_promo(message):
 
 P.S. Your family's Spanish breakthrough is closer than you think. Don't wait—every day without EspaLuz is a missed conversation, a lost connection, a moment your family could be thriving instead of just surviving. Start today. Your future bilingual selves will thank you! 💕"""
 
+    return promo, story, video_url
+
+def send_automated_daily_promo():
+    """Automated version that posts to specific chat and webhook"""
+    try:
+        promo, story, video_url = generate_promo_content()
+        
+        # Send to Telegram channel
+        bot.send_message(TELEGRAM_CHAT_ID, promo)
+        print("✅ Automated promo sent to @EspaLuz channel.")
+        
+        # Send to Make.com webhook
+        payload = {
+            "promoText": promo,
+            "videoURL": video_url,
+            "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
+            "videoDescription": story['story'][:200] + "...",
+            "automated": True,
+            "timestamp": datetime.now(pytz.timezone('America/Panama')).isoformat()
+        }
+        response = requests.post(MAKE_WEBHOOK_URL, json=payload)
+        print(f"📤 Automated promo sent to Make.com webhook. Response: {response.status_code}")
+        
+    except Exception as e:
+        print(f"❌ Error in automated promo: {e}")
+
+@bot.message_handler(commands=["daily_promo"])
+def send_daily_promo(message):
+    print("📣 /daily_promo triggered manually...")
+    
+    promo, story, video_url = generate_promo_content()
+
     bot.reply_to(message, promo)
-    print("✅ Rich promo sent to Telegram chat.")
+    print("✅ Manual promo sent to Telegram chat.")
 
     try:
         payload = {
             "promoText": promo,
             "videoURL": video_url,
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
-            "videoDescription": story['story'][:200] + "..."
+            "videoDescription": story['story'][:200] + "...",
+            "automated": False
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print("📤 Sent promo to Make.com webhook. Response:", response.status_code)
@@ -177,6 +214,12 @@ def welcome(message):
     print("👋 /start triggered.")
     bot.reply_to(message, "👋 Welcome to Influencer EspaLuz!\nUse /daily_promo to get your fresh promo post for today.")
 
+def schedule_checker():
+    """Run scheduled tasks in a separate thread"""
+    while True:
+        schedule.run_pending()
+        time.sleep(60)  # Check every minute
+
 def webhook_killer():
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteWebhook"
     while True:
@@ -187,7 +230,14 @@ def webhook_killer():
             print("❌ Error deleting webhook:", e)
         time.sleep(30)
 
-threading.Thread(target=webhook_killer, daemon=True).start()
+# Schedule daily promo for 1:00 PM Panama time
+schedule.every().day.at("13:00").do(send_automated_daily_promo)
+print("⏰ Scheduled daily promo for 1:00 PM Panama time")
 
-print("🤖 Influencer EspaLuz is running in polling mode...")
+# Start background threads
+threading.Thread(target=webhook_killer, daemon=True).start()
+threading.Thread(target=schedule_checker, daemon=True).start()
+
+print("🤖 Influencer EspaLuz is running in polling mode with automation...")
+print("📅 Next scheduled promo:", schedule.next_run())
 bot.polling(none_stop=True, timeout=30)
