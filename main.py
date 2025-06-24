@@ -148,7 +148,7 @@ def send_daily_promo(message):
 👇 https://t.me/EspaLuzFamily_bot
 
 🎥 Long Story Short:
-{chr(10).join(video_links)}
+{video_url}
 
 {hashtags}
 
