@@ -295,14 +295,7 @@ force_single_instance()
 # Schedule daily promo for 1:00 PM Panama time
 schedule.every().day.at("13:00").do(send_automated_daily_promo)
 
-# Test scheduler - runs every 2 minutes for testing
-def test_scheduler():
-    print("🧪 TEST: Scheduler is working! Current time:", datetime.now(pytz.timezone('America/Panama')).strftime('%H:%M:%S'))
-
-schedule.every(2).minutes.do(test_scheduler)
-
 print("⏰ Scheduled daily promo for 1:00 PM Panama time")
-print("🧪 Test scheduler runs every 2 minutes")
 
 # Start background threads  
 threading.Thread(target=schedule_checker, daemon=True).start()
