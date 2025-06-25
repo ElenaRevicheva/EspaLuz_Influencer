@@ -12,7 +12,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = "@EspaLuz"  # Your channel
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
-MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
+MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr464o2xrtaxatxja8yqxhfli"
 
 video_links = [
     "https://youtube.com/shorts/4l9B4Rc1SxY?feature=share",
@@ -295,26 +295,7 @@ force_single_instance()
 # Schedule daily promo for 1:00 PM Panama time
 schedule.every().day.at("13:00").do(send_automated_daily_promo)
 
-# Test scheduler - runs every 2 minutes for testing
-def test_scheduler():
-    print("🧪 TEST: Scheduler is working! Current time:", datetime.now(pytz.timezone('America/Panama')).strftime('%H:%M:%S'))
-
-schedule.every(2).minutes.do(test_scheduler)
-
-# AUTOMATION TEST - runs every 5 minutes to test full flow
-def test_automation():
-    print("🚀 AUTOMATION TEST: Running full promo generation...")
-    try:
-        send_automated_daily_promo()
-        print("✅ AUTOMATION TEST: Success! Check @EspaLuz and Make.com!")
-    except Exception as e:
-        print(f"❌ AUTOMATION TEST: Error - {e}")
-
-schedule.every(5).minutes.do(test_automation)
-
 print("⏰ Scheduled daily promo for 1:00 PM Panama time")
-print("🧪 Test scheduler runs every 2 minutes") 
-print("🚀 Automation test runs every 5 minutes")
 
 # Start background threads  
 threading.Thread(target=schedule_checker, daemon=True).start()
