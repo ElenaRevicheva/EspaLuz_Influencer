@@ -12,7 +12,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = "@EspaLuz"  # Your channel
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
-MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
+MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr464o2xrtaxatxja8yqxhfli"
 
 video_links = [
     "https://youtube.com/shorts/4l9B4Rc1SxY?feature=share",
@@ -232,8 +232,12 @@ def welcome(message):
 def schedule_checker():
     """Run scheduled tasks in a separate thread"""
     while True:
-        schedule.run_pending()
-        time.sleep(60)  # Check every minute
+        try:
+            schedule.run_pending()
+            time.sleep(60)  # Check every minute
+        except Exception as e:
+            print(f"❌ Schedule checker error: {e}")
+            time.sleep(60)
 
 def webhook_killer():
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteWebhook"
@@ -245,14 +249,35 @@ def webhook_killer():
             print("❌ Error deleting webhook:", e)
         time.sleep(30)
 
+def keep_alive():
+    """Keep the bot running with proper error handling"""
+    while True:
+        try:
+            print("🤖 Starting bot polling...")
+            bot.polling(none_stop=True, timeout=30)
+        except Exception as e:
+            print(f"❌ Bot polling error: {e}")
+            print("🔄 Restarting bot in 10 seconds...")
+            time.sleep(10)
+
 # Schedule daily promo for 1:00 PM Panama time
 schedule.every().day.at("13:00").do(send_automated_daily_promo)
+
+# Test scheduler - runs every 2 minutes for testing
+def test_scheduler():
+    print("🧪 TEST: Scheduler is working! Current time:", datetime.now(pytz.timezone('America/Panama')).strftime('%H:%M:%S'))
+
+schedule.every(2).minutes.do(test_scheduler)
+
 print("⏰ Scheduled daily promo for 1:00 PM Panama time")
+print("🧪 Test scheduler runs every 2 minutes")
 
 # Start background threads
 threading.Thread(target=webhook_killer, daemon=True).start()
 threading.Thread(target=schedule_checker, daemon=True).start()
 
-print("🤖 Influencer EspaLuz is running in polling mode with automation...")
+print("🤖 Influencer EspaLuz is running with automation...")
 print("📅 Next scheduled promo:", schedule.next_run())
-bot.polling(none_stop=True, timeout=30)
+
+# Run the bot with auto-restart capability
+keep_alive()
