@@ -12,7 +12,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = "@EspaLuz"  # Your channel
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
-MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr464o2xrtaxatxja8yqxhfli"
+MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
 
 video_links = [
     "https://youtube.com/shorts/4l9B4Rc1SxY?feature=share",
