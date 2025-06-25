@@ -249,16 +249,48 @@ def webhook_killer():
             print("❌ Error deleting webhook:", e)
         time.sleep(30)
 
+def force_single_instance():
+    """Ensure only one bot instance is running"""
+    try:
+        # Aggressively clear any existing connections
+        bot.remove_webhook()
+        time.sleep(2)
+        
+        # Force delete webhook multiple times
+        for i in range(3):
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteWebhook"
+            requests.get(url)
+            time.sleep(1)
+            
+        print("🧹 Cleared all webhook connections")
+        
+        # Add random delay to avoid simultaneous startups
+        import random
+        delay = random.uniform(1, 5)
+        print(f"⏳ Random startup delay: {delay:.1f} seconds")
+        time.sleep(delay)
+        
+    except Exception as e:
+        print(f"⚠️ Cleanup error: {e}")
+
 def keep_alive():
-    """Keep the bot running with proper error handling"""
+    """Keep the bot running with better conflict resolution"""
     while True:
         try:
             print("🤖 Starting bot polling...")
-            bot.polling(none_stop=True, timeout=30)
+            bot.polling(none_stop=True, timeout=30, long_polling_timeout=30)
         except Exception as e:
-            print(f"❌ Bot polling error: {e}")
-            print("🔄 Restarting bot in 10 seconds...")
-            time.sleep(10)
+            if "409" in str(e):
+                print("⚠️ Bot conflict detected - waiting longer before restart...")
+                time.sleep(30)  # Wait longer for other instances to die
+                force_single_instance()
+            else:
+                print(f"❌ Bot polling error: {e}")
+            print("🔄 Restarting bot in 15 seconds...")
+            time.sleep(15)
+
+# Force cleanup at startup
+force_single_instance()
 
 # Schedule daily promo for 1:00 PM Panama time
 schedule.every().day.at("13:00").do(send_automated_daily_promo)
@@ -272,12 +304,11 @@ schedule.every(2).minutes.do(test_scheduler)
 print("⏰ Scheduled daily promo for 1:00 PM Panama time")
 print("🧪 Test scheduler runs every 2 minutes")
 
-# Start background threads
-threading.Thread(target=webhook_killer, daemon=True).start()
+# Start background threads  
 threading.Thread(target=schedule_checker, daemon=True).start()
 
-print("🤖 Influencer EspaLuz is running with automation...")
+print("🤖 Influencer EspaLuz is running with polling mode...")
 print("📅 Next scheduled promo:", schedule.next_run())
 
-# Run the bot with auto-restart capability
+# Run the bot with enhanced conflict resolution
 keep_alive()
