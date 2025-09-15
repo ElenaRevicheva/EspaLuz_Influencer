@@ -15,6 +15,7 @@ bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
 
 video_links = [
+    "https://www.tiktok.com/@aideazz/video/7550418350229163270",
     "https://youtube.com/shorts/4l9B4Rc1SxY?feature=share",
     "https://youtube.com/shorts/drlbgFu68tI?feature=share"
 ]
