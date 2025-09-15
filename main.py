@@ -128,14 +128,14 @@ benefit_sections = [
     }
 ]
 
-# Truthful call-to-action variations with emotional positioning
+# Truthful call-to-action variations with correct EspaLuz links
 cta_options = [
-    "🧠 Ready for an AI that actually understands your family's emotions? Try EspaLuz FREE for 7 days!\n🛒 Gumroad: https://revicheva.gumroad.com/l/espaluzwhatsapp\n💳 PayPal: Log in to your PayPal account\n💰 Only $7.77/month - Less than a coffee per week!",
-    "💕 Your family deserves connection, not just translation. Start your emotional Spanish journey:\n🛒 https://revicheva.gumroad.com/l/espaluzwhatsapp\n🎁 7-day FREE trial - No app needed, works in WhatsApp!",
-    "🎬 Experience the world's first emotionally intelligent Spanish coach:\n✅ Live Conversation Mode ✅ Personalized Videos ✅ Family-Focused AI\n🚀 Start FREE: https://revicheva.gumroad.com/l/espaluzwhatsapp",
-    "🌟 Stop settling for robotic language apps. EspaLuz understands your heart, not just your words.\n💙 Join expat families in Panama building deeper connections through Spanish.\n🎯 Try FREE: https://revicheva.gumroad.com/l/espaluzwhatsapp",
-    "👨‍👩‍👧‍👦 'It's not just Spanish lessons—it's family therapy that teaches Spanish.'\n🧠 Emotional AI + Conversation Mode + Personalized Videos = Your bilingual breakthrough\n💝 FREE 7-day trial: https://revicheva.gumroad.com/l/espaluzwhatsapp",
-    "🎭 From frustrated parent to confident bilingual family—EspaLuz makes it possible.\n⚡ Works directly in WhatsApp, no app download needed\n🎁 Start your transformation: https://revicheva.gumroad.com/l/espaluzwhatsapp"
+    "🧠 Ready for an AI that actually understands your family's emotions?\n✅ Telegram: https://t.me/EspaLuzFamily_bot\n✅ WhatsApp: https://bit.ly/EspaLuz\n🤖 AI Family Companion for Learning Spanish On-The-Go!",
+    "💕 Your family deserves connection, not just translation. Start your emotional Spanish journey:\n✅ Try Telegram: https://t.me/EspaLuzFamily_bot\n✅ Try WhatsApp: https://bit.ly/EspaLuz\n🎁 AI Family Companion - Start FREE!",
+    "🎬 Experience the world's first emotionally intelligent Spanish coach:\n✅ Live Conversation Mode ✅ Personalized Videos ✅ Family-Focused AI\n📱 Telegram: https://t.me/EspaLuzFamily_bot\n📱 WhatsApp: https://bit.ly/EspaLuz",
+    "🌟 Stop settling for robotic language apps. EspaLuz understands your heart, not just your words.\n💙 Join expat families building deeper connections through Spanish.\n✅ Telegram: https://t.me/EspaLuzFamily_bot | ✅ WhatsApp: https://bit.ly/EspaLuz",
+    "👨‍👩‍👧‍👦 'It's not just Spanish lessons—it's family therapy that teaches Spanish.'\n🧠 Emotional AI + Conversation Mode + Personalized Videos = Your bilingual breakthrough\n🚀 Start FREE: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://bit.ly/EspaLuz",
+    "🎭 From frustrated parent to confident bilingual family—EspaLuz makes it possible.\n🤖 AI Family Companion for Learning Spanish On-The-Go\n📲 Choose your platform: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://bit.ly/EspaLuz"
 ]
 
 # Emotional AI social proof testimonials
@@ -218,8 +218,9 @@ def generate_promo_content():
 {proof}
 
 {cta}
-👇 Try FREE: https://t.me/EspaLuzFamily_bot
-🛒 Full Version: https://revicheva.gumroad.com/l/espaluzwhatsapp
+🤖 EspaLuz: AI Family Companion for Learning Spanish On-The-Go
+✅ Telegram: https://t.me/EspaLuzFamily_bot
+✅ WhatsApp: https://bit.ly/EspaLuz
 
 🎥 Long Story Short:
 {video_url}
