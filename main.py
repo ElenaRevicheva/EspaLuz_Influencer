@@ -27,98 +27,154 @@ image_urls = [
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",
 ]
 
-# Rich story templates with emotional hooks
+# Rich story templates with emotional AI hooks
 story_templates = [
     {
-        "hook": "🚨 PANIC MODE ACTIVATED",
-        "story": "Picture this: I'm at the pharmacy in Panama, my daughter has a fever, and I'm frantically pointing at medicine bottles like I'm playing charades. The pharmacist is speaking rapid-fire Spanish, I'm sweating bullets, and my daughter is crying...",
-        "transformation": "Fast forward 3 months with EspaLuz: I walked into that SAME pharmacy, confidently asked for 'medicina para la fiebre infantil,' and even cracked a joke with the pharmacist. My daughter was amazed—and so was I! 🏆",
-        "emotion": "💪 From panic to CONFIDENCE"
+        "hook": "🧠 AI THAT ACTUALLY GETS IT",
+        "story": "I was having a meltdown trying to discipline my toddler in Spanish. I sent a frustrated voice message to EspaLuz: 'I don't know how to be firm but loving in Spanish!' The AI didn't just translate—it UNDERSTOOD I was a stressed parent and coached me through it.",
+        "transformation": "EspaLuz analyzed my emotional state, gave me gentle parenting phrases in Spanish, and sent a personalized video showing me how to set boundaries with love. Now my daughter responds better, and I feel confident as a bilingual parent! 🎭💕",
+        "emotion": "🤖 From robotic apps to EMOTIONAL AI"
     },
     {
-        "hook": "😭 THE GROCERY STORE MELTDOWN",
-        "story": "My 8-year-old son wanted to buy his favorite cookies at the local tienda. He approached the counter with his pocket money, froze completely when the cashier spoke in Spanish, and ran back to me in tears. As a parent, watching your kid feel defeated like that... it breaks your heart.",
-        "transformation": "Yesterday, that same little boy marched up to the counter, asked '¿Cuánto cuesta estas galletas?' with the biggest smile, and even said '¡Gracias!' without prompting. The cashier complimented his Spanish! 🍪✨",
-        "emotion": "❤️ From tears to TRIUMPH"
+        "hook": "🎬 THE CONVERSATION MODE MIRACLE",
+        "story": "My husband and I were fighting about money—in English. Our Spanish neighbors could hear everything through thin walls, but we couldn't explain or apologize because of the language barrier. I felt so embarrassed and isolated.",
+        "transformation": "I used EspaLuz's new Conversation Mode to practice what I wanted to say. Voice message → instant analysis → Spanish coaching → personalized motivation video. I knocked on their door, apologized in perfect Spanish, and we're now close friends! 🏠✨",
+        "emotion": "💬 From isolation to CONNECTION"
     },
     {
-        "hook": "🏠 THE NEIGHBOR SITUATION",
-        "story": "Our sweet 70-year-old neighbor Doña Carmen kept bringing us homemade tamales and trying to chat. For MONTHS, all I could do was smile, nod, and feel terrible that I couldn't connect with this amazing woman who was trying so hard to welcome our family.",
-        "transformation": "Last week, I surprised Doña Carmen by asking for her tamale recipe—in Spanish! We spent an hour laughing and cooking together. She hugged me and said I was 'como familia.' I literally cried happy tears. 🫔💕",
-        "emotion": "🤗 From isolation to FAMILY"
+        "hook": "🎯 THE BEDTIME BREAKTHROUGH",
+        "story": "Bedtime was a nightmare. My 5-year-old only wanted Spanish lullabies like the local kids, but I felt ridiculous trying to sing in broken Spanish. She'd get frustrated and cry, 'Mami, you don't sound right!' My heart broke every night.",
+        "transformation": "EspaLuz created a personalized video just for our bedtime routine! It taught me the lullabies with perfect pronunciation and gave me confidence-building phrases. Now she requests MY Spanish lullabies over anyone else's! 🌙🎵",
+        "emotion": "🎭 From embarrassment to PRIDE"
     },
     {
-        "hook": "🎂 THE BIRTHDAY PARTY DISASTER",
-        "story": "My daughter got invited to her first local birthday party. She was SO excited... until she realized she'd be the only kid who couldn't speak Spanish. She begged me not to make her go. Seeing your child choose isolation over fun because of a language barrier? That's a wake-up call.",
-        "transformation": "Three months later, she's not just attending parties—she's LEADING the games! Last weekend, she taught all the kids a Spanish song she learned through EspaLuz. She's become the bridge between worlds. 🌉🎉",
-        "emotion": "🌟 From isolation to LEADERSHIP"
+        "hook": "💔 THE SCHOOL MEETING DISASTER",
+        "story": "Parent-teacher conference in Spanish? I was terrified. I sat there nodding like a bobblehead while the teacher explained my son's behavior issues. I had no idea what was happening, couldn't ask questions, and felt like the worst parent ever.",
+        "transformation": "Before the next meeting, I practiced with EspaLuz's emotional AI. It detected my anxiety, coached me through education vocabulary, and gave me a personalized pep-talk video. I advocated for my son like a champion—in fluent Spanish! 📚🏆",
+        "emotion": "🛡️ From helpless to ADVOCATE"
     },
     {
-        "hook": "🚗 THE UBER AWKWARDNESS",
-        "story": "Every Uber ride was 20 minutes of painful silence. Drivers would try to make conversation, I'd give one-word responses, and you could cut the awkwardness with a knife. I felt like I was being rude, but what else could I do?",
-        "transformation": "Now Uber drivers and I chat about everything—family, food, local spots, even politics! Last week, a driver said I speak Spanish 'mejor que algunos panameños.' We became friends and he's taking our family to his favorite beach this weekend! 🏖️",
-        "emotion": "🗣️ From silence to FRIENDSHIP"
+        "hook": "🏥 THE EMERGENCY ROOM PANIC",
+        "story": "My daughter fell and needed stitches. In the ER, surrounded by rapid Spanish, I couldn't explain her allergies or medical history. The doctors were frustrated, my daughter was scared, and I was completely useless when she needed me most.",
+        "transformation": "Now I carry confidence everywhere. EspaLuz's emotional coaching taught me medical Spanish through real conversations, not just vocabulary lists. Last week, I calmly handled my son's fever appointment and even comforted another scared parent! 🏥💪",
+        "emotion": "⚡ From panic to PREPARED"
     },
     {
-        "hook": "🏥 THE DOCTOR'S OFFICE PANIC",
-        "story": "Taking grandma to her doctor appointment was a nightmare. Medical terminology in Spanish? Forget about it. I was using Google Translate for everything, the doctor was frustrated, grandma was scared, and I felt like the worst grandson ever for not being able to help her properly.",
-        "transformation": "Last month's appointment? I translated everything perfectly, asked detailed questions about her medications, and even advocated for a second opinion—all in fluent Spanish. Grandma squeezed my hand and said she felt safe. That's everything. 👵💙",
-        "emotion": "🛡️ From helpless to HERO"
+        "hook": "🎉 THE FAMILY REUNION TRANSFORMATION",
+        "story": "My husband's family reunion in Mexico was coming up. 40+ relatives, all speaking Spanish, and me—the gringa who smiles and waves. I dreaded being the outsider again, watching my kids connect with their heritage while I stood silent.",
+        "transformation": "EspaLuz understood my family role and coached me through cultural conversations. At the reunion, I shared stories, asked about family history, and even helped cook with the abuelas. My mother-in-law cried and said I was 'truly family now.' 👨‍👩‍👧‍👦💕",
+        "emotion": "🌟 From outsider to FAMILIA"
+    },
+    {
+        "hook": "🛒 THE MARKET CONFIDENCE BOOST",
+        "story": "The local mercado intimidated me. Vendors speaking fast Spanish, haggling I couldn't understand, and me pointing at things like a tourist. I was paying double what locals paid and everyone knew I didn't belong.",
+        "transformation": "EspaLuz's conversation practice prepared me for real market interactions. Now vendors greet me by name, I negotiate prices confidently, and last week one vendor taught me his grandmother's secret spice blend—in Spanish! 🌶️🎯",
+        "emotion": "💰 From tourist to LOCAL"
+    },
+    {
+        "hook": "💕 THE DATE NIGHT GAME-CHANGER",
+        "story": "My husband wanted to take Spanish dance lessons together, but I was too embarrassed about my pronunciation. 'What if I mess up the steps AND the language?' I kept making excuses, and our connection was suffering.",
+        "transformation": "EspaLuz's emotional AI gave me confidence-building exercises and dance-specific Spanish phrases. Now we salsa every Friday night, I flirt with him in Spanish, and our relationship is stronger than ever! 💃🕺",
+        "emotion": "💃 From insecurity to ROMANCE"
     }
 ]
 
-# Compelling benefit points with social proof
+# Revolutionary benefit points with emotional AI focus
 benefit_sections = [
     {
-        "title": "🎯 INSTANT REAL-WORLD HELP",
+        "title": "🧠 WORLD'S FIRST EMOTIONAL AI COACH",
         "points": [
-            "📸 Snap a photo of ANY text → Get instant translation + pronunciation",
-            "🎙️ Speak naturally → EspaLuz understands your intent, not just words",
-            "⚡ Real-time help in restaurants, stores, appointments—anywhere you need it"
+            "🎭 Detects your emotional state and adapts responses accordingly",
+            "👨‍👩‍👧‍👦 Recognizes your family role (parent, spouse, child) for targeted support",
+            "💕 Provides empathy and encouragement, not just cold translations",
+            "🎯 Coaches you through real family situations with emotional intelligence"
         ]
     },
     {
-        "title": "👨‍👩‍👧‍👦 FAMILY-FIRST APPROACH",
+        "title": "🎬 LIVE CONVERSATION MODE (JUST DEPLOYED!)",
         "points": [
-            "🧠 Remembers each family member's learning style and progress",
-            "💝 Adapts to your emotions—patient when you're frustrated, excited when you succeed",
-            "🎭 Creates personalized avatar videos that kids actually WANT to watch"
+            "🎙️ Send voice messages → Instant transcription + emotional analysis",
+            "🔄 Real-time Spanish/English audio with perfect message flow",
+            "💬 Two-way family conversations with live AI coaching",
+            "⚡ No waiting, no apps—works directly in WhatsApp"
         ]
     },
     {
-        "title": "🚀 BEYOND BASIC TRANSLATION",
+        "title": "🎥 PERSONALIZED MOTIVATIONAL VIDEOS",
         "points": [
-            "🎨 Cultural context—learn WHY Spanish speakers say things certain ways",
-            "🔊 Natural pronunciation coaching with instant feedback",
-            "💬 Conversational practice that feels like talking to a bilingual friend"
+            "🎨 Custom Spanish videos tailored to YOUR exact conversation topic",
+            "💪 Custom English videos for your specific emotional state",
+            "⏰ 15-20 second inspiration when you need encouragement most",
+            "🎯 Uses your conversation context—not generic motivation"
+        ]
+    },
+    {
+        "title": "👨‍👩‍👧‍👦 FAMILY-CENTERED LEARNING",
+        "points": [
+            "🏠 Designed for expat families in Panama, Mexico, Spain",
+            "🍼 Real parenting phrases for bedtime, meals, discipline",
+            "💑 Relationship Spanish for couples building bilingual connections",
+            "🌟 Builds family bonds through language, not just vocabulary"
+        ]
+    },
+    {
+        "title": "🆚 BEYOND EVERY OTHER APP",
+        "points": [
+            "❌ Others: 'Say this phrase' → ✅ EspaLuz: 'I understand you're frustrated. Here's how to connect...'",
+            "❌ Others: Generic lessons → ✅ EspaLuz: 'As a parent in Panama, you're modeling resilience'",
+            "❌ Others: Cold translation → ✅ EspaLuz: Warm emotional coaching with Spanish learning",
+            "❌ Others: One-size-fits-all → ✅ EspaLuz: Personalized videos for YOUR family situation"
         ]
     }
 ]
 
-# Call-to-action variations
+# Truthful call-to-action variations with emotional positioning
 cta_options = [
-    "🔥 Don't let language barriers steal another moment from your family. Try EspaLuz FREE today!",
-    "💎 Your family's breakthrough moment is one conversation away. Start with EspaLuz now!",
-    "⚡ Stop letting language hold your family back. EspaLuz is waiting to help—for FREE!",
-    "🎯 Ready to turn your family's biggest struggle into your greatest strength? EspaLuz starts here:",
-    "🌟 Your confident, bilingual family story starts with one click. Try EspaLuz FREE:"
+    "🧠 Ready for an AI that actually understands your family's emotions? Try EspaLuz FREE for 7 days!\n🛒 Gumroad: https://revicheva.gumroad.com/l/espaluzwhatsapp\n💳 PayPal: Log in to your PayPal account\n💰 Only $7.77/month - Less than a coffee per week!",
+    "💕 Your family deserves connection, not just translation. Start your emotional Spanish journey:\n🛒 https://revicheva.gumroad.com/l/espaluzwhatsapp\n🎁 7-day FREE trial - No app needed, works in WhatsApp!",
+    "🎬 Experience the world's first emotionally intelligent Spanish coach:\n✅ Live Conversation Mode ✅ Personalized Videos ✅ Family-Focused AI\n🚀 Start FREE: https://revicheva.gumroad.com/l/espaluzwhatsapp",
+    "🌟 Stop settling for robotic language apps. EspaLuz understands your heart, not just your words.\n💙 Join expat families in Panama building deeper connections through Spanish.\n🎯 Try FREE: https://revicheva.gumroad.com/l/espaluzwhatsapp",
+    "👨‍👩‍👧‍👦 'It's not just Spanish lessons—it's family therapy that teaches Spanish.'\n🧠 Emotional AI + Conversation Mode + Personalized Videos = Your bilingual breakthrough\n💝 FREE 7-day trial: https://revicheva.gumroad.com/l/espaluzwhatsapp",
+    "🎭 From frustrated parent to confident bilingual family—EspaLuz makes it possible.\n⚡ Works directly in WhatsApp, no app download needed\n🎁 Start your transformation: https://revicheva.gumroad.com/l/espaluzwhatsapp"
 ]
 
-# Social proof elements
+# Emotional AI social proof testimonials
 social_proof = [
-    "💬 'My kids now dream in Spanish!' - Maria, Panama City",
-    "🏆 'We went from tourists to locals in 2 months' - The Johnson Family",
-    "❤️ 'EspaLuz saved our family relationships' - Carlos, expat dad",
-    "🌟 'Even abuela is using it now!' - Sofia, 3-generation household",
-    "🎉 'Our Spanish is better than our neighbors who've lived here 5 years' - The Smiths"
+    "🧠 'The AI detected I was stressed about parenting and gave me exactly the Spanish phrases I needed to connect with my daughter. It's like having a bilingual therapist!' - Sarah, expat mom in Panama",
+    "🎬 'Conversation Mode changed everything. I sent a panicked voice message about my son's school meeting, and EspaLuz coached me through the whole thing with personalized videos!' - Mike, Panama City",
+    "💕 'My husband's family finally accepts me. EspaLuz understood I felt like an outsider and taught me cultural Spanish, not just words.' - Jennifer, married to Mexican national",
+    "🎭 'The AI knew I was embarrassed about my pronunciation and sent me confidence-building exercises. Now I sing Spanish lullabies to my kids!' - Amanda, bilingual family",
+    "⚡ 'EspaLuz detected my anxiety about medical appointments and prepared me with doctor-specific Spanish. I advocated for my mom like a pro!' - Carlos, caring for elderly parent",
+    "🌟 'It's not just translation—it's emotional support. The AI celebrates my wins and encourages me through frustrations. Like having a Spanish-speaking best friend!' - Lisa, solo expat",
+    "👨‍👩‍👧‍👦 'Our family went from language barriers to bilingual bonding. EspaLuz understood our dynamics and coached us all differently.' - The Rodriguez Family, 3 generations",
+    "🎯 'I was paying tourist prices at the market until EspaLuz taught me confident haggling Spanish. Now vendors treat me like family!' - Tom, digital nomad in Mexico"
 ]
 
-# Hashtag combinations for different platforms
+# Platform-specific hashtag sets for emotional AI positioning
 hashtag_sets = [
-    ["#EspaLuz", "#FamilyFirst", "#BilingualJourney", "#PanamaLife", "#ExpatFamilies"],
-    ["#LearnTogether", "#SpanishForFamilies", "#AITutor", "#ConfidentKids", "#CulturalBridge"],
-    ["#FamilyLearning", "#SpanishSuccess", "#NoMoreBarriers", "#EmpoweredFamilies", "#BilingualHome"],
-    ["#LanguageMagic", "#FamilyGoals", "#SpanishMadeEasy", "#ConnectedFamilies", "#CulturalFluency"]
+    # Instagram/Facebook - Emotional AI Focus
+    ["#EspaLuz", "#EmotionalAI", "#BilingualFamilies", "#ConversationMode", "#SpanishWithHeart", "#FamilyFirst", "#ExpatLife"],
+    
+    # TikTok - Trending + Features
+    ["#EspaLuz", "#AICoach", "#SpanishTok", "#ExpatTok", "#BilingualJourney", "#FamilyGoals", "#LanguageLearning", "#EmotionalIntelligence"],
+    
+    # Twitter/X - Professional + Innovation
+    ["#EspaLuz", "#EmotionalAI", "#ConversationMode", "#AIInnovation", "#SpanishLearning", "#ExpatFamilies", "#WhatsAppAI"],
+    
+    # YouTube - Educational + Family
+    ["#EspaLuz", "#SpanishForFamilies", "#EmotionalAI", "#BilingualParenting", "#ConversationMode", "#ExpatLife", "#FamilyLearning"],
+    
+    # LinkedIn - Professional Expat Focus
+    ["#EspaLuz", "#ExpatLife", "#BilingualProfessionals", "#EmotionalAI", "#WorkingAbroad", "#SpanishBusiness", "#GlobalFamilies"],
+    
+    # General Emotional Positioning
+    ["#EspaLuz", "#EmotionalIntelligence", "#FamilyConnection", "#SpanishWithEmpathy", "#BilingualBonding", "#AIThatCares", "#HeartfeltLearning"],
+    
+    # Panama/Mexico Specific
+    ["#EspaLuz", "#PanamaExpats", "#MexicoLife", "#SpainLife", "#LatinAmericaLife", "#ExpatFamilies", "#BilingualKids", "#CulturalIntegration"],
+    
+    # Feature-Specific
+    ["#EspaLuz", "#ConversationMode", "#PersonalizedVideos", "#VoiceToText", "#WhatsAppLearning", "#NoAppNeeded", "#InstantTranslation"]
 ]
 
 def generate_promo_content():
@@ -162,7 +218,8 @@ def generate_promo_content():
 {proof}
 
 {cta}
-👇 https://t.me/EspaLuzFamily_bot
+👇 Try FREE: https://t.me/EspaLuzFamily_bot
+🛒 Full Version: https://revicheva.gumroad.com/l/espaluzwhatsapp
 
 🎥 Long Story Short:
 {video_url}
