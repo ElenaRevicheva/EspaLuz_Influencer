@@ -371,10 +371,14 @@ def keep_alive():
 # Force cleanup at startup
 force_single_instance()
 
-# Schedule daily promo for 4:55 PM Panama time
-schedule.every().day.at("16:55").do(send_automated_daily_promo)
+# Schedule daily promo for 4:55 PM Panama time (21:55 UTC since Panama is UTC-5)
+schedule.every().day.at("21:55").do(send_automated_daily_promo)
 
-print("⏰ Scheduled daily promo for 4:55 PM Panama time")
+# TEMPORARY: One-time test for tonight at 5:45 PM Panama time (22:45 UTC)
+schedule.every().day.at("22:45").do(send_automated_daily_promo)
+
+print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
+print("🧪 TEMPORARY: Test promo scheduled for 5:45 PM Panama time (22:45 UTC) - tonight only")
 
 # Display timezone information for debugging
 panama_tz = pytz.timezone('America/Panama')
