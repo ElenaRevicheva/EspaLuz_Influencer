@@ -133,12 +133,12 @@ benefit_sections = [
 
 # Truthful call-to-action variations with correct EspaLuz links
 cta_options = [
-    "🧠 Ready for an AI that actually understands your family's emotions?\n✅ Telegram: https://t.me/EspaLuzFamily_bot\n✅ WhatsApp: https://bit.ly/EspaLuz\n🤖 AI Family Companion for Learning Spanish On-The-Go!",
-    "💕 Your family deserves connection, not just translation. Start your emotional Spanish journey:\n✅ Try Telegram: https://t.me/EspaLuzFamily_bot\n✅ Try WhatsApp: https://bit.ly/EspaLuz\n🎁 AI Family Companion - Start FREE!",
-    "🎬 Experience the world's first emotionally intelligent Spanish coach:\n✅ Live Conversation Mode ✅ Personalized Videos ✅ Family-Focused AI\n📱 Telegram: https://t.me/EspaLuzFamily_bot\n📱 WhatsApp: https://bit.ly/EspaLuz",
-    "🌟 Stop settling for robotic language apps. EspaLuz understands your heart, not just your words.\n💙 Join expat families building deeper connections through Spanish.\n✅ Telegram: https://t.me/EspaLuzFamily_bot | ✅ WhatsApp: https://bit.ly/EspaLuz",
-    "👨‍👩‍👧‍👦 'It's not just Spanish lessons—it's family therapy that teaches Spanish.'\n🧠 Emotional AI + Conversation Mode + Personalized Videos = Your bilingual breakthrough\n🚀 Start FREE: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://bit.ly/EspaLuz",
-    "🎭 From frustrated parent to confident bilingual family—EspaLuz makes it possible.\n🤖 AI Family Companion for Learning Spanish On-The-Go\n📲 Choose your platform: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://bit.ly/EspaLuz"
+    "🧠 Ready for an AI that actually understands your family's emotions?\n✅ Telegram: https://t.me/EspaLuzFamily_bot\n✅ WhatsApp: https://wa.me/50766623757\n🤖 AI Family Companion for Learning Spanish On-The-Go!",
+    "💕 Your family deserves connection, not just translation. Start your emotional Spanish journey:\n✅ Try Telegram: https://t.me/EspaLuzFamily_bot\n✅ Try WhatsApp: https://wa.me/50766623757\n🎁 AI Family Companion - Start FREE!",
+    "🎬 Experience the world's first emotionally intelligent Spanish coach:\n✅ Live Conversation Mode ✅ Personalized Videos ✅ Family-Focused AI\n📱 Telegram: https://t.me/EspaLuzFamily_bot\n📱 WhatsApp: https://wa.me/50766623757",
+    "🌟 Stop settling for robotic language apps. EspaLuz understands your heart, not just your words.\n💙 Join expat families building deeper connections through Spanish.\n✅ Telegram: https://t.me/EspaLuzFamily_bot | ✅ WhatsApp: https://wa.me/50766623757",
+    "👨‍👩‍👧‍👦 'It's not just Spanish lessons—it's family therapy that teaches Spanish.'\n🧠 Emotional AI + Conversation Mode + Personalized Videos = Your bilingual breakthrough\n🚀 Start FREE: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://wa.me/50766623757",
+    "🎭 From frustrated parent to confident bilingual family—EspaLuz makes it possible.\n🤖 AI Family Companion for Learning Spanish On-The-Go\n📲 Choose your platform: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://wa.me/50766623757"
 ]
 
 # Emotional AI social proof testimonials
