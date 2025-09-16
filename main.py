@@ -221,9 +221,6 @@ def generate_promo_content():
 {proof}
 
 {cta}
-🤖 EspaLuz: AI Family Companion for Learning Spanish On-The-Go
-✅ Telegram: https://t.me/EspaLuzFamily_bot
-✅ WhatsApp: https://bit.ly/EspaLuz
 
 🎥 Long Story Short:
 {video_url}
