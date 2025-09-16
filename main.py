@@ -242,7 +242,7 @@ def send_automated_daily_promo():
         
         # Send to Make.com webhook
         payload = {
-            "promoText": promo,
+            "text": promo,
             "videoURL": video_url,
             "imageURL": image_url,
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
@@ -271,7 +271,7 @@ def send_daily_promo(message):
 
     try:
         payload = {
-            "promoText": promo,
+            "text": promo,
             "videoURL": video_url,
             "imageURL": image_url,
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
