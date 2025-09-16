@@ -286,7 +286,27 @@ def send_daily_promo(message):
 @bot.message_handler(commands=["start"])
 def welcome(message):
     print("👋 /start triggered.")
-    bot.reply_to(message, "👋 Welcome to Influencer EspaLuz!\nUse /daily_promo to get your fresh promo post for today.")
+    bot.reply_to(message, "👋 Welcome to Influencer EspaLuz!\nUse /daily_promo to get your fresh promo post for today.\nUse /test_time to check current times.")
+
+@bot.message_handler(commands=["test_time"])
+def test_time(message):
+    """Test command to check current times and next scheduled run"""
+    panama_tz = pytz.timezone('America/Panama')
+    current_panama_time = datetime.now(panama_tz)
+    server_time = datetime.now()
+    next_run = schedule.next_run()
+    
+    time_info = f"""🕐 **TIME CHECK**
+    
+🌍 **Server time (Railway)**: {server_time.strftime('%Y-%m-%d %H:%M:%S %Z')}
+🇵🇦 **Panama time**: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}
+📅 **Next scheduled promo**: {next_run}
+⏰ **Scheduled for**: 4:55 PM Panama time daily
+
+*Note: Railway servers typically use UTC timezone.*"""
+    
+    bot.reply_to(message, time_info)
+    print(f"📊 Time check requested by user: {message.from_user.username}")
 
 def schedule_checker():
     """Run scheduled tasks in a separate thread"""
@@ -351,10 +371,18 @@ def keep_alive():
 # Force cleanup at startup
 force_single_instance()
 
-# Schedule daily promo for 1:00 PM Panama time
-schedule.every().day.at("13:00").do(send_automated_daily_promo)
+# Schedule daily promo for 4:55 PM Panama time
+schedule.every().day.at("16:55").do(send_automated_daily_promo)
 
-print("⏰ Scheduled daily promo for 1:00 PM Panama time")
+print("⏰ Scheduled daily promo for 4:55 PM Panama time")
+
+# Display timezone information for debugging
+panama_tz = pytz.timezone('America/Panama')
+current_panama_time = datetime.now(panama_tz)
+server_time = datetime.now()
+
+print(f"🌍 Server time (Railway): {server_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
 
 # Start background threads  
 threading.Thread(target=schedule_checker, daemon=True).start()
