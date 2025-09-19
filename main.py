@@ -21,7 +21,7 @@ EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4u
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 
 video_links = [
-    "https://www.dropbox.com/scl/fi/olrb8clvbwqvp857rivtp/AI_Spanish_Coach_For_Parents.mp4?rlkey=24etrdri4rfhh52sbzwxicvny&st=cmkiczl5&dl=1",
+    "https://drive.google.com/uc?export=download&id=1EC-BQ-awJAjhD2meIlwOXyGGQGepoKi8",
     "https://youtube.com/shorts/4l9B4Rc1SxY?feature=share",
     "https://youtube.com/shorts/drlbgFu68tI?feature=share"
 ]
