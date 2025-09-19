@@ -15,7 +15,7 @@ bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
 
 # Emotional Intelligence Engine webhook (for testing)
-EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/REPLACE_WITH_NEW_WEBHOOK_URL"
+EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4uadkmi9"
 
 # Backup webhook for alternative social media posting (if Buffer fails)
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
