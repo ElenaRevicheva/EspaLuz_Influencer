@@ -240,7 +240,7 @@ def send_automated_daily_promo():
         bot.send_message(TELEGRAM_CHAT_ID, promo)
         print("✅ Automated promo sent to @EspaLuz channel.")
         
-        # Send to Make.com webhook
+        # Send to Make.com webhook with emotional intelligence data
         payload = {
             "text": promo,
             "videoURL": video_url,
@@ -248,7 +248,15 @@ def send_automated_daily_promo():
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": True,
-            "timestamp": datetime.now(pytz.timezone('America/Panama')).isoformat()
+            "timestamp": datetime.now(pytz.timezone('America/Panama')).isoformat(),
+            # Emotional Intelligence Data
+            "hook": story['hook'],
+            "story": story['story'],
+            "emotion": story['emotion'],
+            "transformation": story['transformation'],
+            "cta": cta,
+            "hashtags": " ".join(hashtags),
+            "socialProof": proof
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print(f"📤 Automated promo sent to Make.com webhook. Response: {response.status_code}")
@@ -276,7 +284,15 @@ def send_daily_promo(message):
             "imageURL": image_url,
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
-            "automated": False
+            "automated": False,
+            # Emotional Intelligence Data
+            "hook": story['hook'],
+            "story": story['story'],
+            "emotion": story['emotion'],
+            "transformation": story['transformation'],
+            "cta": cta,
+            "hashtags": " ".join(hashtags),
+            "socialProof": proof
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print("📤 Sent promo to Make.com webhook. Response:", response.status_code)
