@@ -14,6 +14,9 @@ bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
 MAKE_WEBHOOK_URL = "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
 
+# Emotional Intelligence Engine webhook (for testing)
+EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/REPLACE_WITH_NEW_WEBHOOK_URL"
+
 # Backup webhook for alternative social media posting (if Buffer fails)
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 
@@ -323,6 +326,45 @@ def test_time(message):
     
     bot.reply_to(message, time_info)
     print(f"📊 Time check requested by user: {message.from_user.username}")
+
+@bot.message_handler(commands=["test_emotional_ai"])
+def test_emotional_ai(message):
+    """Test command for emotional AI engine"""
+    print("🧠 /test_emotional_ai triggered...")
+    
+    promo, story, video_url, image_url = generate_promo_content()
+    
+    # Reply to the user who triggered the command
+    bot.reply_to(message, f"🧠 **EMOTIONAL AI TEST**\n\nDetected emotion: {story['emotion']}\n\nContent generated and sent to Emotional AI webhook for testing!\n\nCheck Make.com for results.")
+    
+    try:
+        payload = {
+            "text": promo,
+            "videoURL": video_url,
+            "imageURL": image_url,
+            "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
+            "videoDescription": story['story'][:200] + "...",
+            "automated": False,
+            "testMode": True,
+            # Emotional Intelligence Data
+            "hook": story['hook'],
+            "story": story['story'],
+            "emotion": story['emotion'],
+            "transformation": story['transformation'],
+            "cta": random.choice(cta_options),
+            "hashtags": " ".join(random.choice(hashtag_sets)),
+            "socialProof": random.choice(social_proof)
+        }
+        
+        # Send to Emotional AI webhook (when URL is configured)
+        if "REPLACE_WITH_NEW_WEBHOOK_URL" not in EMOTIONAL_AI_WEBHOOK_URL:
+            response = requests.post(EMOTIONAL_AI_WEBHOOK_URL, json=payload)
+            print(f"🧠 Sent to Emotional AI webhook. Response: {response.status_code}")
+        else:
+            print("⚠️ Emotional AI webhook URL not configured yet")
+            
+    except Exception as e:
+        print(f"❌ Failed to send to Emotional AI webhook: {e}")
 
 def schedule_checker():
     """Run scheduled tasks in a separate thread"""
