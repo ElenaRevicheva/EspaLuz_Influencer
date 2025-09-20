@@ -1,0 +1,60 @@
+{
+    "id": 1,
+    "module": "youtube:uploadVideo",
+    "version": 4,
+    "parameters": {
+        "connection": "your_youtube_connection_id"
+    },
+    "mapper": {
+        "title": "{{20.youtubeTitle}}",
+        "file": {
+            "filename": "{{17.videoTitle}}.mp4",
+            "data": "{{17.videoURL}}"
+        },
+        "categoryId": "22",
+        "privacyStatus": "public",
+        "description": "{{20.smartContent}}\n\n🌟 Transform your life with EspaLuz\n💬 Connect with us: https://wa.me/50766623757\n\n{{17.hashtags}}\n\n#EspaLuz #Transformation #PersonalGrowth #SuccessStory",
+        "madeForKids": false,
+        "containsAlteredMedia": false
+    },
+    "metadata": {
+        "designer": {
+            "x": 600,
+            "y": 0
+        },
+        "restore": {
+            "parameters": {
+                "connection": {
+                    "label": "YouTube Connection"
+                }
+            },
+            "expect": {
+                "title": {
+                    "mode": "edit"
+                },
+                "file": {
+                    "mode": "edit"
+                },
+                "categoryId": {
+                    "mode": "chose",
+                    "label": "People & Blogs"
+                },
+                "privacyStatus": {
+                    "mode": "chose",
+                    "label": "Public"
+                },
+                "description": {
+                    "mode": "edit"
+                },
+                "madeForKids": {
+                    "mode": "chose",
+                    "label": "No"
+                },
+                "containsAlteredMedia": {
+                    "mode": "chose",
+                    "label": "No"
+                }
+            }
+        }
+    }
+}
