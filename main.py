@@ -421,9 +421,9 @@ def send_automated_daily_promo():
             "story": story['story'],
             "emotion": story['emotion'],
             "transformation": story['transformation'],
-            "cta": cta,
-            "hashtags": " ".join(hashtags),
-            "socialProof": proof,
+            "cta": random.choice(cta_options),
+            "hashtags": " ".join(random.choice(hashtag_sets)),
+            "socialProof": random.choice(social_proof),
             
             # NEW: Audience & Emotional State Intelligence
             "audience": story.get('audience', 'general_learner'),
@@ -432,14 +432,14 @@ def send_automated_daily_promo():
             
             # NEW: Enhanced Content Metadata
             "content_type": "success_story",
-            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle']) else "medium",
-            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth'] else "medium",
+            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle', 'lost', 'failed', 'couldn\'t']) else "medium",
+            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth', 'career_breakthrough'] else "medium",
             
             # NEW: Platform Optimization Hints
-            "instagram_focus": "community_engagement",
-            "linkedin_focus": "professional_growth", 
-            "tiktok_focus": "viral_relatability",
-            "youtube_focus": "educational_inspiration"
+            "instagram_focus": "community_engagement" if story.get('audience') in ['expat_parent', 'cultural_explorer'] else "professional_growth",
+            "linkedin_focus": "professional_growth" if story.get('audience') in ['digital_nomad', 'business_traveler', 'entrepreneur'] else "personal_development",
+            "tiktok_focus": "viral_relatability" if story.get('emotional_state') in ['crushing_embarrassment', 'local_acceptance'] else "educational_content",
+            "youtube_focus": "educational_inspiration" if story.get('audience') in ['service_provider', 'native_english_learner'] else "transformation_story"
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print(f"📤 Automated promo sent to Make.com webhook. Response: {response.status_code}")
@@ -474,9 +474,9 @@ def send_daily_promo(message):
             "story": story['story'],
             "emotion": story['emotion'],
             "transformation": story['transformation'],
-            "cta": cta,
-            "hashtags": " ".join(hashtags),
-            "socialProof": proof,
+            "cta": random.choice(cta_options),
+            "hashtags": " ".join(random.choice(hashtag_sets)),
+            "socialProof": random.choice(social_proof),
             
             # NEW: Audience & Emotional State Intelligence
             "audience": story.get('audience', 'general_learner'),
@@ -485,14 +485,14 @@ def send_daily_promo(message):
             
             # NEW: Enhanced Content Metadata
             "content_type": "success_story",
-            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle']) else "medium",
-            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth'] else "medium",
+            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle', 'lost', 'failed', 'couldn\'t']) else "medium",
+            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth', 'career_breakthrough'] else "medium",
             
             # NEW: Platform Optimization Hints
-            "instagram_focus": "community_engagement",
-            "linkedin_focus": "professional_growth",
-            "tiktok_focus": "viral_relatability", 
-            "youtube_focus": "educational_inspiration"
+            "instagram_focus": "community_engagement" if story.get('audience') in ['expat_parent', 'cultural_explorer'] else "professional_growth",
+            "linkedin_focus": "professional_growth" if story.get('audience') in ['digital_nomad', 'business_traveler', 'entrepreneur'] else "personal_development",
+            "tiktok_focus": "viral_relatability" if story.get('emotional_state') in ['crushing_embarrassment', 'local_acceptance'] else "educational_content",
+            "youtube_focus": "educational_inspiration" if story.get('audience') in ['service_provider', 'native_english_learner'] else "transformation_story"
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print("📤 Sent promo to Make.com webhook. Response:", response.status_code)
@@ -526,13 +526,15 @@ def test_time(message):
 
 @bot.message_handler(commands=["test_emotional_ai"])
 def test_emotional_ai(message):
-    """Test command for emotional AI engine"""
+    """Test command for revolutionary emotional AI engine"""
     print("🧠 /test_emotional_ai triggered...")
     
     promo, story, video_url, image_url = generate_promo_content()
     
     # Reply to the user who triggered the command
-    bot.reply_to(message, f"🧠 **EMOTIONAL AI TEST**\n\nDetected emotion: {story['emotion']}\n\nContent generated and sent to Emotional AI webhook for testing!\n\nCheck Make.com for results.")
+    audience_type = story.get('audience', 'general_learner')
+    emotional_state = story.get('emotional_state', 'general')
+    bot.reply_to(message, f"🧠 **REVOLUTIONARY EMOTIONAL AI TEST**\n\n🎯 Audience: {audience_type}\n🎭 Emotional State: {emotional_state}\n💫 Emotion: {story['emotion']}\n\nContent generated and sent to Make.com for revolutionary processing!\n\nCheck Make.com scenario for results.")
     
     try:
         payload = {
@@ -543,25 +545,39 @@ def test_emotional_ai(message):
             "videoDescription": story['story'][:200] + "...",
             "automated": False,
             "testMode": True,
-            # Emotional Intelligence Data
+            
+            # REVOLUTIONARY Emotional Intelligence Data
             "hook": story['hook'],
             "story": story['story'],
             "emotion": story['emotion'],
             "transformation": story['transformation'],
             "cta": random.choice(cta_options),
             "hashtags": " ".join(random.choice(hashtag_sets)),
-            "socialProof": random.choice(social_proof)
+            "socialProof": random.choice(social_proof),
+            
+            # NEW: Audience & Emotional State Intelligence
+            "audience": story.get('audience', 'general_learner'),
+            "emotional_state": story.get('emotional_state', 'general'),
+            "target_market": story.get('audience', 'expat_parent'),
+            
+            # NEW: Enhanced Content Metadata
+            "content_type": "success_story",
+            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle', 'lost', 'failed', 'couldn\'t']) else "medium",
+            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth', 'career_breakthrough'] else "medium",
+            
+            # NEW: Platform Optimization Hints
+            "instagram_focus": "community_engagement" if story.get('audience') in ['expat_parent', 'cultural_explorer'] else "professional_growth",
+            "linkedin_focus": "professional_growth" if story.get('audience') in ['digital_nomad', 'business_traveler', 'entrepreneur'] else "personal_development",
+            "tiktok_focus": "viral_relatability" if story.get('emotional_state') in ['crushing_embarrassment', 'local_acceptance'] else "educational_content",
+            "youtube_focus": "educational_inspiration" if story.get('audience') in ['service_provider', 'native_english_learner'] else "transformation_story"
         }
         
-        # Send to Emotional AI webhook (when URL is configured)
-        if "REPLACE_WITH_NEW_WEBHOOK_URL" not in EMOTIONAL_AI_WEBHOOK_URL:
-            response = requests.post(EMOTIONAL_AI_WEBHOOK_URL, json=payload)
-            print(f"🧠 Sent to Emotional AI webhook. Response: {response.status_code}")
-        else:
-            print("⚠️ Emotional AI webhook URL not configured yet")
+        # Send to Revolutionary Emotional AI webhook
+        response = requests.post(EMOTIONAL_AI_WEBHOOK_URL, json=payload)
+        print(f"🧠 Sent to Revolutionary Emotional AI webhook. Response: {response.status_code}")
             
     except Exception as e:
-        print(f"❌ Failed to send to Emotional AI webhook: {e}")
+        print(f"❌ Failed to send to Revolutionary Emotional AI webhook: {e}")
 
 def schedule_checker():
     """Run scheduled tasks in a separate thread"""
