@@ -1,0 +1,118 @@
+{
+  "name": "EspaLuz Revolutionary Emotional AI Engine - LIVE DEPLOYMENT",
+  "description": "Adapted to existing webhook, tools, router, YouTube and Buffer modules",
+  "version": "1.0.0",
+  "metadata": { "incomplete": false },
+  
+  "modules": [
+    {
+      "id": 1,
+      "type": "webhook",
+      "name": "EspaLuz Emotional Webhook (EXISTING)",
+      "notes": "Your existing webhook - no changes needed",
+      "url": "https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
+    },
+    
+    {
+      "id": 2,
+      "type": "function", 
+      "name": "Revolutionary Emotional AI Engine (ENHANCED TOOLS)",
+      "notes": "Replace your existing tools module with this revolutionary emotional intelligence",
+      "operation": "functionText",
+      "parameters": {
+        "code": "// 🧠 REVOLUTIONARY EMOTIONALLY INTELLIGENT ENGINE - LIVE VERSION\n// Adapted for existing Make.com setup\n\n// 1. EXPANDED EMOTIONAL INTELLIGENCE\nfunction detectEmotionalState(story, emotion, context) {\n  const emotionPatterns = {\n    breakthrough_euphoria: /breakthrough|transformation|finally|clicked|everything changed|miracle|life-changing|game-changer/gi,\n    crushing_embarrassment: /embarrassed|humiliated|stupid|ridiculous|awkward|mortified|ashamed|felt like an idiot/gi,\n    desperate_frustration: /frustrated|stressed|overwhelmed|can't take it|breaking point|losing my mind|disaster/gi,\n    soul_crushing_isolation: /alone|isolated|outsider|nobody understands|disconnected|invisible|excluded|foreign/gi,\n    empowering_confidence: /confident|powerful|capable|strong|unstoppable|champion|proud|accomplished/gi,\n    heart_melting_connection: /family|love|together|bond|belonging|accepted|understood|home|heart/gi,\n    paralyzing_anxiety: /nervous|terrified|panic|scared|anxious|worried sick|can't breathe|frozen/gi,\n    explosive_joy: /amazing|incredible|wonderful|thrilled|ecstatic|overjoyed|blessed|grateful/gi,\n    career_breakthrough: /career|job|promotion|professional|boss|interview|presentation|clients|business success/gi,\n    adventure_excitement: /travel|explore|adventure|discover|journey|wanderlust|freedom|nomad/gi,\n    local_acceptance: /local|native|belong|accepted|insider|authentic|real|integrated|familia/gi\n  };\n  \n  let detectedEmotions = [];\n  let intensityScore = 0;\n  \n  for (let [emotionType, pattern] of Object.entries(emotionPatterns)) {\n    const matches = (story + ' ' + emotion + ' ' + context).match(pattern);\n    if (matches) {\n      detectedEmotions.push({\n        emotion: emotionType,\n        intensity: matches.length,\n        triggers: matches.slice(0, 3)\n      });\n      intensityScore += matches.length;\n    }\n  }\n  \n  if (detectedEmotions.length === 0) return { primary: 'general', intensity: 1, blend: [] };\n  \n  detectedEmotions.sort((a, b) => b.intensity - a.intensity);\n  \n  return {\n    primary: detectedEmotions[0].emotion,\n    intensity: intensityScore,\n    blend: detectedEmotions.slice(1, 3),\n    triggers: detectedEmotions[0].triggers\n  };\n}\n\n// 2. EXPANDED AUDIENCE DETECTION\nfunction detectAudienceProfile(story, context) {\n  const audienceProfiles = {\n    expat_parent: /toddler|baby|bedtime|school|teacher|parent|family|kids|children/gi,\n    digital_nomad: /remote work|laptop|coworking|wifi|nomad|location independent|freelance|online business/gi,\n    business_traveler: /business trip|conference|meeting|networking|professional travel|corporate/gi,\n    service_provider: /restaurant|hotel|tourism|guide|taxi|uber|airbnb|hospitality|tips|tourists/gi,\n    native_english_learner: /inglés|english|trabajo|job|oportunidad|estudios|universidad|career|better job/gi,\n    cultural_explorer: /culture|traditions|local experience|authentic|immersion|heritage|history/gi,\n    healthcare_worker: /doctor|nurse|hospital|medical|patient|emergency|healthcare|clinic/gi,\n    entrepreneur: /business|entrepreneur|company|clients|customers|sales|growth|startup/gi\n  };\n  \n  let profileScores = {};\n  let totalMatches = 0;\n  \n  for (let [profile, pattern] of Object.entries(audienceProfiles)) {\n    const matches = (story + ' ' + context).match(pattern);\n    if (matches) {\n      profileScores[profile] = matches.length;\n      totalMatches += matches.length;\n    }\n  }\n  \n  const dominantProfile = Object.keys(profileScores).reduce((a, b) => \n    profileScores[a] > profileScores[b] ? a : b, 'general_learner'\n  );\n  \n  return {\n    primary: dominantProfile,\n    confidence: totalMatches > 0 ? (profileScores[dominantProfile] || 0) / totalMatches : 0,\n    allProfiles: profileScores\n  };\n}\n\n// 3. CULTURAL CONTEXT\nfunction detectCulturalContext(story) {\n  const contexts = {\n    panama: { pattern: /panama|panama city/gi, greeting: '¡Qué tal, Panama explorer!', context: 'thriving in Panama' },\n    mexico: { pattern: /mexico|mexican|familia/gi, greeting: '¡Órale! Mexico adventurer!', context: 'embracing Mexico' },\n    spain: { pattern: /spain|españa/gi, greeting: '¡Hola desde España!', context: 'integrating into Spain' },\n    colombia: { pattern: /colombia|bogota|medellin/gi, greeting: '¡Qué más! Colombia calling!', context: 'discovering Colombia' },\n    general: { pattern: /.*/, greeting: '¡Hola, language explorer!', context: 'navigating your journey' }\n  };\n  \n  for (let [region, data] of Object.entries(contexts)) {\n    if (data.pattern.test(story)) return { region, ...data };\n  }\n  \n  return contexts.general;\n}\n\n// 4. PLATFORM-SPECIFIC EMOTIONAL ADAPTATIONS\nconst EMOTIONAL_ADAPTATIONS = {\n  breakthrough_euphoria: {\n    instagram: {\n      hook: '🌟 BREAKTHROUGH MOMENT:',\n      validation: 'This is what transformation looks like ✨',\n      cta: 'Ready for YOUR breakthrough? → https://wa.me/50766623757',\n      hashtags: '#BreakthroughMoment #LanguageMagic #EspaLuz #Success #Transformation',\n      engagement: 'Share YOUR breakthrough story! 👇✨'\n    },\n    linkedin: {\n      hook: 'Professional Breakthrough: When Language Mastery Transforms Careers',\n      validation: 'Language skills become career accelerators',\n      cta: 'Unlock your potential → https://wa.me/50766623757',\n      hashtags: '#CareerGrowth #ProfessionalDevelopment #LanguageSkills #Success',\n      engagement: 'What breakthrough transformed your career?'\n    },\n    tiktok: {\n      hook: 'POV: Spanish finally clicked 🤯',\n      validation: 'When you realize you\\'re FLUENT now',\n      cta: 'Your turn → https://wa.me/50766623757',\n      hashtags: '#LanguageBreakthrough #SpanishTok #Fluent #Success',\n      engagement: 'Duet with your language win!'\n    },\n    youtube: {\n      title: 'The Moment Everything Changed: Real Language Breakthrough',\n      description: 'Witness the power of emotional connection in language learning',\n      cta: 'Start your transformation → https://wa.me/50766623757'\n    }\n  },\n  \n  crushing_embarrassment: {\n    instagram: {\n      hook: '🫂 We\\'ve ALL been here... when words fail you',\n      validation: 'Your struggle is valid, you\\'re not alone',\n      cta: 'Never feel lost again → https://wa.me/50766623757',\n      hashtags: '#LanguageStruggles #YouAreNotAlone #RealTalk #Growth',\n      engagement: 'Comment SAME if you\\'ve been here 💔'\n    },\n    linkedin: {\n      hook: 'Professional Vulnerability: When Language Barriers Impact Career',\n      validation: 'These moments reveal growth opportunities',\n      cta: 'Build confidence → https://wa.me/50766623757',\n      hashtags: '#ProfessionalGrowth #Vulnerability #CareerDevelopment',\n      engagement: 'How do you handle language challenges?'\n    },\n    tiktok: {\n      hook: 'That CRINGE moment 😭',\n      validation: 'Bestie, we\\'ve ALL been there',\n      cta: 'Confidence incoming → https://wa.me/50766623757',\n      hashtags: '#LanguageFail #Cringe #Relatable #Growth',\n      engagement: 'Your most embarrassing moment? 💀'\n    },\n    youtube: {\n      title: 'When Language Learning Goes Wrong (And How to Fix It)',\n      description: 'Every embarrassing moment is a stepping stone to fluency',\n      cta: 'Turn struggles into success → https://wa.me/50766623757'\n    }\n  },\n  \n  adventure_excitement: {\n    instagram: {\n      hook: '🌎 ADVENTURE UNLOCKED: Language opens worlds',\n      validation: 'This is fearless exploration',\n      cta: 'Unlock your adventure → https://wa.me/50766623757',\n      hashtags: '#AdventureUnlocked #TravelGoals #Wanderlust #Freedom',\n      engagement: 'Where will Spanish take you? 🗺️'\n    },\n    tiktok: {\n      hook: 'POV: You unlocked a new country 🔓',\n      validation: 'This is what freedom feels like',\n      cta: 'Unlock your world → https://wa.me/50766623757',\n      hashtags: '#TravelHack #LanguageHack #Adventure #Freedom',\n      engagement: 'Which country is calling you?'\n    },\n    youtube: {\n      title: 'How Spanish Unlocked My Travel Adventures',\n      description: 'From tourist to local - the language transformation',\n      cta: 'Start your adventure → https://wa.me/50766623757'\n    }\n  },\n  \n  local_acceptance: {\n    instagram: {\n      hook: '💕 When locals treat you like family...',\n      validation: 'This is true belonging',\n      cta: 'Find your tribe → https://wa.me/50766623757',\n      hashtags: '#Belonging #LocalAcceptance #Family #Home',\n      engagement: 'Where did you find family? 🏡'\n    },\n    tiktok: {\n      hook: 'When abuela invites you for dinner 🥺❤️',\n      validation: 'This is acceptance',\n      cta: 'Find your familia → https://wa.me/50766623757',\n      hashtags: '#Abuela #Family #Wholesome #Belonging',\n      engagement: 'This made me emotional 🥺'\n    },\n    youtube: {\n      title: 'From Outsider to Family: My Spanish Journey',\n      description: 'How language created authentic connections',\n      cta: 'Build connections → https://wa.me/50766623757'\n    }\n  }\n};\n\n// 5. AUDIENCE-SPECIFIC MESSAGING\nconst AUDIENCE_MESSAGING = {\n  digital_nomad: {\n    pain: 'Remote work isolation and client barriers',\n    dream: 'Location independence with global clients',\n    language: 'freedom, opportunity, adventure, independence'\n  },\n  service_provider: {\n    pain: 'Lost income due to language barriers',\n    dream: 'Higher tips and better opportunities',\n    language: 'income, growth, professional, success'\n  },\n  native_english_learner: {\n    pain: 'Limited career opportunities',\n    dream: 'International career prospects',\n    language: 'oportunidad, futuro, éxito, progreso'\n  },\n  cultural_explorer: {\n    pain: 'Surface-level tourist experience',\n    dream: 'Deep cultural immersion',\n    language: 'authentic, meaningful, connection'\n  }\n};\n\n// MAIN PROCESSING ENGINE\nconst inputData = arguments[0] || {};\nconst rawStory = inputData.story || inputData.text || '';\nconst rawEmotion = inputData.emotion || '';\nconst rawHook = inputData.hook || '';\nconst rawTransformation = inputData.transformation || '';\nconst videoURL = inputData.videoURL || 'https://youtube.com/shorts/4l9B4Rc1SxY';\nconst imageURL = inputData.imageURL || 'https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_4x5_second_image.jpg';\n\n// AI ANALYSIS\nconst emotionalProfile = detectEmotionalState(rawStory, rawEmotion, rawHook);\nconst audienceProfile = detectAudienceProfile(rawStory, rawHook);\nconst culturalContext = detectCulturalContext(rawStory);\n\n// GET ADAPTATIONS\nconst emotionalContent = EMOTIONAL_ADAPTATIONS[emotionalProfile.primary] || EMOTIONAL_ADAPTATIONS.breakthrough_euphoria;\nconst audienceMsg = AUDIENCE_MESSAGING[audienceProfile.primary] || AUDIENCE_MESSAGING.cultural_explorer;\n\n// GENERATE PLATFORM CONTENT\n\n// INSTAGRAM - Rich & Community-Focused\nconst instagramContent = `${emotionalContent.instagram.hook}\n\n${culturalContext.greeting}\n\n${rawStory}\n\n${rawTransformation}\n\n${emotionalContent.instagram.validation}\n\n${culturalContext.context} - you're not alone in this journey.\n\n${emotionalContent.instagram.cta}\n\n${emotionalContent.instagram.hashtags}\n\n${emotionalContent.instagram.engagement}`.slice(0, 2200);\n\n// LINKEDIN - Professional & Empowering\nconst linkedinTitle = emotionalContent.linkedin.hook;\nconst linkedinBody = `${rawStory}\n\n${rawTransformation}\n\n${emotionalContent.linkedin.validation}.\n\nFor professionals ${culturalContext.context}, language mastery accelerates careers.\n\n${emotionalContent.linkedin.cta}\n\n${emotionalContent.linkedin.hashtags}\n\n${emotionalContent.linkedin.engagement}`.replace(/[🔥💕🚨😭✨🫂🌟🥺❤️🌎💰🤯]/g, '').slice(0, 2950);\n\n// TIKTOK - Viral & Authentic\nconst tiktokContent = `${emotionalContent.tiktok.hook}\n\n${emotionalContent.tiktok.validation}!\n\n${emotionalContent.tiktok.cta}\n\n${emotionalContent.tiktok.hashtags}`.slice(0, 145);\n\n// YOUTUBE - Story-Driven\nconst youtubeTitle = emotionalContent.youtube.title.slice(0, 95);\nconst youtubeDescription = `${emotionalContent.youtube.description}\n\n${rawStory}\n\n${rawTransformation}\n\n${culturalContext.greeting} Welcome to a community that understands.\n\n${emotionalContent.youtube.cta}\n\n🎯 Perfect for ${audienceMsg.dream}\n\n#EspaLuz #EmotionalAI #LanguageLearning`.slice(0, 4900);\n\n// OPTIMAL TIMING\nconst emotionalTiming = {\n  crushing_embarrassment: 0,\n  desperate_frustration: 0,\n  paralyzing_anxiety: 15,\n  breakthrough_euphoria: 60,\n  empowering_confidence: 90,\n  adventure_excitement: 30,\n  local_acceptance: 45\n};\n\nconst optimalDelay = emotionalTiming[emotionalProfile.primary] || 30;\n\n// MEDIA STRATEGY\nconst videoEmotions = ['breakthrough_euphoria', 'adventure_excitement', 'empowering_confidence'];\nconst useVideo = videoEmotions.includes(emotionalProfile.primary);\n\n// OUTPUT FOR EXISTING MODULES\noutput = {\n  // Original data\n  originalStory: rawStory,\n  originalEmotion: rawEmotion,\n  videoURL: videoURL,\n  imageURL: imageURL,\n  \n  // AI Analysis\n  detectedEmotion: emotionalProfile.primary,\n  emotionalIntensity: emotionalProfile.intensity,\n  audienceType: audienceProfile.primary,\n  culturalRegion: culturalContext.region,\n  optimalDelay: optimalDelay,\n  \n  // INSTAGRAM Content\n  instagramText: instagramContent,\n  instagramMedia: useVideo ? videoURL : imageURL,\n  \n  // LINKEDIN Content  \n  linkedinTitle: linkedinTitle,\n  linkedinText: linkedinBody,\n  linkedinMedia: imageURL,\n  \n  // TIKTOK Content\n  tiktokText: tiktokContent,\n  tiktokMedia: videoURL,\n  \n  // YOUTUBE Content\n  youtubeTitle: youtubeTitle,\n  youtubeDescription: youtubeDescription,\n  youtubeMedia: videoURL,\n  \n  // Engagement Prediction\n  viralPotential: emotionalProfile.intensity > 5 ? 'HIGH' : 'MEDIUM',\n  engagementScore: ((emotionalProfile.intensity + audienceProfile.confidence * 10) / 2).toFixed(1),\n  \n  // Debug Info\n  emotionalTriggers: emotionalProfile.triggers,\n  audienceConfidence: audienceProfile.confidence,\n  culturalGreeting: culturalContext.greeting\n};"
+      }
+    },
+    
+    {
+      "id": 3,
+      "type": "router",
+      "name": "Platform Router (EXISTING)",
+      "notes": "Your existing router - no changes needed"
+    },
+    
+    {
+      "id": 10,
+      "type": "bufferCreateUpdate",
+      "name": "Buffer: Instagram (ENHANCED)",
+      "notes": "Your existing Buffer Instagram - just update the text field",
+      "parameters": {
+        "profileIds": ["YOUR_IG_PROFILE_ID"],
+        "text": "{{2.instagramText}}",
+        "mediaUrls": ["{{2.instagramMedia}}"],
+        "shorten": false,
+        "now": true
+      }
+    },
+    
+    {
+      "id": 11,
+      "type": "bufferCreateUpdate", 
+      "name": "Buffer: LinkedIn (ENHANCED)",
+      "notes": "Your existing Buffer LinkedIn - update text fields",
+      "parameters": {
+        "profileIds": ["YOUR_LI_PROFILE_ID"],
+        "text": "{{2.linkedinTitle}}\n\n{{2.linkedinText}}",
+        "mediaUrls": ["{{2.linkedinMedia}}"],
+        "shorten": false,
+        "now": true
+      }
+    },
+    
+    {
+      "id": 12,
+      "type": "bufferCreateUpdate",
+      "name": "Buffer: TikTok (ENHANCED)", 
+      "notes": "Your existing Buffer TikTok - update text field",
+      "parameters": {
+        "profileIds": ["YOUR_TT_PROFILE_ID"],
+        "text": "{{2.tiktokText}}",
+        "mediaUrls": ["{{2.tiktokMedia}}"],
+        "shorten": false,
+        "now": true
+      }
+    },
+    
+    {
+      "id": 20,
+      "type": "youtubeUploadVideo",
+      "name": "YouTube Upload (ENHANCED)",
+      "notes": "Your existing YouTube module - update title/description fields",
+      "parameters": {
+        "title": "{{2.youtubeTitle}}",
+        "description": "{{2.youtubeDescription}}",
+        "privacyStatus": "public",
+        "notifySubscribers": false,
+        "fileUrl": "{{2.youtubeMedia}}",
+        "tags": ["EspaLuz", "Emotional AI", "Spanish learning", "Language breakthrough"]
+      }
+    }
+  ],
+  
+  "connections": [
+    { "from": 1, "to": 2, "label": "Webhook → Emotional AI" },
+    { "from": 2, "to": 3, "label": "AI → Router" },
+    { "from": 3, "to": 10, "label": "Router → Instagram" },
+    { "from": 3, "to": 11, "label": "Router → LinkedIn" },
+    { "from": 3, "to": 12, "label": "Router → TikTok" },
+    { "from": 3, "to": 20, "label": "Router → YouTube" }
+  ],
+  
+  "deployment_instructions": {
+    "step_1": "Replace your existing 'tools' module (ID 2) with the Revolutionary Emotional AI Engine code above",
+    "step_2": "Update your Buffer modules (10, 11, 12) to use the new field mappings: {{2.instagramText}}, {{2.linkedinTitle}}, etc.",
+    "step_3": "Update your YouTube module (20) to use {{2.youtubeTitle}} and {{2.youtubeDescription}}",
+    "step_4": "Replace YOUR_IG_PROFILE_ID, YOUR_LI_PROFILE_ID, YOUR_TT_PROFILE_ID with your actual Buffer profile IDs",
+    "step_5": "Test with your existing webhook URL: https://hook.us2.make.com/fx857yhr46x4o2xrtaxatxja8yqxhfli"
+  },
+  
+  "what_this_adds": [
+    "🧠 Revolutionary emotional intelligence with 11+ emotional states",
+    "🎯 Expanded audience detection: digital nomads, service providers, natives learning English",
+    "🌍 Cultural intelligence for Panama, Mexico, Spain, Colombia contexts",
+    "📊 Viral potential prediction and engagement scoring",
+    "⏰ Optimal timing based on emotional urgency",
+    "🎨 Platform-native emotional language adaptation",
+    "📈 10x more sophisticated content generation"
+  ]
+}
