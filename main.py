@@ -33,19 +33,116 @@ image_urls = [
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",
 ]
 
-# Rich story templates with emotional AI hooks
+# REVOLUTIONARY EMOTIONALLY INTELLIGENT STORY TEMPLATES - EXPANDED AUDIENCES
 story_templates = [
+    # EXPAT FAMILIES - Original Audience
     {
         "hook": "🧠 AI THAT ACTUALLY GETS IT",
         "story": "I was having a meltdown trying to discipline my toddler in Spanish. I sent a frustrated voice message to EspaLuz: 'I don't know how to be firm but loving in Spanish!' The AI didn't just translate—it UNDERSTOOD I was a stressed parent and coached me through it.",
         "transformation": "EspaLuz analyzed my emotional state, gave me gentle parenting phrases in Spanish, and sent a personalized video showing me how to set boundaries with love. Now my daughter responds better, and I feel confident as a bilingual parent! 🎭💕",
-        "emotion": "🤖 From robotic apps to EMOTIONAL AI"
+        "emotion": "🤖 From robotic apps to EMOTIONAL AI",
+        "audience": "expat_parent",
+        "emotional_state": "desperate_frustration"
     },
+    
+    # DIGITAL NOMADS - New High-Value Audience
+    {
+        "hook": "💻 REMOTE WORK BREAKTHROUGH",
+        "story": "Client call disaster in Mexico City. My Spanish wasn't good enough for the business presentation, and I was losing a $50K contract. I felt like a fraud calling myself 'location independent' when I couldn't even communicate professionally.",
+        "transformation": "EspaLuz's business Spanish module didn't just teach me phrases—it understood my professional anxiety and coached me through confident business communication. I nailed the follow-up presentation and landed the contract! Now I'm truly location independent.",
+        "emotion": "💼 From imposter syndrome to PROFESSIONAL CONFIDENCE",
+        "audience": "digital_nomad",
+        "emotional_state": "career_breakthrough"
+    },
+    
+    # SERVICE PROVIDERS - Huge Untapped Market
+    {
+        "hook": "💰 INCOME DOUBLED WITH ENGLISH",
+        "story": "I was a tour guide in Cartagena making barely enough to survive. Tourists would ask complex questions in English, and I'd just smile and nod, losing tips and credibility. My English was holding back my dreams of a better life.",
+        "transformation": "EspaLuz understood I wasn't just learning English—I was fighting for my family's future. It coached me through tourism vocabulary, confident pronunciation, and cultural communication. Now I'm the highest-rated guide in the city, earning 3x more!",
+        "emotion": "🚀 From survival to PROSPERITY",
+        "audience": "service_provider",
+        "emotional_state": "empowering_confidence"
+    },
+    
+    # BUSINESS TRAVELERS - Professional Market
+    {
+        "hook": "🎯 BOARDROOM BREAKTHROUGH",
+        "story": "Merger negotiations in Madrid. I was the only American executive who couldn't contribute meaningfully because my Spanish wasn't business-level. I watched a $2M deal almost collapse because of communication barriers. I felt professionally inadequate.",
+        "transformation": "EspaLuz detected my professional anxiety and created a business Spanish crash course tailored to my industry. Within weeks, I was leading Spanish negotiations with confidence. The merger succeeded, and I got promoted to VP of International Operations!",
+        "emotion": "📈 From professional liability to EXECUTIVE ASSET",
+        "audience": "business_traveler",
+        "emotional_state": "breakthrough_euphoria"
+    },
+    
+    # CULTURAL EXPLORERS - Adventure Market
+    {
+        "hook": "🌍 AUTHENTIC CONNECTION UNLOCKED",
+        "story": "Three months backpacking through South America, but I was still just a tourist. Staying in hostels, eating at tourist restaurants, never connecting with locals. I was traveling but not truly experiencing the culture.",
+        "transformation": "EspaLuz understood my desire for authentic connection and taught me conversational Spanish that opened hearts, not just conversations. Families invited me to Sunday dinners, I learned traditional recipes from abuelas, and experienced the real Latin America!",
+        "emotion": "❤️ From tourist to FAMILY",
+        "audience": "cultural_explorer",  
+        "emotional_state": "local_acceptance"
+    },
+    
+    # HEALTHCARE WORKERS - Critical Situations
+    {
+        "hook": "🏥 LIFE-SAVING COMMUNICATION",
+        "story": "Emergency room nurse in Miami. Spanish-speaking patient having chest pains, but I couldn't understand her symptoms description. I had to rely on Google Translate while she was in distress. I felt helpless when lives depended on clear communication.",
+        "transformation": "EspaLuz created medical Spanish modules that understood the emotional weight of healthcare communication. It taught me not just medical terms, but how to provide comfort and confidence to scared patients. Now I'm the go-to nurse for Spanish-speaking emergencies.",
+        "emotion": "🛡️ From helpless to LIFESAVER",
+        "audience": "healthcare_worker",
+        "emotional_state": "empowering_confidence"
+    },
+    
+    # ENTREPRENEURS - Business Growth
+    {
+        "hook": "📊 BUSINESS EXPANSION SUCCESS",
+        "story": "My online business was stuck serving only English speakers. I knew the Latin American market was huge, but language barriers kept me from expanding. I was leaving millions on the table because I couldn't communicate with potential customers.",
+        "transformation": "EspaLuz understood my entrepreneurial drive and created business expansion modules. It taught me customer service Spanish, marketing language, and cultural business etiquette. My revenue increased 400% in the first year of Latin American expansion!",
+        "emotion": "💎 From limited market to GLOBAL EMPIRE",
+        "audience": "entrepreneur",
+        "emotional_state": "business_growth"
+    },
+    
+    # NATIVES LEARNING ENGLISH - Reverse Market
+    {
+        "hook": "🎓 UNIVERSITY DREAMS ACHIEVED",
+        "story": "Soy de Colombia y siempre soñé con estudiar en Estados Unidos, pero mi inglés no era suficiente para los exámenes de admisión. Veía cómo otros conseguían becas mientras yo me quedaba atrás. Me sentía limitada por el idioma.",
+        "transformation": "EspaLuz entendió que no solo estaba aprendiendo inglés—estaba luchando por mi futuro. Me ayudó con inglés académico, confianza para hablar, y preparación para exámenes. ¡Conseguí una beca completa para MIT! Ahora estoy estudiando ingeniería.",
+        "emotion": "🌟 From limited opportunities to UNLIMITED FUTURE",
+        "audience": "native_english_learner",
+        "emotional_state": "breakthrough_euphoria"
+    },
+    
+    # RETIREMENT EXPATS - Growing Market
+    {
+        "hook": "🌅 RETIREMENT PARADISE UNLOCKED",
+        "story": "Retired to Costa Rica for the Pura Vida lifestyle, but felt like a prisoner in my own paradise. Couldn't talk to neighbors, understand the doctor, or navigate daily life. I was living in isolation instead of integration.",
+        "transformation": "EspaLuz understood that at 65, I wasn't just learning Spanish—I was reclaiming my independence and dignity. It adapted to my learning pace and focused on practical daily conversations. Now I'm the gringo who helps other expats integrate!",
+        "emotion": "🏡 From isolated retiree to COMMUNITY LEADER",
+        "audience": "retirement_expat",
+        "emotional_state": "local_acceptance"
+    },
+    
+    # EMERGENCY SITUATIONS - High Stakes
+    {
+        "hook": "🚨 CRISIS COMMUNICATION BREAKTHROUGH",
+        "story": "My elderly mother fell in her Mexico City apartment. I'm calling from the US, trying to coordinate with Spanish-speaking doctors and paramedics. Every second mattered, but language barriers were slowing down her care.",
+        "transformation": "EspaLuz's emergency Spanish module prepared me for exactly this scenario. I confidently communicated her medical history, allergies, and symptoms to the medical team. She got immediate proper care and recovered fully!",
+        "emotion": "⚡ From panic to PREPARED ADVOCATE",
+        "audience": "emergency_situation",
+        "emotional_state": "empowering_confidence"
+    },
+    
+    # ORIGINAL EXPAT FAMILY STORIES (Enhanced)
     {
         "hook": "🎬 THE CONVERSATION MODE MIRACLE",
         "story": "My husband and I were fighting about money—in English. Our Spanish neighbors could hear everything through thin walls, but we couldn't explain or apologize because of the language barrier. I felt so embarrassed and isolated.",
         "transformation": "I used EspaLuz's new Conversation Mode to practice what I wanted to say. Voice message → instant analysis → Spanish coaching → personalized motivation video. I knocked on their door, apologized in perfect Spanish, and we're now close friends! 🏠✨",
-        "emotion": "💬 From isolation to CONNECTION"
+        "emotion": "💬 From isolation to CONNECTION",
+        "audience": "expat_spouse",
+        "emotional_state": "heart_melting_connection"
     },
     {
         "hook": "🎯 THE BEDTIME BREAKTHROUGH",
@@ -85,15 +182,16 @@ story_templates = [
     }
 ]
 
-# Revolutionary benefit points with emotional AI focus
+# REVOLUTIONARY BENEFIT SECTIONS - EXPANDED FOR ALL AUDIENCES
 benefit_sections = [
     {
         "title": "🧠 WORLD'S FIRST EMOTIONAL AI COACH",
         "points": [
             "🎭 Detects your emotional state and adapts responses accordingly",
-            "👨‍👩‍👧‍👦 Recognizes your family role (parent, spouse, child) for targeted support",
+            "👨‍👩‍👧‍👦 Recognizes your life context (parent, professional, traveler, entrepreneur) for targeted support",
             "💕 Provides empathy and encouragement, not just cold translations",
-            "🎯 Coaches you through real family situations with emotional intelligence"
+            "🎯 Coaches you through real-life situations with emotional intelligence",
+            "💼 Understands professional anxiety, family stress, travel excitement, business pressure"
         ]
     },
     {
@@ -115,9 +213,29 @@ benefit_sections = [
         ]
     },
     {
+        "title": "💼 PROFESSIONAL & BUSINESS MASTERY",
+        "points": [
+            "📊 Business Spanish for entrepreneurs expanding to Latin markets",
+            "🏥 Medical Spanish for healthcare workers saving lives",
+            "✈️ Executive-level Spanish for international business travelers",
+            "💰 Service industry English for tourism professionals increasing income",
+            "🎓 Academic English for natives pursuing international education"
+        ]
+    },
+    {
+        "title": "🌍 CULTURAL & TRAVEL INTELLIGENCE",
+        "points": [
+            "🗺️ Location-specific Spanish for digital nomads (Mexico City, Medellín, Panama)",
+            "🏠 Integration Spanish for retirees living their best expat life",
+            "❤️ Authentic connection Spanish for cultural explorers and backpackers",
+            "🚨 Emergency Spanish for critical life situations",
+            "🎭 Cultural etiquette and context, not just language rules"
+        ]
+    },
+    {
         "title": "👨‍👩‍👧‍👦 FAMILY-CENTERED LEARNING",
         "points": [
-            "🏠 Designed for expat families in Panama, Mexico, Spain",
+            "🏠 Designed for expat families in Panama, Mexico, Spain, Colombia, Costa Rica",
             "🍼 Real parenting phrases for bedtime, meals, discipline",
             "💑 Relationship Spanish for couples building bilingual connections",
             "🌟 Builds family bonds through language, not just vocabulary"
@@ -144,43 +262,88 @@ cta_options = [
     "🎭 From frustrated parent to confident bilingual family—EspaLuz makes it possible.\n🤖 AI Family Companion for Learning Spanish On-The-Go\n📲 Choose your platform: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://wa.me/50766623757"
 ]
 
-# Emotional AI social proof testimonials
+# REVOLUTIONARY SOCIAL PROOF - ALL AUDIENCES
 social_proof = [
+    # EXPAT FAMILIES (Original)
     "🧠 'The AI detected I was stressed about parenting and gave me exactly the Spanish phrases I needed to connect with my daughter. It's like having a bilingual therapist!' - Sarah, expat mom in Panama",
     "🎬 'Conversation Mode changed everything. I sent a panicked voice message about my son's school meeting, and EspaLuz coached me through the whole thing with personalized videos!' - Mike, Panama City",
     "💕 'My husband's family finally accepts me. EspaLuz understood I felt like an outsider and taught me cultural Spanish, not just words.' - Jennifer, married to Mexican national",
-    "🎭 'The AI knew I was embarrassed about my pronunciation and sent me confidence-building exercises. Now I sing Spanish lullabies to my kids!' - Amanda, bilingual family",
+    
+    # DIGITAL NOMADS & ENTREPRENEURS
+    "💻 'Lost a $30K client because of language barriers. EspaLuz's business Spanish got me fluent in negotiations. Now I'm closing deals in 3 countries!' - Alex, digital nomad entrepreneur",
+    "📈 'My SaaS business was English-only. EspaLuz helped me expand to Latin America. Revenue jumped 400% in 8 months!' - Maria, tech entrepreneur",
+    "🎯 'I was paying tourist prices at the market until EspaLuz taught me confident haggling Spanish. Now vendors treat me like family!' - Tom, location-independent consultant",
+    
+    # SERVICE PROVIDERS & NATIVES LEARNING ENGLISH
+    "💰 'Como guía turístico, EspaLuz mejoró mi inglés profesional. Ahora gano el triple y tengo las mejores reseñas en TripAdvisor!' - Carlos, tour guide in Cartagena",
+    "🎓 'Conseguí beca completa para Stanford gracias a EspaLuz. Mi inglés académico pasó de básico a universitario en 6 meses.' - Ana, Colombian engineering student",
+    "🏥 'As a hotel manager, EspaLuz taught me hospitality English that impresses international guests. Got promoted to regional manager!' - Luis, hospitality professional",
+    
+    # HEALTHCARE & EMERGENCY SITUATIONS
     "⚡ 'EspaLuz detected my anxiety about medical appointments and prepared me with doctor-specific Spanish. I advocated for my mom like a pro!' - Carlos, caring for elderly parent",
-    "🌟 'It's not just translation—it's emotional support. The AI celebrates my wins and encourages me through frustrations. Like having a Spanish-speaking best friend!' - Lisa, solo expat",
+    "🏥 'Emergency room Spanish from EspaLuz saved lives. I can now comfort scared patients and communicate critical information with confidence.' - Dr. Patricia, Miami ER",
+    "🚨 'When my dad had a heart attack in Mexico, EspaLuz's medical Spanish helped me coordinate his care from the US. He's alive because I could communicate clearly.' - Robert, emergency situation",
+    
+    # BUSINESS TRAVELERS & PROFESSIONALS
+    "💼 'Boardroom Spanish from EspaLuz landed me the VP position. I went from liability to asset in international negotiations.' - James, corporate executive",
+    "✈️ 'Business travel was stressful until EspaLuz taught me professional Spanish. Now I lead our Latin American expansion.' - Michelle, business development director",
+    
+    # CULTURAL EXPLORERS & RETIREES
+    "🌟 'It's not just translation—it's emotional support. The AI celebrates my wins and encourages me through frustrations. Like having a Spanish-speaking best friend!' - Lisa, solo backpacker",
+    "🏡 'Retired to Costa Rica but felt isolated. EspaLuz helped me integrate with locals. Now I'm the neighborhood gringo who helps everyone!' - Bob, retirement expat",
+    "❤️ 'Backpacking through Colombia, EspaLuz connected me with local families. I experienced authentic culture, not just tourist spots.' - Emma, cultural explorer",
+    
+    # FAMILY SUCCESS STORIES
     "👨‍👩‍👧‍👦 'Our family went from language barriers to bilingual bonding. EspaLuz understood our dynamics and coached us all differently.' - The Rodriguez Family, 3 generations",
-    "🎯 'I was paying tourist prices at the market until EspaLuz taught me confident haggling Spanish. Now vendors treat me like family!' - Tom, digital nomad in Mexico"
+    "🎭 'The AI knew I was embarrassed about my pronunciation and sent me confidence-building exercises. Now I sing Spanish lullabies to my kids!' - Amanda, bilingual family"
 ]
 
-# Platform-specific hashtag sets for emotional AI positioning
+# REVOLUTIONARY HASHTAG SETS - ALL AUDIENCES & PLATFORMS
 hashtag_sets = [
-    # Instagram/Facebook - Emotional AI Focus
+    # Instagram/Facebook - Emotional AI + Family Focus
     ["#EspaLuz", "#EmotionalAI", "#BilingualFamilies", "#ConversationMode", "#SpanishWithHeart", "#FamilyFirst", "#ExpatLife"],
     
-    # TikTok - Trending + Features
-    ["#EspaLuz", "#AICoach", "#SpanishTok", "#ExpatTok", "#BilingualJourney", "#FamilyGoals", "#LanguageLearning", "#EmotionalIntelligence"],
+    # TikTok - Viral + All Audiences
+    ["#EspaLuz", "#AICoach", "#SpanishTok", "#ExpatTok", "#NomadLife", "#BilingualJourney", "#LanguageHack", "#EmotionalIntelligence"],
     
-    # Twitter/X - Professional + Innovation
-    ["#EspaLuz", "#EmotionalAI", "#ConversationMode", "#AIInnovation", "#SpanishLearning", "#ExpatFamilies", "#WhatsAppAI"],
+    # LinkedIn - Professional + Business Focus
+    ["#EspaLuz", "#EmotionalAI", "#BusinessSpanish", "#ProfessionalDevelopment", "#GlobalBusiness", "#CareerGrowth", "#ExecutiveSpanish"],
     
-    # YouTube - Educational + Family
-    ["#EspaLuz", "#SpanishForFamilies", "#EmotionalAI", "#BilingualParenting", "#ConversationMode", "#ExpatLife", "#FamilyLearning"],
+    # YouTube - Educational + Success Stories
+    ["#EspaLuz", "#LanguageLearning", "#EmotionalAI", "#SuccessStory", "#BilingualSuccess", "#ConversationMode", "#LanguageBreakthrough"],
     
-    # LinkedIn - Professional Expat Focus
-    ["#EspaLuz", "#ExpatLife", "#BilingualProfessionals", "#EmotionalAI", "#WorkingAbroad", "#SpanishBusiness", "#GlobalFamilies"],
+    # Digital Nomad Focus
+    ["#EspaLuz", "#DigitalNomad", "#RemoteWork", "#LocationIndependent", "#NomadLife", "#BusinessSpanish", "#GlobalEntrepreneur"],
     
-    # General Emotional Positioning
-    ["#EspaLuz", "#EmotionalIntelligence", "#FamilyConnection", "#SpanishWithEmpathy", "#BilingualBonding", "#AIThatCares", "#HeartfeltLearning"],
+    # Service Provider Focus (English/Spanish Mix)
+    ["#EspaLuz", "#TourismEnglish", "#HospitalitySpanish", "#ServiceExcellence", "#ProfessionalEnglish", "#CareerUpgrade", "#IncomeBoost"],
     
-    # Panama/Mexico Specific
-    ["#EspaLuz", "#PanamaExpats", "#MexicoLife", "#SpainLife", "#LatinAmericaLife", "#ExpatFamilies", "#BilingualKids", "#CulturalIntegration"],
+    # Healthcare & Emergency Focus
+    ["#EspaLuz", "#MedicalSpanish", "#HealthcareHeroes", "#EmergencySpanish", "#LifeSavingCommunication", "#PatientCare", "#MedicalAI"],
     
-    # Feature-Specific
-    ["#EspaLuz", "#ConversationMode", "#PersonalizedVideos", "#VoiceToText", "#WhatsAppLearning", "#NoAppNeeded", "#InstantTranslation"]
+    # Cultural Explorer Focus
+    ["#EspaLuz", "#CulturalImmersion", "#AuthenticTravel", "#LocalConnection", "#BackpackerLife", "#CulturalExchange", "#TravelDeep"],
+    
+    # Entrepreneur & Business Growth
+    ["#EspaLuz", "#BusinessGrowth", "#EntrepreneurLife", "#GlobalExpansion", "#StartupSuccess", "#BusinessSpanish", "#RevenueGrowth"],
+    
+    # Native English Learners (Spanish/English Mix)
+    ["#EspaLuz", "#InglésAcadémico", "#UniversityDreams", "#ScholarshipSuccess", "#AcademicEnglish", "#FuturoIlimitado", "#EducaciónGlobal"],
+    
+    # Retirement & Lifestyle Focus
+    ["#EspaLuz", "#RetirementAbroad", "#ExpatRetirement", "#PuraVida", "#RetirementGoals", "#SeniorExpats", "#LifestyleChange"],
+    
+    # Geographic Specific - Expanded
+    ["#EspaLuz", "#PanamaExpats", "#MexicoLife", "#ColombiaLife", "#CostaRicaLife", "#SpainLife", "#LatinAmericaLife", "#CentralAmerica"],
+    
+    # Emotional & Breakthrough Focus
+    ["#EspaLuz", "#EmotionalIntelligence", "#LanguageBreakthrough", "#ConfidenceBuilding", "#PersonalGrowth", "#TransformationStory", "#AIThatCares"],
+    
+    # Feature-Specific Technology
+    ["#EspaLuz", "#ConversationMode", "#PersonalizedVideos", "#VoiceToText", "#WhatsAppLearning", "#AICoaching", "#EmotionalSupport"],
+    
+    # General High-Engagement
+    ["#EspaLuz", "#LanguageLearning", "#BilingualLife", "#SpanishSuccess", "#LifeChanging", "#DreamsComeTrue", "#UnlimitedPotential"]
 ]
 
 def generate_promo_content():
@@ -243,7 +406,7 @@ def send_automated_daily_promo():
         bot.send_message(TELEGRAM_CHAT_ID, promo)
         print("✅ Automated promo sent to @EspaLuz channel.")
         
-        # Send to Make.com webhook with emotional intelligence data
+        # Send to Make.com webhook with REVOLUTIONARY emotional intelligence data
         payload = {
             "text": promo,
             "videoURL": video_url,
@@ -252,14 +415,31 @@ def send_automated_daily_promo():
             "videoDescription": story['story'][:200] + "...",
             "automated": True,
             "timestamp": datetime.now(pytz.timezone('America/Panama')).isoformat(),
-            # Emotional Intelligence Data
+            
+            # REVOLUTIONARY Emotional Intelligence Data
             "hook": story['hook'],
             "story": story['story'],
             "emotion": story['emotion'],
             "transformation": story['transformation'],
             "cta": cta,
             "hashtags": " ".join(hashtags),
-            "socialProof": proof
+            "socialProof": proof,
+            
+            # NEW: Audience & Emotional State Intelligence
+            "audience": story.get('audience', 'general_learner'),
+            "emotional_state": story.get('emotional_state', 'general'),
+            "target_market": story.get('audience', 'expat_parent'),
+            
+            # NEW: Enhanced Content Metadata
+            "content_type": "success_story",
+            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle']) else "medium",
+            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth'] else "medium",
+            
+            # NEW: Platform Optimization Hints
+            "instagram_focus": "community_engagement",
+            "linkedin_focus": "professional_growth", 
+            "tiktok_focus": "viral_relatability",
+            "youtube_focus": "educational_inspiration"
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print(f"📤 Automated promo sent to Make.com webhook. Response: {response.status_code}")
@@ -288,14 +468,31 @@ def send_daily_promo(message):
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": False,
-            # Emotional Intelligence Data
+            
+            # REVOLUTIONARY Emotional Intelligence Data
             "hook": story['hook'],
             "story": story['story'],
             "emotion": story['emotion'],
             "transformation": story['transformation'],
             "cta": cta,
             "hashtags": " ".join(hashtags),
-            "socialProof": proof
+            "socialProof": proof,
+            
+            # NEW: Audience & Emotional State Intelligence
+            "audience": story.get('audience', 'general_learner'),
+            "emotional_state": story.get('emotional_state', 'general'),
+            "target_market": story.get('audience', 'expat_parent'),
+            
+            # NEW: Enhanced Content Metadata
+            "content_type": "success_story",
+            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle']) else "medium",
+            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth'] else "medium",
+            
+            # NEW: Platform Optimization Hints
+            "instagram_focus": "community_engagement",
+            "linkedin_focus": "professional_growth",
+            "tiktok_focus": "viral_relatability", 
+            "youtube_focus": "educational_inspiration"
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print("📤 Sent promo to Make.com webhook. Response:", response.status_code)
