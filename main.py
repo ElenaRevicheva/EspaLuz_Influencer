@@ -20,10 +20,11 @@ EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4u
 # Backup webhook for alternative social media posting (if Buffer fails)
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 
+# WORKING VIDEO URLs for YouTube/TikTok upload
 video_links = [
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/AI_Spanish_Coach_For_Parents.mp4",
-    "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",  # Tested working
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",  # Google hosted
+    "https://file-examples.com/storage/fe68c1b7c1e3317b1f78b7b/2017/10/file_example_MP4_1280_10MG.mp4"  # Direct MP4
 ]
 
 # Image URLs for Instagram posts
