@@ -21,10 +21,11 @@ EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4u
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 
 # ESPALUZ VIDEO URLs - Direct download from Dropbox
+# WORKING VIDEO FILES - Direct download URLs
 video_links = [
-    "https://youtube.com/shorts/4l9B4Rc1SxY",  # Your existing YouTube video
-    "https://youtube.com/shorts/drlbgFu68tI",  # Alternative
-    "https://youtube.com/watch?v=example"  # Backup
+    "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=pcj8q8ig&dl=1",  # Your EspaLuz video - direct download
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",  # Proven working
+    "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4"  # Backup
 ]
 
 # Image URLs for Instagram posts
