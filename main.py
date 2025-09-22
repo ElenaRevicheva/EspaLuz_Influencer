@@ -20,11 +20,11 @@ EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4u
 # Backup webhook for alternative social media posting (if Buffer fails)
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 
-# PROVEN WORKING VIDEO URLs for YouTube API
+# ESPALUZ VIDEO URLs - Direct download from Dropbox
 video_links = [
-    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",  # Google Cloud - proven
-    "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",  # W3C standard
-    "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4"  # Sample videos
+    "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=pcj8q8ig&dl=1",  # Your EspaLuz video
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",  # Backup
+    "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"  # Backup
 ]
 
 # Image URLs for Instagram posts
