@@ -21,9 +21,9 @@ EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4u
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 
 video_links = [
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/AI_Spanish_Coach_For_Parents.mp4",
     "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-    "https://youtube.com/shorts/4l9B4Rc1SxY?feature=share",
-    "https://youtube.com/shorts/drlbgFu68tI?feature=share"
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
 ]
 
 # Image URLs for Instagram posts
