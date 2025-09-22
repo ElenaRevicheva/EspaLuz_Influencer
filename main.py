@@ -364,7 +364,7 @@ def generate_promo_content():
     print(f"🎬 Selected video: {video_url}")
     print(f"🖼️ Selected image: {image_url}")
 
-    # Build rich promo content
+    # Build rich promo content with embedded video links
     promo = f"""{story['hook']} 🚨
 
 {story['story']}
@@ -389,8 +389,7 @@ def generate_promo_content():
 
 {cta}
 
-🎥 Long Story Short:
-{video_url}
+🎬 WATCH: See this transformation in action → {video_url}
 
 {hashtags}
 
