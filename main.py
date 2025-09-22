@@ -23,9 +23,7 @@ BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 # ESPALUZ VIDEO URLs - Direct download from Dropbox
 # ESPALUZ BRANDED VIDEO FILES - Direct download URLs
 video_links = [
-    "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=21jbk8c9&dl=1",  # Your ACTUAL EspaLuz video - direct download
-    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",  # Backup if Dropbox fails
-    "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4"  # Emergency backup
+    "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=21jbk8c9&dl=1"  # ONLY your EspaLuz video
 ]
 
 # Image URLs for Instagram posts
