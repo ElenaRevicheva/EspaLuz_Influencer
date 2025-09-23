@@ -26,11 +26,19 @@ video_links = [
     "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=21jbk8c9&dl=1"  # ONLY your EspaLuz video
 ]
 
-# Image URLs for Instagram posts
+# COMPLETE IMAGE COLLECTION - QR Codes + Branded Content
 image_urls = [
+    # QR CODES - High conversion
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/qr code of whatsapp espaluz.jpg",  # WhatsApp QR
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",  # Telegram QR
+    
+    # BRANDED CONTENT IMAGES
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_4x5_second_image.jpg",
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_image_4x5.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.27_92d791cd.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.56_9e90aa1c.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-23 at 10.46.04_571ea224.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-23 at 10.46.04_75d5e010.jpg"
 ]
 
 # REVOLUTIONARY EMOTIONALLY INTELLIGENT STORY TEMPLATES - EXPANDED AUDIENCES
