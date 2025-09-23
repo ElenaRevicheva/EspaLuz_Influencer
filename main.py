@@ -21,9 +21,14 @@ EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4u
 BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
 
 # ESPALUZ VIDEO URLs - Direct download from Dropbox
-# ESPALUZ BRANDED VIDEO FILES - Direct download URLs
+# ESPALUZ YOUTUBE VIDEOS - Daily Rotation for Maximum Engagement
 video_links = [
-    "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=21jbk8c9&dl=1"  # ONLY your EspaLuz video
+    "https://youtube.com/shorts/-0bw32yzD4Y?si=zfbYJCyRkcVFKdpw",  # EspaLuz Short 1
+    "https://youtube.com/shorts/I3H4V0G-ZtQ?si=D2sbtkGuQ-z87AKm",  # EspaLuz Short 2  
+    "https://youtube.com/shorts/O4a2g3cDDxA?si=AH6qC1f_zWAI2b4G",  # EspaLuz Short 3
+    "https://youtu.be/z2gP6YyEoUs?si=AI7HgtEYxAqMqAFE",          # EspaLuz Video 1
+    "https://youtu.be/scmnutn6Vs4?si=IqrMGHJZO0Cnx9M8",          # EspaLuz Video 2
+    "https://youtube.com/shorts/Y2dhzKlv4J4?si=mSethuhB7-ebjs3q"   # EspaLuz Short 4
 ]
 
 # PERFECT 4:5 RATIO IMAGES - All Instagram Compatible
