@@ -26,15 +26,13 @@ video_links = [
     "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=21jbk8c9&dl=1"  # ONLY your EspaLuz video
 ]
 
-# COMPLETE IMAGE COLLECTION - QR Codes + Branded Content
+# CURATED IMAGE COLLECTION - 6 Perfect Images for Daily Rotation
 image_urls = [
-    # QR CODES - High conversion
+    # QR CODES - Direct conversion paths
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/qr code of whatsapp espaluz.jpg",  # WhatsApp QR
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",  # Telegram QR
     
-    # BRANDED CONTENT IMAGES
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_4x5_second_image.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_image_4x5.jpg",
+    # BRANDED CONTENT IMAGES - Professional visuals
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.27_92d791cd.jpg",
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.56_9e90aa1c.jpg",
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-23 at 10.46.04_571ea224.jpg",
@@ -366,25 +364,8 @@ def generate_promo_content():
     hashtags = " ".join(random.choice(hashtag_sets))
     video_url = random.choice(video_links)
     
-    # CAROUSEL STRATEGY: Select 3-4 images including 1 QR code
-    qr_codes = [
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/qr code of whatsapp espaluz.jpg",
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg"
-    ]
-    branded_images = [
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_4x5_second_image.jpg",
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_image_4x5.jpg",
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.27_92d791cd.jpg",
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.56_9e90aa1c.jpg",
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-23 at 10.46.04_571ea224.jpg",
-        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-23 at 10.46.04_75d5e010.jpg"
-    ]
-    
-    # Create carousel: 1 QR code + 2-3 branded images
-    selected_qr = random.choice(qr_codes)
-    selected_branded = random.sample(branded_images, 3)  # Pick 3 branded images
-    carousel_images = [selected_qr] + selected_branded  # QR first, then branded
-    image_url = selected_qr  # Primary image for single-image platforms
+    # DAILY IMAGE ROTATION: Select 1 random image from all 6
+    image_url = random.choice(image_urls)
     
     # Debug: Print which video and image were selected
     print(f"🎬 Selected video: {video_url}")
@@ -421,12 +402,12 @@ def generate_promo_content():
 
 P.S. Your family's Spanish breakthrough is closer than you think. Don't wait—every day without EspaLuz is a missed conversation, a lost connection, a moment your family could be thriving instead of just surviving. Start today. Your future bilingual selves will thank you! 💕"""
 
-    return promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded
+    return promo, story, video_url, image_url
 
 def send_automated_daily_promo():
     """Automated version that posts to specific chat and webhook"""
     try:
-        promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded = generate_promo_content()
+        promo, story, video_url, image_url = generate_promo_content()
         
         # Send to Telegram channel
         bot.send_message(TELEGRAM_CHAT_ID, promo)
@@ -437,9 +418,6 @@ def send_automated_daily_promo():
             "text": promo,
             "videoURL": video_url,
             "imageURL": image_url,  # Primary image
-            "carouselImages": carousel_images,  # NEW: Multiple images for carousel
-            "qrCode": selected_qr,  # NEW: Always includes a QR code
-            "brandedImages": selected_branded,  # NEW: Branded content images
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": True,
@@ -494,9 +472,6 @@ def send_daily_promo(message):
             "text": promo,
             "videoURL": video_url,
             "imageURL": image_url,  # Primary image
-            "carouselImages": carousel_images,  # NEW: Multiple images for carousel
-            "qrCode": selected_qr,  # NEW: Always includes a QR code
-            "brandedImages": selected_branded,  # NEW: Branded content images
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": False,
