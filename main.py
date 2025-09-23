@@ -458,7 +458,7 @@ def send_automated_daily_promo():
 def send_daily_promo(message):
     print("📣 /daily_promo triggered manually...")
     
-    promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded = generate_promo_content()
+    promo, story, video_url, image_url = generate_promo_content()
 
     # Reply to the user who triggered the command
     bot.reply_to(message, promo)
@@ -536,7 +536,7 @@ def test_emotional_ai(message):
     """Test command for revolutionary emotional AI engine"""
     print("🧠 /test_emotional_ai triggered...")
     
-    promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded = generate_promo_content()
+    promo, story, video_url, image_url = generate_promo_content()
     
     # Reply to the user who triggered the command
     audience_type = story.get('audience', 'general_learner')
