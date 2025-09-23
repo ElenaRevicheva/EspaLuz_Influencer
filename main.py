@@ -26,17 +26,15 @@ video_links = [
     "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=21jbk8c9&dl=1"  # ONLY your EspaLuz video
 ]
 
-# CURATED IMAGE COLLECTION - 6 Perfect Images with URL-Encoded Names
+# INSTAGRAM-COMPATIBLE IMAGES ONLY - Tested 4:5 Ratio
 image_urls = [
-    # QR CODES - Direct conversion paths
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/qr%20code%20of%20whatsapp%20espaluz.jpg",  # WhatsApp QR (spaces encoded)
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",  # Telegram QR
+    # KNOWN WORKING IMAGES (4:5 ratio)
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",  # Telegram QR - WORKS
     
-    # BRANDED CONTENT IMAGES - Professional visuals  
+    # TEST THESE ONE BY ONE - Keep only the ones that work
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/qr%20code%20of%20whatsapp%20espaluz.jpg",  # WhatsApp QR 
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp%20Image%202025-09-15%20at%2014.15.27_92d791cd.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp%20Image%202025-09-15%20at%2014.15.56_9e90aa1c.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp%20Image%202025-09-23%20at%2010.46.04_571ea224.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp%20Image%202025-09-23%20at%2010.46.04_75d5e010.jpg"
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp%20Image%202025-09-15%20at%2014.15.56_9e90aa1c.jpg"
 ]
 
 # REVOLUTIONARY EMOTIONALLY INTELLIGENT STORY TEMPLATES - EXPANDED AUDIENCES
