@@ -26,9 +26,14 @@ video_links = [
     "https://www.dropbox.com/scl/fi/uy5uv35wicmtbcr667p9u/202509151508.mp4?rlkey=om1n84rnwnpkobgvcm31d7xhd&st=21jbk8c9&dl=1"  # ONLY your EspaLuz video
 ]
 
-# ONLY WORKING 4:5 RATIO IMAGES - Instagram Compatible
+# PERFECT 4:5 RATIO IMAGES - All Instagram Compatible
 image_urls = [
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg"  # ONLY confirmed working image
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",  # Telegram QR
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image1.jpg",  # Branded content
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image2.jpg",  # Branded content
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image3.jpg",  # Branded content
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image4.jpg",  # Branded content
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image5.jpg"   # Branded content
 ]
 
 # REVOLUTIONARY EMOTIONALLY INTELLIGENT STORY TEMPLATES - EXPANDED AUDIENCES
