@@ -365,7 +365,26 @@ def generate_promo_content():
     proof = random.choice(social_proof)
     hashtags = " ".join(random.choice(hashtag_sets))
     video_url = random.choice(video_links)
-    image_url = random.choice(image_urls)
+    
+    # CAROUSEL STRATEGY: Select 3-4 images including 1 QR code
+    qr_codes = [
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/qr code of whatsapp espaluz.jpg",
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg"
+    ]
+    branded_images = [
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_4x5_second_image.jpg",
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/converted_image_4x5.jpg",
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.27_92d791cd.jpg",
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-15 at 14.15.56_9e90aa1c.jpg",
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-23 at 10.46.04_571ea224.jpg",
+        "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/WhatsApp Image 2025-09-23 at 10.46.04_75d5e010.jpg"
+    ]
+    
+    # Create carousel: 1 QR code + 2-3 branded images
+    selected_qr = random.choice(qr_codes)
+    selected_branded = random.sample(branded_images, 3)  # Pick 3 branded images
+    carousel_images = [selected_qr] + selected_branded  # QR first, then branded
+    image_url = selected_qr  # Primary image for single-image platforms
     
     # Debug: Print which video and image were selected
     print(f"🎬 Selected video: {video_url}")
@@ -402,12 +421,12 @@ def generate_promo_content():
 
 P.S. Your family's Spanish breakthrough is closer than you think. Don't wait—every day without EspaLuz is a missed conversation, a lost connection, a moment your family could be thriving instead of just surviving. Start today. Your future bilingual selves will thank you! 💕"""
 
-    return promo, story, video_url, image_url
+    return promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded
 
 def send_automated_daily_promo():
     """Automated version that posts to specific chat and webhook"""
     try:
-        promo, story, video_url, image_url = generate_promo_content()
+        promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded = generate_promo_content()
         
         # Send to Telegram channel
         bot.send_message(TELEGRAM_CHAT_ID, promo)
@@ -417,7 +436,10 @@ def send_automated_daily_promo():
         payload = {
             "text": promo,
             "videoURL": video_url,
-            "imageURL": image_url,
+            "imageURL": image_url,  # Primary image
+            "carouselImages": carousel_images,  # NEW: Multiple images for carousel
+            "qrCode": selected_qr,  # NEW: Always includes a QR code
+            "brandedImages": selected_branded,  # NEW: Branded content images
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": True,
@@ -458,7 +480,7 @@ def send_automated_daily_promo():
 def send_daily_promo(message):
     print("📣 /daily_promo triggered manually...")
     
-    promo, story, video_url, image_url = generate_promo_content()
+    promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded = generate_promo_content()
 
     # Reply to the user who triggered the command
     bot.reply_to(message, promo)
@@ -471,7 +493,10 @@ def send_daily_promo(message):
         payload = {
             "text": promo,
             "videoURL": video_url,
-            "imageURL": image_url,
+            "imageURL": image_url,  # Primary image
+            "carouselImages": carousel_images,  # NEW: Multiple images for carousel
+            "qrCode": selected_qr,  # NEW: Always includes a QR code
+            "brandedImages": selected_branded,  # NEW: Branded content images
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": False,
@@ -536,7 +561,7 @@ def test_emotional_ai(message):
     """Test command for revolutionary emotional AI engine"""
     print("🧠 /test_emotional_ai triggered...")
     
-    promo, story, video_url, image_url = generate_promo_content()
+    promo, story, video_url, image_url, carousel_images, selected_qr, selected_branded = generate_promo_content()
     
     # Reply to the user who triggered the command
     audience_type = story.get('audience', 'general_learner')
