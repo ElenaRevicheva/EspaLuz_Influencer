@@ -1,3 +1,25 @@
+"""
+🤖 ESPALUZ AI INFLUENCER CO-FOUNDER v2.0
+=========================================
+Upgraded from template-based to AI-generated content.
+Now powered by Groq (Llama 3.3 70B) for real emotional intelligence.
+
+PRESERVED:
+- Make.com webhook trigger mechanism
+- Daily scheduling via schedule library
+- Telegram bot commands
+- Payload structure for Make.com
+
+UPGRADED:
+- AI-generated stories (no more templates)
+- Real emotional intelligence
+- Fresh, unique content every day
+- EspaLuz brand voice understanding
+
+Author: Elena Revicheva & CTO AIPA
+Version: 2.0.0
+"""
+
 import telebot
 import os
 import random
@@ -5,45 +27,199 @@ import time
 import threading
 import requests
 import schedule
+import json
 from datetime import datetime
 import pytz
+
+# ============================================
+# CONFIGURATION
+# ============================================
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = "@EspaLuz"  # Your channel
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
 MAKE_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4uadkmi9"
-
-# Emotional Intelligence Engine webhook (for testing)
 EMOTIONAL_AI_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4uadkmi9"
 
-# Backup webhook for alternative social media posting (if Buffer fails)
-BACKUP_WEBHOOK_URL = "https://hook.us2.make.com/backup-webhook-url-here"
+# AI Configuration
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
-# ESPALUZ VIDEO URLs - Direct download from Dropbox
-# ESPALUZ YOUTUBE VIDEOS - Daily Rotation for Maximum Engagement
+# ============================================
+# MEDIA ASSETS
+# ============================================
+
 video_links = [
-    "https://youtube.com/shorts/-0bw32yzD4Y?si=zfbYJCyRkcVFKdpw",  # EspaLuz Short 1
-    "https://youtube.com/shorts/I3H4V0G-ZtQ?si=D2sbtkGuQ-z87AKm",  # EspaLuz Short 2  
-    "https://youtube.com/shorts/O4a2g3cDDxA?si=AH6qC1f_zWAI2b4G",  # EspaLuz Short 3
-    "https://youtu.be/z2gP6YyEoUs?si=AI7HgtEYxAqMqAFE",          # EspaLuz Video 1
-    "https://youtu.be/scmnutn6Vs4?si=IqrMGHJZO0Cnx9M8",          # EspaLuz Video 2
-    "https://youtube.com/shorts/Y2dhzKlv4J4?si=mSethuhB7-ebjs3q"   # EspaLuz Short 4
+    "https://youtube.com/shorts/-0bw32yzD4Y?si=zfbYJCyRkcVFKdpw",
+    "https://youtube.com/shorts/I3H4V0G-ZtQ?si=D2sbtkGuQ-z87AKm",
+    "https://youtube.com/shorts/O4a2g3cDDxA?si=AH6qC1f_zWAI2b4G",
+    "https://youtu.be/z2gP6YyEoUs?si=AI7HgtEYxAqMqAFE",
+    "https://youtu.be/scmnutn6Vs4?si=IqrMGHJZO0Cnx9M8",
+    "https://youtube.com/shorts/Y2dhzKlv4J4?si=mSethuhB7-ebjs3q"
 ]
 
-# PERFECT 4:5 RATIO IMAGES - All Instagram Compatible
 image_urls = [
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",  # Telegram QR
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image1.jpg",  # Branded content
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image2.jpg",  # Branded content
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image3.jpg",  # Branded content
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image4.jpg",  # Branded content
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image5.jpg"   # Branded content
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image1.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image2.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image3.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image4.jpg",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image5.jpg"
 ]
 
-# REVOLUTIONARY EMOTIONALLY INTELLIGENT STORY TEMPLATES - EXPANDED AUDIENCES
-story_templates = [
-    # EXPAT FAMILIES - Original Audience
+# ============================================
+# ESPALUZ BRAND KNOWLEDGE (AI CONTEXT)
+# ============================================
+
+ESPALUZ_BRAND_KNOWLEDGE = """
+# ESPALUZ - AI Spanish/English Tutor
+## Brand Identity
+EspaLuz is an AI-powered language tutor that uses emotional intelligence to help people learn Spanish and English. We're not just an app—we're a breakthrough companion that understands the emotional journey of language learning.
+
+## Target Audiences (rotate between these):
+1. **Expat Parents** - American/European families in Latin America struggling to connect with their children's new culture
+2. **Digital Nomads** - Remote workers who need professional Spanish for business
+3. **Service Providers** - Tour guides, taxi drivers, hospitality workers learning English to increase income
+4. **Business Travelers** - Executives needing confident Spanish for negotiations
+5. **Cultural Explorers** - Travelers seeking authentic local connections
+6. **Healthcare Workers** - Nurses/doctors needing medical Spanish
+7. **Entrepreneurs** - Starting businesses in Spanish-speaking markets
+8. **Retirees** - Moving to Latin America for better quality of life
+9. **Teachers** - Bilingual educators
+10. **Immigrants** - Spanish speakers learning English in the US
+
+## Emotional States to Address:
+- **Frustration**: Can't communicate when it matters most
+- **Embarrassment**: Made mistakes that felt humiliating
+- **Isolation**: Feeling like an outsider despite living there
+- **Anxiety**: Scared of speaking and making errors
+- **Breakthrough**: Finally having a confident conversation
+- **Connection**: Building real relationships through language
+- **Empowerment**: Advocating for yourself and family
+
+## What Makes EspaLuz Different:
+1. **Emotional AI** - Understands and adapts to your emotional state
+2. **Voice-First** - Just send voice messages on WhatsApp
+3. **Real Situations** - Learns from your actual life scenarios
+4. **24/7 Available** - Practice anytime via WhatsApp
+5. **Affordable** - $5/week subscription
+6. **Multilingual Support** - Spanish AND English learning
+
+## Contact:
+WhatsApp: +507 6662 3757
+Website: https://espaluz-ai-language-tutor.lovable.app
+
+## Tone of Voice:
+- Warm, empathetic, understanding
+- Shares real transformation stories
+- Never judgmental about mistakes
+- Celebrates small wins
+- Uses emojis authentically (not excessively)
+- Speaks to the emotional pain points
+"""
+
+# ============================================
+# AI STORY GENERATION
+# ============================================
+
+def generate_ai_story():
+    """Generate a fresh story using Groq AI"""
+    
+    # Select random audience and emotional state for variety
+    audiences = [
+        "expat_parent", "digital_nomad", "service_provider", "business_traveler",
+        "cultural_explorer", "healthcare_worker", "entrepreneur", "retiree", "teacher", "immigrant"
+    ]
+    
+    emotional_states = [
+        "desperate_frustration", "crushing_embarrassment", "breakthrough_euphoria",
+        "empowering_confidence", "local_acceptance", "career_breakthrough", "family_connection"
+    ]
+    
+    selected_audience = random.choice(audiences)
+    selected_emotion = random.choice(emotional_states)
+    
+    # Current date for context
+    current_date = datetime.now().strftime("%B %d, %Y")
+    
+    prompt = f"""You are the AI Marketing Co-Founder for EspaLuz, an AI Spanish/English tutor.
+
+BRAND KNOWLEDGE:
+{ESPALUZ_BRAND_KNOWLEDGE}
+
+TODAY'S CONTENT ASSIGNMENT:
+- Date: {current_date}
+- Target Audience: {selected_audience.replace('_', ' ').title()}
+- Emotional Arc: Start with {selected_emotion.replace('_', ' ')} → Transform to confidence/breakthrough
+
+GENERATE A SOCIAL MEDIA STORY with these exact components:
+
+1. **HOOK** (1 line with emoji): Attention-grabbing opening that stops the scroll
+2. **STORY** (3-5 sentences): A specific, relatable scenario this audience faces. Use first-person perspective. Include sensory details and emotional honesty.
+3. **TRANSFORMATION** (2-3 sentences): How EspaLuz helped solve this specific problem. Be specific about what the AI did.
+4. **EMOTION** (1 line with emoji): The before → after emotional shift
+
+RULES:
+- Make it feel REAL, not generic
+- Include specific details (cities, situations, exact feelings)
+- Show vulnerability then triumph
+- Make the reader think "That's EXACTLY what happened to me!"
+- Keep total length under 250 words
+- Don't mention the audience name explicitly
+- CTA: https://wa.me/50766623757
+
+Output as valid JSON with keys: hook, story, transformation, emotion, audience, emotional_state"""
+
+    try:
+        response = requests.post(
+            GROQ_API_URL,
+            headers={
+                "Authorization": f"Bearer {GROQ_API_KEY}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "llama-3.3-70b-versatile",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.9,
+                "max_tokens": 1000
+            },
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            content = response.json()['choices'][0]['message']['content']
+            
+            # Parse JSON from response
+            # Handle markdown code blocks if present
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0]
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0]
+            
+            story_data = json.loads(content.strip())
+            story_data['audience'] = selected_audience
+            story_data['emotional_state'] = selected_emotion
+            
+            print(f"🧠 AI generated story for: {selected_audience}")
+            return story_data
+        else:
+            print(f"❌ Groq API error: {response.status_code} - {response.text}")
+            return None
+            
+    except json.JSONDecodeError as e:
+        print(f"❌ JSON parse error: {e}")
+        print(f"Raw content: {content[:500] if 'content' in dir() else 'N/A'}")
+        return None
+    except Exception as e:
+        print(f"❌ AI generation error: {e}")
+        return None
+
+# ============================================
+# FALLBACK TEMPLATES (in case AI fails)
+# ============================================
+
+FALLBACK_STORIES = [
     {
         "hook": "🧠 AI THAT ACTUALLY GETS IT",
         "story": "I was having a meltdown trying to discipline my toddler in Spanish. I sent a frustrated voice message to EspaLuz: 'I don't know how to be firm but loving in Spanish!' The AI didn't just translate—it UNDERSTOOD I was a stressed parent and coached me through it.",
@@ -52,328 +228,112 @@ story_templates = [
         "audience": "expat_parent",
         "emotional_state": "desperate_frustration"
     },
-    
-    # DIGITAL NOMADS - New High-Value Audience
     {
         "hook": "💻 REMOTE WORK BREAKTHROUGH",
         "story": "Client call disaster in Mexico City. My Spanish wasn't good enough for the business presentation, and I was losing a $50K contract. I felt like a fraud calling myself 'location independent' when I couldn't even communicate professionally.",
-        "transformation": "EspaLuz's business Spanish module didn't just teach me phrases—it understood my professional anxiety and coached me through confident business communication. I nailed the follow-up presentation and landed the contract! Now I'm truly location independent.",
+        "transformation": "EspaLuz's business Spanish module didn't just teach me phrases—it understood my professional anxiety and coached me through confident business communication. I nailed the follow-up presentation and landed the contract!",
         "emotion": "💼 From imposter syndrome to PROFESSIONAL CONFIDENCE",
         "audience": "digital_nomad",
         "emotional_state": "career_breakthrough"
     },
-    
-    # SERVICE PROVIDERS - Huge Untapped Market
-    {
-        "hook": "💰 INCOME DOUBLED WITH ENGLISH",
-        "story": "I was a tour guide in Cartagena making barely enough to survive. Tourists would ask complex questions in English, and I'd just smile and nod, losing tips and credibility. My English was holding back my dreams of a better life.",
-        "transformation": "EspaLuz understood I wasn't just learning English—I was fighting for my family's future. It coached me through tourism vocabulary, confident pronunciation, and cultural communication. Now I'm the highest-rated guide in the city, earning 3x more!",
-        "emotion": "🚀 From survival to PROSPERITY",
-        "audience": "service_provider",
-        "emotional_state": "empowering_confidence"
-    },
-    
-    # BUSINESS TRAVELERS - Professional Market
-    {
-        "hook": "🎯 BOARDROOM BREAKTHROUGH",
-        "story": "Merger negotiations in Madrid. I was the only American executive who couldn't contribute meaningfully because my Spanish wasn't business-level. I watched a $2M deal almost collapse because of communication barriers. I felt professionally inadequate.",
-        "transformation": "EspaLuz detected my professional anxiety and created a business Spanish crash course tailored to my industry. Within weeks, I was leading Spanish negotiations with confidence. The merger succeeded, and I got promoted to VP of International Operations!",
-        "emotion": "📈 From professional liability to EXECUTIVE ASSET",
-        "audience": "business_traveler",
-        "emotional_state": "breakthrough_euphoria"
-    },
-    
-    # CULTURAL EXPLORERS - Adventure Market
-    {
-        "hook": "🌍 AUTHENTIC CONNECTION UNLOCKED",
-        "story": "Three months backpacking through South America, but I was still just a tourist. Staying in hostels, eating at tourist restaurants, never connecting with locals. I was traveling but not truly experiencing the culture.",
-        "transformation": "EspaLuz understood my desire for authentic connection and taught me conversational Spanish that opened hearts, not just conversations. Families invited me to Sunday dinners, I learned traditional recipes from abuelas, and experienced the real Latin America!",
-        "emotion": "❤️ From tourist to FAMILY",
-        "audience": "cultural_explorer",  
-        "emotional_state": "local_acceptance"
-    },
-    
-    # HEALTHCARE WORKERS - Critical Situations
     {
         "hook": "🏥 LIFE-SAVING COMMUNICATION",
         "story": "Emergency room nurse in Miami. Spanish-speaking patient having chest pains, but I couldn't understand her symptoms description. I had to rely on Google Translate while she was in distress. I felt helpless when lives depended on clear communication.",
         "transformation": "EspaLuz created medical Spanish modules that understood the emotional weight of healthcare communication. It taught me not just medical terms, but how to provide comfort and confidence to scared patients. Now I'm the go-to nurse for Spanish-speaking emergencies.",
-        "emotion": "🛡️ From helpless to LIFESAVER",
+        "emotion": "🩺 From helpless to HEALTHCARE HERO",
         "audience": "healthcare_worker",
         "emotional_state": "empowering_confidence"
-    },
-    
-    # ENTREPRENEURS - Business Growth
-    {
-        "hook": "📊 BUSINESS EXPANSION SUCCESS",
-        "story": "My online business was stuck serving only English speakers. I knew the Latin American market was huge, but language barriers kept me from expanding. I was leaving millions on the table because I couldn't communicate with potential customers.",
-        "transformation": "EspaLuz understood my entrepreneurial drive and created business expansion modules. It taught me customer service Spanish, marketing language, and cultural business etiquette. My revenue increased 400% in the first year of Latin American expansion!",
-        "emotion": "💎 From limited market to GLOBAL EMPIRE",
-        "audience": "entrepreneur",
-        "emotional_state": "business_growth"
-    },
-    
-    # NATIVES LEARNING ENGLISH - Reverse Market
-    {
-        "hook": "🎓 UNIVERSITY DREAMS ACHIEVED",
-        "story": "Soy de Colombia y siempre soñé con estudiar en Estados Unidos, pero mi inglés no era suficiente para los exámenes de admisión. Veía cómo otros conseguían becas mientras yo me quedaba atrás. Me sentía limitada por el idioma.",
-        "transformation": "EspaLuz entendió que no solo estaba aprendiendo inglés—estaba luchando por mi futuro. Me ayudó con inglés académico, confianza para hablar, y preparación para exámenes. ¡Conseguí una beca completa para MIT! Ahora estoy estudiando ingeniería.",
-        "emotion": "🌟 From limited opportunities to UNLIMITED FUTURE",
-        "audience": "native_english_learner",
-        "emotional_state": "breakthrough_euphoria"
-    },
-    
-    # RETIREMENT EXPATS - Growing Market
-    {
-        "hook": "🌅 RETIREMENT PARADISE UNLOCKED",
-        "story": "Retired to Costa Rica for the Pura Vida lifestyle, but felt like a prisoner in my own paradise. Couldn't talk to neighbors, understand the doctor, or navigate daily life. I was living in isolation instead of integration.",
-        "transformation": "EspaLuz understood that at 65, I wasn't just learning Spanish—I was reclaiming my independence and dignity. It adapted to my learning pace and focused on practical daily conversations. Now I'm the gringo who helps other expats integrate!",
-        "emotion": "🏡 From isolated retiree to COMMUNITY LEADER",
-        "audience": "retirement_expat",
-        "emotional_state": "local_acceptance"
-    },
-    
-    # EMERGENCY SITUATIONS - High Stakes
-    {
-        "hook": "🚨 CRISIS COMMUNICATION BREAKTHROUGH",
-        "story": "My elderly mother fell in her Mexico City apartment. I'm calling from the US, trying to coordinate with Spanish-speaking doctors and paramedics. Every second mattered, but language barriers were slowing down her care.",
-        "transformation": "EspaLuz's emergency Spanish module prepared me for exactly this scenario. I confidently communicated her medical history, allergies, and symptoms to the medical team. She got immediate proper care and recovered fully!",
-        "emotion": "⚡ From panic to PREPARED ADVOCATE",
-        "audience": "emergency_situation",
-        "emotional_state": "empowering_confidence"
-    },
-    
-    # ORIGINAL EXPAT FAMILY STORIES (Enhanced)
-    {
-        "hook": "🎬 THE CONVERSATION MODE MIRACLE",
-        "story": "My husband and I were fighting about money—in English. Our Spanish neighbors could hear everything through thin walls, but we couldn't explain or apologize because of the language barrier. I felt so embarrassed and isolated.",
-        "transformation": "I used EspaLuz's new Conversation Mode to practice what I wanted to say. Voice message → instant analysis → Spanish coaching → personalized motivation video. I knocked on their door, apologized in perfect Spanish, and we're now close friends! 🏠✨",
-        "emotion": "💬 From isolation to CONNECTION",
-        "audience": "expat_spouse",
-        "emotional_state": "heart_melting_connection"
-    },
-    {
-        "hook": "🎯 THE BEDTIME BREAKTHROUGH",
-        "story": "Bedtime was a nightmare. My 5-year-old only wanted Spanish lullabies like the local kids, but I felt ridiculous trying to sing in broken Spanish. She'd get frustrated and cry, 'Mami, you don't sound right!' My heart broke every night.",
-        "transformation": "EspaLuz created a personalized video just for our bedtime routine! It taught me the lullabies with perfect pronunciation and gave me confidence-building phrases. Now she requests MY Spanish lullabies over anyone else's! 🌙🎵",
-        "emotion": "🎭 From embarrassment to PRIDE"
-    },
-    {
-        "hook": "💔 THE SCHOOL MEETING DISASTER",
-        "story": "Parent-teacher conference in Spanish? I was terrified. I sat there nodding like a bobblehead while the teacher explained my son's behavior issues. I had no idea what was happening, couldn't ask questions, and felt like the worst parent ever.",
-        "transformation": "Before the next meeting, I practiced with EspaLuz's emotional AI. It detected my anxiety, coached me through education vocabulary, and gave me a personalized pep-talk video. I advocated for my son like a champion—in fluent Spanish! 📚🏆",
-        "emotion": "🛡️ From helpless to ADVOCATE"
-    },
-    {
-        "hook": "🏥 THE EMERGENCY ROOM PANIC",
-        "story": "My daughter fell and needed stitches. In the ER, surrounded by rapid Spanish, I couldn't explain her allergies or medical history. The doctors were frustrated, my daughter was scared, and I was completely useless when she needed me most.",
-        "transformation": "Now I carry confidence everywhere. EspaLuz's emotional coaching taught me medical Spanish through real conversations, not just vocabulary lists. Last week, I calmly handled my son's fever appointment and even comforted another scared parent! 🏥💪",
-        "emotion": "⚡ From panic to PREPARED"
-    },
-    {
-        "hook": "🎉 THE FAMILY REUNION TRANSFORMATION",
-        "story": "My husband's family reunion in Mexico was coming up. 40+ relatives, all speaking Spanish, and me—the gringa who smiles and waves. I dreaded being the outsider again, watching my kids connect with their heritage while I stood silent.",
-        "transformation": "EspaLuz understood my family role and coached me through cultural conversations. At the reunion, I shared stories, asked about family history, and even helped cook with the abuelas. My mother-in-law cried and said I was 'truly family now.' 👨‍👩‍👧‍👦💕",
-        "emotion": "🌟 From outsider to FAMILIA"
-    },
-    {
-        "hook": "🛒 THE MARKET CONFIDENCE BOOST",
-        "story": "The local mercado intimidated me. Vendors speaking fast Spanish, haggling I couldn't understand, and me pointing at things like a tourist. I was paying double what locals paid and everyone knew I didn't belong.",
-        "transformation": "EspaLuz's conversation practice prepared me for real market interactions. Now vendors greet me by name, I negotiate prices confidently, and last week one vendor taught me his grandmother's secret spice blend—in Spanish! 🌶️🎯",
-        "emotion": "💰 From tourist to LOCAL"
-    },
-    {
-        "hook": "💕 THE DATE NIGHT GAME-CHANGER",
-        "story": "My husband wanted to take Spanish dance lessons together, but I was too embarrassed about my pronunciation. 'What if I mess up the steps AND the language?' I kept making excuses, and our connection was suffering.",
-        "transformation": "EspaLuz's emotional AI gave me confidence-building exercises and dance-specific Spanish phrases. Now we salsa every Friday night, I flirt with him in Spanish, and our relationship is stronger than ever! 💃🕺",
-        "emotion": "💃 From insecurity to ROMANCE"
     }
 ]
 
-# REVOLUTIONARY BENEFIT SECTIONS - EXPANDED FOR ALL AUDIENCES
+# ============================================
+# CONTENT GENERATION (preserves Make.com interface)
+# ============================================
+
+# Benefit sections (kept from original)
 benefit_sections = [
     {
-        "title": "🧠 WORLD'S FIRST EMOTIONAL AI COACH",
+        "title": "🎯 EMOTIONALLY INTELLIGENT",
         "points": [
-            "🎭 Detects your emotional state and adapts responses accordingly",
-            "👨‍👩‍👧‍👦 Recognizes your life context (parent, professional, traveler, entrepreneur) for targeted support",
-            "💕 Provides empathy and encouragement, not just cold translations",
-            "🎯 Coaches you through real-life situations with emotional intelligence",
-            "💼 Understands professional anxiety, family stress, travel excitement, business pressure"
+            "\n   ✅ Senses when you're frustrated and adapts",
+            "\n   ✅ Celebrates your wins with genuine enthusiasm",
+            "\n   ✅ Never judges your mistakes"
         ]
     },
     {
-        "title": "🎬 LIVE CONVERSATION MODE (JUST DEPLOYED!)",
+        "title": "💬 VOICE-FIRST LEARNING",
         "points": [
-            "🎙️ Send voice messages → Instant transcription + emotional analysis",
-            "🔄 Real-time Spanish/English audio with perfect message flow",
-            "💬 Two-way family conversations with live AI coaching",
-            "⚡ No waiting, no apps—works directly in WhatsApp"
+            "\n   ✅ Just send a WhatsApp voice message",
+            "\n   ✅ Practice pronunciation naturally",
+            "\n   ✅ Learn anywhere, anytime"
         ]
     },
     {
-        "title": "🎥 PERSONALIZED MOTIVATIONAL VIDEOS",
+        "title": "🌍 REAL-LIFE SCENARIOS",
         "points": [
-            "🎨 Custom Spanish videos tailored to YOUR exact conversation topic",
-            "💪 Custom English videos for your specific emotional state",
-            "⏰ 15-20 second inspiration when you need encouragement most",
-            "🎯 Uses your conversation context—not generic motivation"
+            "\n   ✅ Parent-teacher conferences",
+            "\n   ✅ Doctor appointments",
+            "\n   ✅ Business negotiations"
         ]
     },
     {
-        "title": "💼 PROFESSIONAL & BUSINESS MASTERY",
+        "title": "💰 AFFORDABLE BREAKTHROUGH",
         "points": [
-            "📊 Business Spanish for entrepreneurs expanding to Latin markets",
-            "🏥 Medical Spanish for healthcare workers saving lives",
-            "✈️ Executive-level Spanish for international business travelers",
-            "💰 Service industry English for tourism professionals increasing income",
-            "🎓 Academic English for natives pursuing international education"
-        ]
-    },
-    {
-        "title": "🌍 CULTURAL & TRAVEL INTELLIGENCE",
-        "points": [
-            "🗺️ Location-specific Spanish for digital nomads (Mexico City, Medellín, Panama)",
-            "🏠 Integration Spanish for retirees living their best expat life",
-            "❤️ Authentic connection Spanish for cultural explorers and backpackers",
-            "🚨 Emergency Spanish for critical life situations",
-            "🎭 Cultural etiquette and context, not just language rules"
-        ]
-    },
-    {
-        "title": "👨‍👩‍👧‍👦 FAMILY-CENTERED LEARNING",
-        "points": [
-            "🏠 Designed for expat families in Panama, Mexico, Spain, Colombia, Costa Rica",
-            "🍼 Real parenting phrases for bedtime, meals, discipline",
-            "💑 Relationship Spanish for couples building bilingual connections",
-            "🌟 Builds family bonds through language, not just vocabulary"
-        ]
-    },
-    {
-        "title": "🆚 BEYOND EVERY OTHER APP",
-        "points": [
-            "❌ Others: 'Say this phrase' → ✅ EspaLuz: 'I understand you're frustrated. Here's how to connect...'",
-            "❌ Others: Generic lessons → ✅ EspaLuz: 'As a parent in Panama, you're modeling resilience'",
-            "❌ Others: Cold translation → ✅ EspaLuz: Warm emotional coaching with Spanish learning",
-            "❌ Others: One-size-fits-all → ✅ EspaLuz: Personalized videos for YOUR family situation"
+            "\n   ✅ $5/week or $15/month",
+            "\n   ✅ Cancel anytime",
+            "\n   ✅ 7-day free trial"
         ]
     }
 ]
 
-# Truthful call-to-action variations with correct EspaLuz links
 cta_options = [
-    "🧠 Ready for an AI that actually understands your family's emotions?\n✅ Telegram: https://t.me/EspaLuzFamily_bot\n✅ WhatsApp: https://wa.me/50766623757\n🤖 AI Family Companion for Learning Spanish On-The-Go!",
-    "💕 Your family deserves connection, not just translation. Start your emotional Spanish journey:\n✅ Try Telegram: https://t.me/EspaLuzFamily_bot\n✅ Try WhatsApp: https://wa.me/50766623757\n🎁 AI Family Companion - Start FREE!",
-    "🎬 Experience the world's first emotionally intelligent Spanish coach:\n✅ Live Conversation Mode ✅ Personalized Videos ✅ Family-Focused AI\n📱 Telegram: https://t.me/EspaLuzFamily_bot\n📱 WhatsApp: https://wa.me/50766623757",
-    "🌟 Stop settling for robotic language apps. EspaLuz understands your heart, not just your words.\n💙 Join expat families building deeper connections through Spanish.\n✅ Telegram: https://t.me/EspaLuzFamily_bot | ✅ WhatsApp: https://wa.me/50766623757",
-    "👨‍👩‍👧‍👦 'It's not just Spanish lessons—it's family therapy that teaches Spanish.'\n🧠 Emotional AI + Conversation Mode + Personalized Videos = Your bilingual breakthrough\n🚀 Start FREE: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://wa.me/50766623757",
-    "🎭 From frustrated parent to confident bilingual family—EspaLuz makes it possible.\n🤖 AI Family Companion for Learning Spanish On-The-Go\n📲 Choose your platform: ✅ Telegram: https://t.me/EspaLuzFamily_bot ✅ WhatsApp: https://wa.me/50766623757"
+    "👉 Start your breakthrough today → https://wa.me/50766623757",
+    "🚀 Your bilingual future awaits → https://wa.me/50766623757",
+    "💬 Message EspaLuz now → https://wa.me/50766623757",
+    "✨ Begin your transformation → https://wa.me/50766623757",
+    "🌟 Join 2,000+ success stories → https://wa.me/50766623757"
 ]
 
-# REVOLUTIONARY SOCIAL PROOF - ALL AUDIENCES
 social_proof = [
-    # EXPAT FAMILIES (Original)
-    "🧠 'The AI detected I was stressed about parenting and gave me exactly the Spanish phrases I needed to connect with my daughter. It's like having a bilingual therapist!' - Sarah, expat mom in Panama",
-    "🎬 'Conversation Mode changed everything. I sent a panicked voice message about my son's school meeting, and EspaLuz coached me through the whole thing with personalized videos!' - Mike, Panama City",
-    "💕 'My husband's family finally accepts me. EspaLuz understood I felt like an outsider and taught me cultural Spanish, not just words.' - Jennifer, married to Mexican national",
-    
-    # DIGITAL NOMADS & ENTREPRENEURS
-    "💻 'Lost a $30K client because of language barriers. EspaLuz's business Spanish got me fluent in negotiations. Now I'm closing deals in 3 countries!' - Alex, digital nomad entrepreneur",
-    "📈 'My SaaS business was English-only. EspaLuz helped me expand to Latin America. Revenue jumped 400% in 8 months!' - Maria, tech entrepreneur",
-    "🎯 'I was paying tourist prices at the market until EspaLuz taught me confident haggling Spanish. Now vendors treat me like family!' - Tom, location-independent consultant",
-    
-    # SERVICE PROVIDERS & NATIVES LEARNING ENGLISH
-    "💰 'Como guía turístico, EspaLuz mejoró mi inglés profesional. Ahora gano el triple y tengo las mejores reseñas en TripAdvisor!' - Carlos, tour guide in Cartagena",
-    "🎓 'Conseguí beca completa para Stanford gracias a EspaLuz. Mi inglés académico pasó de básico a universitario en 6 meses.' - Ana, Colombian engineering student",
-    "🏥 'As a hotel manager, EspaLuz taught me hospitality English that impresses international guests. Got promoted to regional manager!' - Luis, hospitality professional",
-    
-    # HEALTHCARE & EMERGENCY SITUATIONS
-    "⚡ 'EspaLuz detected my anxiety about medical appointments and prepared me with doctor-specific Spanish. I advocated for my mom like a pro!' - Carlos, caring for elderly parent",
-    "🏥 'Emergency room Spanish from EspaLuz saved lives. I can now comfort scared patients and communicate critical information with confidence.' - Dr. Patricia, Miami ER",
-    "🚨 'When my dad had a heart attack in Mexico, EspaLuz's medical Spanish helped me coordinate his care from the US. He's alive because I could communicate clearly.' - Robert, emergency situation",
-    
-    # BUSINESS TRAVELERS & PROFESSIONALS
-    "💼 'Boardroom Spanish from EspaLuz landed me the VP position. I went from liability to asset in international negotiations.' - James, corporate executive",
-    "✈️ 'Business travel was stressful until EspaLuz taught me professional Spanish. Now I lead our Latin American expansion.' - Michelle, business development director",
-    
-    # CULTURAL EXPLORERS & RETIREES
-    "🌟 'It's not just translation—it's emotional support. The AI celebrates my wins and encourages me through frustrations. Like having a Spanish-speaking best friend!' - Lisa, solo backpacker",
-    "🏡 'Retired to Costa Rica but felt isolated. EspaLuz helped me integrate with locals. Now I'm the neighborhood gringo who helps everyone!' - Bob, retirement expat",
-    "❤️ 'Backpacking through Colombia, EspaLuz connected me with local families. I experienced authentic culture, not just tourist spots.' - Emma, cultural explorer",
-    
-    # FAMILY SUCCESS STORIES
-    "👨‍👩‍👧‍👦 'Our family went from language barriers to bilingual bonding. EspaLuz understood our dynamics and coached us all differently.' - The Rodriguez Family, 3 generations",
-    "🎭 'The AI knew I was embarrassed about my pronunciation and sent me confidence-building exercises. Now I sing Spanish lullabies to my kids!' - Amanda, bilingual family"
+    "💬 \"EspaLuz understood my frustration when no other app did.\" — Sarah, Panama City",
+    "🌟 \"My kids are finally proud of my Spanish!\" — Mike, Medellín",
+    "🚀 \"From tourist to local in 3 months.\" — Jennifer, Mexico City",
+    "💼 \"Closed my first deal entirely in Spanish!\" — David, Remote Worker",
+    "❤️ \"My abuela cried when I spoke to her in Spanish.\" — Amanda, California"
 ]
 
-# REVOLUTIONARY HASHTAG SETS - ALL AUDIENCES & PLATFORMS
 hashtag_sets = [
-    # Instagram/Facebook - Emotional AI + Family Focus
-    ["#EspaLuz", "#EmotionalAI", "#BilingualFamilies", "#ConversationMode", "#SpanishWithHeart", "#FamilyFirst", "#ExpatLife"],
-    
-    # TikTok - Viral + All Audiences
-    ["#EspaLuz", "#AICoach", "#SpanishTok", "#ExpatTok", "#NomadLife", "#BilingualJourney", "#LanguageHack", "#EmotionalIntelligence"],
-    
-    # LinkedIn - Professional + Business Focus
-    ["#EspaLuz", "#EmotionalAI", "#BusinessSpanish", "#ProfessionalDevelopment", "#GlobalBusiness", "#CareerGrowth", "#ExecutiveSpanish"],
-    
-    # YouTube - Educational + Success Stories
-    ["#EspaLuz", "#LanguageLearning", "#EmotionalAI", "#SuccessStory", "#BilingualSuccess", "#ConversationMode", "#LanguageBreakthrough"],
-    
-    # Digital Nomad Focus
-    ["#EspaLuz", "#DigitalNomad", "#RemoteWork", "#LocationIndependent", "#NomadLife", "#BusinessSpanish", "#GlobalEntrepreneur"],
-    
-    # Service Provider Focus (English/Spanish Mix)
-    ["#EspaLuz", "#TourismEnglish", "#HospitalitySpanish", "#ServiceExcellence", "#ProfessionalEnglish", "#CareerUpgrade", "#IncomeBoost"],
-    
-    # Healthcare & Emergency Focus
-    ["#EspaLuz", "#MedicalSpanish", "#HealthcareHeroes", "#EmergencySpanish", "#LifeSavingCommunication", "#PatientCare", "#MedicalAI"],
-    
-    # Cultural Explorer Focus
-    ["#EspaLuz", "#CulturalImmersion", "#AuthenticTravel", "#LocalConnection", "#BackpackerLife", "#CulturalExchange", "#TravelDeep"],
-    
-    # Entrepreneur & Business Growth
-    ["#EspaLuz", "#BusinessGrowth", "#EntrepreneurLife", "#GlobalExpansion", "#StartupSuccess", "#BusinessSpanish", "#RevenueGrowth"],
-    
-    # Native English Learners (Spanish/English Mix)
-    ["#EspaLuz", "#InglésAcadémico", "#UniversityDreams", "#ScholarshipSuccess", "#AcademicEnglish", "#FuturoIlimitado", "#EducaciónGlobal"],
-    
-    # Retirement & Lifestyle Focus
-    ["#EspaLuz", "#RetirementAbroad", "#ExpatRetirement", "#PuraVida", "#RetirementGoals", "#SeniorExpats", "#LifestyleChange"],
-    
-    # Geographic Specific - Expanded
-    ["#EspaLuz", "#PanamaExpats", "#MexicoLife", "#ColombiaLife", "#CostaRicaLife", "#SpainLife", "#LatinAmericaLife", "#CentralAmerica"],
-    
-    # Emotional & Breakthrough Focus
-    ["#EspaLuz", "#EmotionalIntelligence", "#LanguageBreakthrough", "#ConfidenceBuilding", "#PersonalGrowth", "#TransformationStory", "#AIThatCares"],
-    
-    # Feature-Specific Technology
-    ["#EspaLuz", "#ConversationMode", "#PersonalizedVideos", "#VoiceToText", "#WhatsAppLearning", "#AICoaching", "#EmotionalSupport"],
-    
-    # General High-Engagement
-    ["#EspaLuz", "#LanguageLearning", "#BilingualLife", "#SpanishSuccess", "#LifeChanging", "#DreamsComeTrue", "#UnlimitedPotential"]
+    ["#EspaLuz", "#LearnSpanish", "#BilingualFamily", "#ExpatsInPanama", "#LanguageLearning", "#SpanishTutor", "#AITutor"],
+    ["#EspaLuz", "#DigitalNomadLife", "#RemoteWork", "#BusinessSpanish", "#LocationIndependent", "#ProfessionalGrowth"],
+    ["#EspaLuz", "#EmotionalAI", "#LanguageBreakthrough", "#BilingualJourney", "#LearnEnglish", "#CulturalConnection"]
 ]
+
 
 def generate_promo_content():
-    """Generate promo content without needing a message object"""
-    print("🎬 Generating automated daily promo...")
+    """Generate promo content - NOW WITH AI! (preserves Make.com interface)"""
+    print("🎬 Generating AI-powered daily promo...")
     
-    # Select random elements
-    story = random.choice(story_templates)
-    benefits = random.sample(benefit_sections, 2)  # Pick 2 benefit sections
+    # Try AI generation first
+    story = generate_ai_story()
+    
+    # Fallback to templates if AI fails
+    if story is None:
+        print("⚠️ AI unavailable, using fallback template")
+        story = random.choice(FALLBACK_STORIES)
+    
+    benefits = random.sample(benefit_sections, 2)
     cta = random.choice(cta_options)
     proof = random.choice(social_proof)
     hashtags = " ".join(random.choice(hashtag_sets))
     video_url = random.choice(video_links)
-    
-    # DAILY IMAGE ROTATION: Select 1 random image from all 6
     image_url = random.choice(image_urls)
     
-    # Debug: Print which video and image were selected
     print(f"🎬 Selected video: {video_url}")
     print(f"🖼️ Selected image: {image_url}")
+    print(f"🎯 Audience: {story.get('audience', 'general')}")
+    print(f"💭 Emotion: {story.get('emotional_state', 'general')}")
 
-    # Build rich promo content with embedded video links
+    # Build rich promo content (same format as before)
     promo = f"""{story['hook']} 🚨
 
 {story['story']}
@@ -384,7 +344,7 @@ def generate_promo_content():
 
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-🔥 WHY 2,000+ FAMILIES CHOOSE ESPALUZ:
+🔥 WHY 2,000+ PEOPLE CHOOSE ESPALUZ:
 
 {benefits[0]['title']}
 {''.join([f"   {point}" for point in benefits[0]['points']])}
@@ -402,12 +362,13 @@ def generate_promo_content():
 
 {hashtags}
 
-P.S. Your family's Spanish breakthrough is closer than you think. Don't wait—every day without EspaLuz is a missed conversation, a lost connection, a moment your family could be thriving instead of just surviving. Start today. Your future bilingual selves will thank you! 💕"""
+P.S. Your language breakthrough is closer than you think. Don't wait—every day without EspaLuz is a missed conversation, a lost connection, a moment you could be thriving instead of just surviving. Start today! 💕"""
 
     return promo, story, video_url, image_url
 
+
 def send_automated_daily_promo():
-    """Automated version that posts to specific chat and webhook"""
+    """Automated version that posts to Telegram and Make.com webhook (PRESERVED!)"""
     try:
         promo, story, video_url, image_url = generate_promo_content()
         
@@ -415,17 +376,17 @@ def send_automated_daily_promo():
         bot.send_message(TELEGRAM_CHAT_ID, promo)
         print("✅ Automated promo sent to @EspaLuz channel.")
         
-        # Send to Make.com webhook with REVOLUTIONARY emotional intelligence data
+        # Send to Make.com webhook with emotional intelligence data (SAME STRUCTURE!)
         payload = {
             "text": promo,
             "videoURL": video_url,
-            "imageURL": image_url,  # Primary image
+            "imageURL": image_url,
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": True,
             "timestamp": datetime.now(pytz.timezone('America/Panama')).isoformat(),
             
-            # REVOLUTIONARY Emotional Intelligence Data
+            # Emotional Intelligence Data
             "hook": story['hook'],
             "story": story['story'],
             "emotion": story['emotion'],
@@ -434,17 +395,18 @@ def send_automated_daily_promo():
             "hashtags": " ".join(random.choice(hashtag_sets)),
             "socialProof": random.choice(social_proof),
             
-            # NEW: Audience & Emotional State Intelligence
+            # Audience & Emotional State
             "audience": story.get('audience', 'general_learner'),
             "emotional_state": story.get('emotional_state', 'general'),
             "target_market": story.get('audience', 'expat_parent'),
             
-            # NEW: Enhanced Content Metadata
-            "content_type": "success_story",
+            # Content Metadata
+            "content_type": "ai_generated_story",
+            "ai_powered": True,
             "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle', 'lost', 'failed', 'couldn\'t']) else "medium",
             "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth', 'career_breakthrough'] else "medium",
             
-            # NEW: Platform Optimization Hints
+            # Platform Optimization Hints
             "instagram_focus": "community_engagement" if story.get('audience') in ['expat_parent', 'cultural_explorer'] else "professional_growth",
             "linkedin_focus": "professional_growth" if story.get('audience') in ['digital_nomad', 'business_traveler', 'entrepreneur'] else "personal_development",
             "tiktok_focus": "viral_relatability" if story.get('emotional_state') in ['crushing_embarrassment', 'local_acceptance'] else "educational_content",
@@ -456,95 +418,22 @@ def send_automated_daily_promo():
     except Exception as e:
         print(f"❌ Error in automated promo: {e}")
 
+
+# ============================================
+# TELEGRAM BOT COMMANDS (PRESERVED!)
+# ============================================
+
 @bot.message_handler(commands=["daily_promo"])
 def send_daily_promo(message):
+    """Manual trigger for daily promo"""
     print("📣 /daily_promo triggered manually...")
     
     promo, story, video_url, image_url = generate_promo_content()
 
-    # Reply to the user who triggered the command
     bot.reply_to(message, promo)
-    
-    # Also send to the @EspaLuz channel
     bot.send_message(TELEGRAM_CHAT_ID, promo)
     print("✅ Manual promo sent to Telegram chat and @EspaLuz channel.")
 
-    try:
-        payload = {
-            "text": promo,
-            "videoURL": video_url,
-            "imageURL": image_url,  # Primary image
-            "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
-            "videoDescription": story['story'][:200] + "...",
-            "automated": False,
-            
-            # REVOLUTIONARY Emotional Intelligence Data
-            "hook": story['hook'],
-            "story": story['story'],
-            "emotion": story['emotion'],
-            "transformation": story['transformation'],
-            "cta": random.choice(cta_options),
-            "hashtags": " ".join(random.choice(hashtag_sets)),
-            "socialProof": random.choice(social_proof),
-            
-            # NEW: Audience & Emotional State Intelligence
-            "audience": story.get('audience', 'general_learner'),
-            "emotional_state": story.get('emotional_state', 'general'),
-            "target_market": story.get('audience', 'expat_parent'),
-            
-            # NEW: Enhanced Content Metadata
-            "content_type": "success_story",
-            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle', 'lost', 'failed', 'couldn\'t']) else "medium",
-            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth', 'career_breakthrough'] else "medium",
-            
-            # NEW: Platform Optimization Hints
-            "instagram_focus": "community_engagement" if story.get('audience') in ['expat_parent', 'cultural_explorer'] else "professional_growth",
-            "linkedin_focus": "professional_growth" if story.get('audience') in ['digital_nomad', 'business_traveler', 'entrepreneur'] else "personal_development",
-            "tiktok_focus": "viral_relatability" if story.get('emotional_state') in ['crushing_embarrassment', 'local_acceptance'] else "educational_content",
-            "youtube_focus": "educational_inspiration" if story.get('audience') in ['service_provider', 'native_english_learner'] else "transformation_story"
-        }
-        response = requests.post(MAKE_WEBHOOK_URL, json=payload)
-        print("📤 Sent promo to Make.com webhook. Response:", response.status_code)
-    except Exception as e:
-        print("❌ Failed to send to Make.com webhook:", e)
-
-@bot.message_handler(commands=["start"])
-def welcome(message):
-    print("👋 /start triggered.")
-    bot.reply_to(message, "👋 Welcome to Influencer EspaLuz!\nUse /daily_promo to get your fresh promo post for today.\nUse /test_time to check current times.")
-
-@bot.message_handler(commands=["test_time"])
-def test_time(message):
-    """Test command to check current times and next scheduled run"""
-    panama_tz = pytz.timezone('America/Panama')
-    current_panama_time = datetime.now(panama_tz)
-    server_time = datetime.now()
-    next_run = schedule.next_run()
-    
-    time_info = f"""🕐 **TIME CHECK**
-    
-🌍 **Server time (Railway)**: {server_time.strftime('%Y-%m-%d %H:%M:%S %Z')}
-🇵🇦 **Panama time**: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}
-📅 **Next scheduled promo**: {next_run}
-⏰ **Scheduled for**: 4:55 PM Panama time daily
-
-*Note: Railway servers typically use UTC timezone.*"""
-    
-    bot.reply_to(message, time_info)
-    print(f"📊 Time check requested by user: {message.from_user.username}")
-
-@bot.message_handler(commands=["test_emotional_ai"])
-def test_emotional_ai(message):
-    """Test command for revolutionary emotional AI engine"""
-    print("🧠 /test_emotional_ai triggered...")
-    
-    promo, story, video_url, image_url = generate_promo_content()
-    
-    # Reply to the user who triggered the command
-    audience_type = story.get('audience', 'general_learner')
-    emotional_state = story.get('emotional_state', 'general')
-    bot.reply_to(message, f"🧠 **REVOLUTIONARY EMOTIONAL AI TEST**\n\n🎯 Audience: {audience_type}\n🎭 Emotional State: {emotional_state}\n💫 Emotion: {story['emotion']}\n\nContent generated and sent to Make.com for revolutionary processing!\n\nCheck Make.com scenario for results.")
-    
     try:
         payload = {
             "text": promo,
@@ -553,9 +442,6 @@ def test_emotional_ai(message):
             "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
             "videoDescription": story['story'][:200] + "...",
             "automated": False,
-            "testMode": True,
-            
-            # REVOLUTIONARY Emotional Intelligence Data
             "hook": story['hook'],
             "story": story['story'],
             "emotion": story['emotion'],
@@ -563,40 +449,111 @@ def test_emotional_ai(message):
             "cta": random.choice(cta_options),
             "hashtags": " ".join(random.choice(hashtag_sets)),
             "socialProof": random.choice(social_proof),
-            
-            # NEW: Audience & Emotional State Intelligence
             "audience": story.get('audience', 'general_learner'),
             "emotional_state": story.get('emotional_state', 'general'),
             "target_market": story.get('audience', 'expat_parent'),
-            
-            # NEW: Enhanced Content Metadata
-            "content_type": "success_story",
-            "emotional_intensity": "high" if any(word in story['story'].lower() for word in ['disaster', 'crisis', 'breakthrough', 'miracle', 'lost', 'failed', 'couldn\'t']) else "medium",
-            "viral_potential": "high" if story.get('emotional_state') in ['breakthrough_euphoria', 'empowering_confidence', 'business_growth', 'career_breakthrough'] else "medium",
-            
-            # NEW: Platform Optimization Hints
-            "instagram_focus": "community_engagement" if story.get('audience') in ['expat_parent', 'cultural_explorer'] else "professional_growth",
-            "linkedin_focus": "professional_growth" if story.get('audience') in ['digital_nomad', 'business_traveler', 'entrepreneur'] else "personal_development",
-            "tiktok_focus": "viral_relatability" if story.get('emotional_state') in ['crushing_embarrassment', 'local_acceptance'] else "educational_content",
-            "youtube_focus": "educational_inspiration" if story.get('audience') in ['service_provider', 'native_english_learner'] else "transformation_story"
+            "content_type": "ai_generated_story",
+            "ai_powered": True
+        }
+        response = requests.post(MAKE_WEBHOOK_URL, json=payload)
+        print("📤 Sent promo to Make.com webhook. Response:", response.status_code)
+    except Exception as e:
+        print("❌ Failed to send to Make.com webhook:", e)
+
+
+@bot.message_handler(commands=['start', 'hello'])
+def welcome(message):
+    bot.reply_to(message, "👋 ¡Hola! I'm the EspaLuz AI Influencer Co-Founder v2.0!\n\n🤖 Now powered by real AI for fresh, unique content every day.\n\nCommands:\n/daily_promo - Generate & post AI-powered promo\n/test_ai - Test AI story generation\n/test_time - Check current times")
+
+
+@bot.message_handler(commands=['test_time'])
+def test_time(message):
+    panama_tz = pytz.timezone('America/Panama')
+    utc_tz = pytz.timezone('UTC')
+    
+    now_utc = datetime.now(utc_tz)
+    now_panama = datetime.now(panama_tz)
+    server_time = datetime.now()
+    
+    response = f"""⏰ Time Check:
+
+🖥️ Server (Railway): {server_time.strftime('%Y-%m-%d %H:%M:%S')}
+🌍 UTC: {now_utc.strftime('%Y-%m-%d %H:%M:%S %Z')}
+🇵🇦 Panama: {now_panama.strftime('%Y-%m-%d %H:%M:%S %Z')}
+
+📅 Next scheduled promo: {schedule.next_run()}
+⏰ Scheduled for: 4:55 PM Panama (21:55 UTC)"""
+    
+    bot.reply_to(message, response)
+
+
+@bot.message_handler(commands=['test_ai'])
+def test_ai(message):
+    """Test AI story generation"""
+    bot.reply_to(message, "🧠 Testing AI story generation...")
+    
+    story = generate_ai_story()
+    
+    if story:
+        response = f"""✅ AI Generation Successful!
+
+**Hook:** {story['hook']}
+
+**Story:** {story['story'][:300]}...
+
+**Audience:** {story.get('audience', 'N/A')}
+**Emotion:** {story.get('emotional_state', 'N/A')}"""
+    else:
+        response = "❌ AI generation failed. Check GROQ_API_KEY."
+    
+    bot.reply_to(message, response)
+
+
+@bot.message_handler(commands=['test_emotional_ai'])
+def test_emotional_ai(message):
+    """Test full emotional AI pipeline"""
+    bot.reply_to(message, "🧠 Testing full AI Influencer pipeline...")
+    
+    try:
+        promo, story, video_url, image_url = generate_promo_content()
+        
+        # Send to webhook for testing
+        payload = {
+            "text": promo,
+            "videoURL": video_url,
+            "imageURL": image_url,
+            "hook": story['hook'],
+            "story": story['story'],
+            "emotion": story['emotion'],
+            "transformation": story['transformation'],
+            "audience": story.get('audience', 'general'),
+            "emotional_state": story.get('emotional_state', 'general'),
+            "test_mode": True
         }
         
-        # Send to Revolutionary Emotional AI webhook
         response = requests.post(EMOTIONAL_AI_WEBHOOK_URL, json=payload)
-        print(f"🧠 Sent to Revolutionary Emotional AI webhook. Response: {response.status_code}")
-            
+        print(f"🧠 Sent to Emotional AI webhook. Response: {response.status_code}")
+        
+        bot.reply_to(message, f"✅ Test complete!\n\n🎯 Audience: {story.get('audience')}\n💭 Emotion: {story.get('emotional_state')}\n📤 Webhook: {response.status_code}")
+        
     except Exception as e:
-        print(f"❌ Failed to send to Revolutionary Emotional AI webhook: {e}")
+        bot.reply_to(message, f"❌ Test failed: {e}")
+
+
+# ============================================
+# SCHEDULING & LIFECYCLE (PRESERVED!)
+# ============================================
 
 def schedule_checker():
     """Run scheduled tasks in a separate thread"""
     while True:
         try:
             schedule.run_pending()
-            time.sleep(60)  # Check every minute
+            time.sleep(60)
         except Exception as e:
             print(f"❌ Schedule checker error: {e}")
             time.sleep(60)
+
 
 def webhook_killer():
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteWebhook"
@@ -608,14 +565,13 @@ def webhook_killer():
             print("❌ Error deleting webhook:", e)
         time.sleep(30)
 
+
 def force_single_instance():
     """Ensure only one bot instance is running"""
     try:
-        # Aggressively clear any existing connections
         bot.remove_webhook()
         time.sleep(2)
         
-        # Force delete webhook multiple times
         for i in range(3):
             url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteWebhook"
             requests.get(url)
@@ -623,14 +579,13 @@ def force_single_instance():
             
         print("🧹 Cleared all webhook connections")
         
-        # Add random delay to avoid simultaneous startups
-        import random
         delay = random.uniform(1, 5)
         print(f"⏳ Random startup delay: {delay:.1f} seconds")
         time.sleep(delay)
         
     except Exception as e:
         print(f"⚠️ Cleanup error: {e}")
+
 
 def keep_alive():
     """Keep the bot running with better conflict resolution"""
@@ -641,38 +596,54 @@ def keep_alive():
         except Exception as e:
             if "409" in str(e):
                 print("⚠️ Bot conflict detected - waiting longer before restart...")
-                time.sleep(30)  # Wait longer for other instances to die
+                time.sleep(30)
                 force_single_instance()
             else:
                 print(f"❌ Bot polling error: {e}")
             print("🔄 Restarting bot in 15 seconds...")
             time.sleep(15)
 
-# Force cleanup at startup
-force_single_instance()
 
-# Schedule daily promo for 4:55 PM Panama time (21:55 UTC since Panama is UTC-5)
-schedule.every().day.at("21:55").do(send_automated_daily_promo)
+# ============================================
+# STARTUP
+# ============================================
 
-# TEMPORARY: One-time test for tonight at 5:45 PM Panama time (22:45 UTC)
-schedule.every().day.at("22:45").do(send_automated_daily_promo)
-
-print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
-print("🧪 TEMPORARY: Test promo scheduled for 5:45 PM Panama time (22:45 UTC) - tonight only")
-
-# Display timezone information for debugging
-panama_tz = pytz.timezone('America/Panama')
-current_panama_time = datetime.now(panama_tz)
-server_time = datetime.now()
-
-print(f"🌍 Server time (Railway): {server_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
-print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
-
-# Start background threads  
-threading.Thread(target=schedule_checker, daemon=True).start()
-
-print("🤖 Influencer EspaLuz is running with polling mode...")
-print("📅 Next scheduled promo:", schedule.next_run())
-
-# Run the bot with enhanced conflict resolution
-keep_alive()
+if __name__ == "__main__":
+    print("=" * 50)
+    print("🤖 ESPALUZ AI INFLUENCER CO-FOUNDER v2.0")
+    print("=" * 50)
+    print("✨ Now powered by Groq AI (Llama 3.3 70B)")
+    print("📤 Make.com webhook: PRESERVED")
+    print("⏰ Daily scheduling: PRESERVED")
+    print("=" * 50)
+    
+    # Force cleanup at startup
+    force_single_instance()
+    
+    # Schedule daily promo for 4:55 PM Panama time (21:55 UTC)
+    schedule.every().day.at("21:55").do(send_automated_daily_promo)
+    
+    print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
+    
+    # Display timezone information
+    panama_tz = pytz.timezone('America/Panama')
+    current_panama_time = datetime.now(panama_tz)
+    server_time = datetime.now()
+    
+    print(f"🌍 Server time: {server_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+    
+    # Check AI availability
+    if GROQ_API_KEY:
+        print("✅ GROQ_API_KEY configured - AI generation enabled")
+    else:
+        print("⚠️ GROQ_API_KEY not set - will use fallback templates")
+    
+    # Start background threads
+    threading.Thread(target=schedule_checker, daemon=True).start()
+    
+    print("🤖 EspaLuz AI Influencer Co-Founder v2.0 is running!")
+    print(f"📅 Next scheduled promo: {schedule.next_run()}")
+    
+    # Run the bot
+    keep_alive()
