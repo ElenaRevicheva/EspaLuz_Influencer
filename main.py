@@ -75,12 +75,27 @@ image_urls = [
 ESPALUZ_BRAND_KNOWLEDGE = """
 # ESPALUZ - AI Spanish/English Tutor
 ## Brand Identity
-EspaLuz is an AI-powered language tutor that uses emotional intelligence to help people learn Spanish and English. We're not just an app—we're a breakthrough companion that understands the emotional journey of language learning.
+EspaLuz is an AI-powered bilingual tutor on WhatsApp that uses emotional intelligence to help people learn Spanish and English. We're not just an app—we're a breakthrough companion that understands the emotional journey of language learning.
+
+## ACTUAL PRODUCT FEATURES (use these!):
+🗣️ **CONVERSATION MODE** - Type "conversation" for intelligent family conversation practice (MAIN FEATURE!)
+🧠 **Emotional AI** - Analyzes emotions (frustrated, excited, homesick) and adapts responses
+🎤 **Voice Messages** - Send voice in any language, get audio responses back
+📸 **Photo Translation** - Send photos of menus, signs, documents for instant translation
+🎥 **Personalized Video Responses** - Custom video explanations
+👨‍👩‍👧‍👦 **Family Personalization** - Learns family names, preferences, dynamics
+🌍 **19 Countries** - Cultural context for all Spanish-speaking countries
+🌐 **Trilingual** - Russian, Spanish, AND English support
+
+## PRICING (CORRECT!):
+- 🆓 **7-DAY FREE TRIAL** - Full access to all features
+- 💰 **$7.77/month via PayPal** - BONUS: 1 extra week FREE after subscription!
+- PayPal link: https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-38A73508FY163121MNCJXTYY
 
 ## Target Audiences (rotate between these):
-1. **Expat Parents** - American/European families in Latin America struggling to connect with their children's new culture
-2. **Digital Nomads** - Remote workers who need professional Spanish for business
-3. **Service Providers** - Tour guides, taxi drivers, hospitality workers learning English to increase income
+1. **Expat Parents** - American/European families in Latin America (especially Panama!)
+2. **Digital Nomads** - Remote workers needing professional Spanish
+3. **Service Providers** - Tour guides, taxi drivers learning English to increase income
 4. **Business Travelers** - Executives needing confident Spanish for negotiations
 5. **Cultural Explorers** - Travelers seeking authentic local connections
 6. **Healthcare Workers** - Nurses/doctors needing medical Spanish
@@ -88,6 +103,7 @@ EspaLuz is an AI-powered language tutor that uses emotional intelligence to help
 8. **Retirees** - Moving to Latin America for better quality of life
 9. **Teachers** - Bilingual educators
 10. **Immigrants** - Spanish speakers learning English in the US
+11. **Russian Speakers** - Learning Spanish/English (trilingual support!)
 
 ## Emotional States to Address:
 - **Frustration**: Can't communicate when it matters most
@@ -97,14 +113,17 @@ EspaLuz is an AI-powered language tutor that uses emotional intelligence to help
 - **Breakthrough**: Finally having a confident conversation
 - **Connection**: Building real relationships through language
 - **Empowerment**: Advocating for yourself and family
+- **Homesickness**: Missing home, adapting to new culture
 
-## What Makes EspaLuz Different:
-1. **Emotional AI** - Understands and adapts to your emotional state
-2. **Voice-First** - Just send voice messages on WhatsApp
-3. **Real Situations** - Learns from your actual life scenarios
-4. **24/7 Available** - Practice anytime via WhatsApp
-5. **Affordable** - $5/week subscription
-6. **Multilingual Support** - Spanish AND English learning
+## Key Differentiators:
+1. **Conversation Mode** - Practice real family conversations with intelligent AI
+2. **Emotional Intelligence** - AI detects and adapts to your emotional state
+3. **WhatsApp Native** - No app download, just message on WhatsApp
+4. **Voice-First** - Send voice messages, get voice responses
+5. **Photo Recognition** - Snap a photo, get instant translation
+6. **Family-Aware** - Understands parent/child dynamics
+7. **Cultural Context** - 19 Spanish-speaking countries
+8. **Affordable** - $7.77/month with FREE trial
 
 ## Contact:
 WhatsApp: +507 6662 3757
@@ -117,6 +136,7 @@ Website: https://espaluz-ai-language-tutor.lovable.app
 - Celebrates small wins
 - Uses emojis authentically (not excessively)
 - Speaks to the emotional pain points
+- Highlights FREE TRIAL and low price
 """
 
 # ============================================
@@ -253,53 +273,62 @@ FALLBACK_STORIES = [
 # Benefit sections (kept from original)
 benefit_sections = [
     {
-        "title": "🎯 EMOTIONALLY INTELLIGENT",
+        "title": "🗣️ CONVERSATION MODE",
+        "points": [
+            "\n   ✅ Practice real family conversations",
+            "\n   ✅ AI adapts to your emotional state",
+            "\n   ✅ Perfect for expat families"
+        ]
+    },
+    {
+        "title": "🎤 VOICE & PHOTO MAGIC",
+        "points": [
+            "\n   ✅ Send voice messages, get audio back",
+            "\n   ✅ Snap photos of menus for instant translation",
+            "\n   ✅ Video responses for complex topics"
+        ]
+    },
+    {
+        "title": "🧠 EMOTIONALLY INTELLIGENT",
         "points": [
             "\n   ✅ Senses when you're frustrated and adapts",
-            "\n   ✅ Celebrates your wins with genuine enthusiasm",
-            "\n   ✅ Never judges your mistakes"
+            "\n   ✅ Understands homesickness & culture shock",
+            "\n   ✅ Celebrates your wins with you"
         ]
     },
     {
-        "title": "💬 VOICE-FIRST LEARNING",
+        "title": "👨‍👩‍👧‍👦 FAMILY PERSONALIZATION",
         "points": [
-            "\n   ✅ Just send a WhatsApp voice message",
-            "\n   ✅ Practice pronunciation naturally",
-            "\n   ✅ Learn anywhere, anytime"
+            "\n   ✅ Learns your family's names",
+            "\n   ✅ Understands parent/child dynamics",
+            "\n   ✅ Cultural context for 19 countries"
         ]
     },
     {
-        "title": "🌍 REAL-LIFE SCENARIOS",
+        "title": "💰 TRY FREE, STAY CHEAP",
         "points": [
-            "\n   ✅ Parent-teacher conferences",
-            "\n   ✅ Doctor appointments",
-            "\n   ✅ Business negotiations"
-        ]
-    },
-    {
-        "title": "💰 AFFORDABLE BREAKTHROUGH",
-        "points": [
-            "\n   ✅ $5/week or $15/month",
-            "\n   ✅ Cancel anytime",
-            "\n   ✅ 7-day free trial"
+            "\n   ✅ 7-DAY FREE TRIAL - full access!",
+            "\n   ✅ Only $7.77/month after",
+            "\n   ✅ +1 BONUS week when you subscribe!"
         ]
     }
 ]
 
 cta_options = [
-    "👉 Start your breakthrough today → https://wa.me/50766623757",
-    "🚀 Your bilingual future awaits → https://wa.me/50766623757",
-    "💬 Message EspaLuz now → https://wa.me/50766623757",
-    "✨ Begin your transformation → https://wa.me/50766623757",
-    "🌟 Join 2,000+ success stories → https://wa.me/50766623757"
+    "👉 Start your FREE 7-day trial → https://wa.me/50766623757",
+    "🚀 Try FREE for 7 days → https://wa.me/50766623757",
+    "💬 Message EspaLuz now (FREE trial!) → https://wa.me/50766623757",
+    "✨ Get your FREE trial today → https://wa.me/50766623757",
+    "🆓 7 days FREE, then just $7.77/mo → https://wa.me/50766623757"
 ]
 
 social_proof = [
-    "💬 \"EspaLuz understood my frustration when no other app did.\" — Sarah, Panama City",
-    "🌟 \"My kids are finally proud of my Spanish!\" — Mike, Medellín",
-    "🚀 \"From tourist to local in 3 months.\" — Jennifer, Mexico City",
-    "💼 \"Closed my first deal entirely in Spanish!\" — David, Remote Worker",
-    "❤️ \"My abuela cried when I spoke to her in Spanish.\" — Amanda, California"
+    "💬 \"The conversation mode is AMAZING. It's like having a patient tutor 24/7!\" — Sarah, Panama City",
+    "🌟 \"I just snap photos of menus and EspaLuz translates instantly!\" — Mike, Medellín",
+    "🚀 \"Voice messages back and forth - it's like texting a bilingual friend.\" — Jennifer, Mexico City",
+    "💼 \"My whole family uses it. It learns our names and everything!\" — David, Digital Nomad",
+    "❤️ \"The emotional AI actually gets when I'm frustrated and helps me calm down.\" — Amanda, Costa Rica",
+    "🆓 \"Started with the free trial, been subscribed for 6 months now. Worth every penny!\" — Carlos, Miami"
 ]
 
 hashtag_sets = [
@@ -362,7 +391,7 @@ def generate_promo_content():
 
 {hashtags}
 
-P.S. Your language breakthrough is closer than you think. Don't wait—every day without EspaLuz is a missed conversation, a lost connection, a moment you could be thriving instead of just surviving. Start today! 💕"""
+P.S. Your 7-day FREE trial is waiting. No credit card needed to start. Just message EspaLuz on WhatsApp and say "hi"—you'll be practicing conversations in minutes! 💕"""
 
     return promo, story, video_url, image_url
 

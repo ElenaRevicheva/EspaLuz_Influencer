@@ -97,21 +97,21 @@ const EMOTIONAL_ADAPTATIONS = {
     instagram: {
       hook: "😅 We've ALL been there...",
       validation: "Those cringe moments? They're actually growth moments",
-      cta: "Turn embarrassment into confidence → https://wa.me/50766623757",
+      cta: "Start your FREE 7-day trial → https://wa.me/50766623757",
       hashtags: "#LanguageFail #LearnFromMistakes #EspaLuz #BilingualJourney #GrowthMindset",
       engagement: "Drop a 😬 if you've had a language fail moment!"
     },
     linkedin: {
       hook: "The language mistake that changed everything",
       validation: "Professional growth often starts with an embarrassing moment",
-      cta: "Build unshakeable confidence → https://wa.me/50766623757",
+      cta: "Try FREE for 7 days → https://wa.me/50766623757",
       hashtags: "#ProfessionalGrowth #LanguageLearning #EspaLuz #GrowthMindset #CareerDevelopment",
       engagement: "What's your most memorable language learning moment?"
     },
     tiktok: {
       hook: "POV: Your Spanish just betrayed you 😭💀",
       validation: "The way I SCREAMED reading this",
-      cta: "Never again → https://wa.me/50766623757",
+      cta: "FREE trial awaits → https://wa.me/50766623757",
       hashtags: "#SpanishFail #LanguageFail #EspaLuz #Relatable #LearnSpanish",
       engagement: "Stitch this with your own fail!"
     },
@@ -127,28 +127,28 @@ const EMOTIONAL_ADAPTATIONS = {
     instagram: {
       hook: "🫂 You're not alone in this struggle...",
       validation: "Every learner has felt this exact overwhelm",
-      cta: "Find your calm → https://wa.me/50766623757",
+      cta: "Start your FREE trial → https://wa.me/50766623757",
       hashtags: "#LanguageStruggles #YouAreNotAlone #EspaLuz #LearningSupport #BilingualJourney",
       engagement: "Comment 'SAME' if you've been here 👇"
     },
     linkedin: {
       hook: "Professional challenge: Language barriers in critical moments",
       validation: "Workplace communication shouldn't add to your stress",
-      cta: "Build workplace confidence → https://wa.me/50766623757",
+      cta: "Try FREE for 7 days → https://wa.me/50766623757",
       hashtags: "#ProfessionalDevelopment #WorkplaceConfidence #EspaLuz #CareerGrowth",
       engagement: "What's your experience with language barriers at work?"
     },
     tiktok: {
       hook: "POV: When Spanish fails you at the worst moment 😭",
       validation: "We've ALL been there, bestie",
-      cta: "Never again → https://wa.me/50766623757",
+      cta: "FREE trial awaits → https://wa.me/50766623757",
       hashtags: "#SpanishStruggles #EspaLuz #LanguageLearning #RelatableContent",
       engagement: "Duet this with your own fail story!"
     },
     youtube: {
       hook: "The Moment Every Learner Dreads: Lost in Translation",
       validation: "If you've ever felt helpless because of language barriers",
-      cta: "Transform your confidence → https://wa.me/50766623757",
+      cta: "Start FREE today → https://wa.me/50766623757",
       hashtags: "#LanguageBarriers #EspaLuz #BilingualJourney"
     }
   },
@@ -157,28 +157,28 @@ const EMOTIONAL_ADAPTATIONS = {
     instagram: {
       hook: "🌟 TRANSFORMATION ALERT:",
       validation: "This is what breakthrough looks like",
-      cta: "Your transformation awaits → https://wa.me/50766623757",
+      cta: "Try FREE for 7 days → https://wa.me/50766623757",
       hashtags: "#TransformationTuesday #SuccessStory #EspaLuz #Empowerment #BilingualWin",
       engagement: "Save this for motivation! ✨"
     },
     linkedin: {
       hook: "Success story: From language barrier to career advancement",
       validation: "Professional growth through confident communication",
-      cta: "Unlock your potential → https://wa.me/50766623757",
+      cta: "Start your FREE trial → https://wa.me/50766623757",
       hashtags: "#CareerGrowth #SuccessStory #ProfessionalWin #EspaLuz #Leadership",
       engagement: "Share your own professional breakthrough in the comments"
     },
     tiktok: {
       hook: "That moment when everything clicks 🔥✨",
       validation: "THIS is the energy we're manifesting",
-      cta: "Get your glow-up → https://wa.me/50766623757",
+      cta: "Try FREE now → https://wa.me/50766623757",
       hashtags: "#GlowUp #Transformation #SuccessStory #EspaLuz #MainCharacterEnergy",
       engagement: "Use this sound for your own win!"
     },
     youtube: {
       hook: "From Struggle to Success: A Real EspaLuz Transformation",
       validation: "Proof that breakthrough moments are real",
-      cta: "Start your journey → https://wa.me/50766623757",
+      cta: "Start FREE today → https://wa.me/50766623757",
       hashtags: "#TransformationStory #LanguageLearning #EspaLuz #SuccessStory"
     }
   },
@@ -187,28 +187,28 @@ const EMOTIONAL_ADAPTATIONS = {
     instagram: {
       hook: "💕 The moment everything changed...",
       validation: "Connection is what we're all seeking",
-      cta: "Build deeper bonds → https://wa.me/50766623757",
+      cta: "Try FREE for 7 days → https://wa.me/50766623757",
       hashtags: "#Connection #BilingualBonding #EspaLuz #CulturalConnection #Love",
       engagement: "Tag someone who gets this feeling 💕"
     },
     linkedin: {
       hook: "The power of authentic connection in multicultural environments",
       validation: "True connection transcends language barriers",
-      cta: "Strengthen your relationships → https://wa.me/50766623757",
+      cta: "Start FREE today → https://wa.me/50766623757",
       hashtags: "#Relationships #CulturalIntelligence #EspaLuz #GlobalMindset",
       engagement: "How do you build connections across cultures?"
     },
     tiktok: {
       hook: "When you finally feel like family 🥺❤️",
       validation: "This feeling hits different",
-      cta: "Find your tribe → https://wa.me/50766623757",
+      cta: "Try FREE now → https://wa.me/50766623757",
       hashtags: "#FamilyFeels #Belonging #EspaLuz #WholesomeContent #Connection",
       engagement: "This made me cry happy tears 🥺"
     },
     youtube: {
       hook: "Building Real Connections Through Language",
       validation: "The best moments come from genuine connection",
-      cta: "Start connecting → https://wa.me/50766623757",
+      cta: "Start FREE today → https://wa.me/50766623757",
       hashtags: "#Connection #LanguageLearning #EspaLuz #CulturalExchange"
     }
   },
@@ -217,28 +217,28 @@ const EMOTIONAL_ADAPTATIONS = {
     instagram: {
       hook: "✨ Your language journey matters...",
       validation: "Every step forward counts",
-      cta: "Start your journey → https://wa.me/50766623757",
+      cta: "Start FREE today → https://wa.me/50766623757",
       hashtags: "#LanguageLearning #EspaLuz #BilingualJourney #LearnSpanish #GrowthMindset",
       engagement: "What's your language learning goal? 👇"
     },
     linkedin: {
       hook: "The power of language learning in today's global world",
       validation: "Communication skills open doors",
-      cta: "Unlock new opportunities → https://wa.me/50766623757",
+      cta: "Try FREE for 7 days → https://wa.me/50766623757",
       hashtags: "#LanguageLearning #ProfessionalGrowth #EspaLuz #GlobalCommunication",
       engagement: "How has language learning impacted your career?"
     },
     tiktok: {
       hook: "Language learning glow-up incoming ✨",
       validation: "This is your sign to start",
-      cta: "Let's go → https://wa.me/50766623757",
+      cta: "Try FREE → https://wa.me/50766623757",
       hashtags: "#LanguageLearning #EspaLuz #LearnSpanish #GlowUp",
       engagement: "Save for later!"
     },
     youtube: {
       hook: "Transform Your Communication Skills",
       validation: "Every fluent speaker started somewhere",
-      cta: "Begin today → https://wa.me/50766623757",
+      cta: "Start FREE today → https://wa.me/50766623757",
       hashtags: "#LanguageLearning #EspaLuz #LearnSpanish"
     }
   }
