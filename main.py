@@ -662,7 +662,7 @@ def generate_promo_content():
     
     video_url = random.choice(video_links)
     image_url = random.choice(image_urls)
-
+    
     promo = f"""{story['hook']} 🚨
 
 {story['story']}
@@ -695,7 +695,7 @@ P.S. Your 7-day FREE trial is waiting. No credit card needed to start. Just mess
 
     print("✅ Content generated successfully!")
     print("=" * 50)
-    
+
     return promo, story, video_url, image_url
 
 
@@ -781,21 +781,323 @@ def send_daily_promo(message):
 
 @bot.message_handler(commands=['start', 'hello'])
 def welcome(message):
-    bot.reply_to(message, """👋 ¡Hola! I'm the EspaLuz AI Marketing Co-Founder v3.0!
+    """Welcome message with full menu"""
+    welcome_text = """👋 ¡Hola! I'm the EspaLuz AI Marketing Co-Founder v3.0!
 
-🧠 **NEW in v3.0:**
-- Memory System (no repeated content!)
-- Strategic Calendar (themed days!)
-- Intelligent Rotation (variety guaranteed!)
-- Self-Review (quality checks!)
+🤖 **TRUE AI CO-FOUNDER CAPABILITIES:**
+━━━━━━━━━━━━━━━━━━━━━━━
+🧠 Memory System - No repeated content
+📅 Strategic Calendar - Day themes & holidays  
+🔄 Intelligent Rotation - Variety guaranteed
+✅ Self-Review - Quality checks before posting
+━━━━━━━━━━━━━━━━━━━━━━━
 
-Commands:
-/daily_promo - Generate & post AI-powered promo
-/test_ai - Test AI story generation
+Type /help to see all commands!"""
+    
+    bot.reply_to(message, welcome_text)
+    # Set bot commands menu
+    set_bot_commands()
+
+
+@bot.message_handler(commands=['help', 'menu', 'commands'])
+def show_help(message):
+    """Show full command menu"""
+    help_text = """📋 **ESPALUZ AI CO-FOUNDER v3.0 - COMMANDS**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📣 **CONTENT GENERATION**
+/daily_promo - Generate & post AI promo NOW
+/test_ai - Test AI generation (no posting)
+
+📊 **ANALYTICS & MEMORY**
 /memory - View content memory stats
-/weekly - Get weekly content summary
-/strategy - See today's content strategy
-/test_time - Check current times""")
+/weekly - Weekly content summary
+/stats - Full performance statistics
+
+📅 **STRATEGY & PLANNING**
+/strategy - Today's content strategy
+/calendar - View upcoming themes & holidays
+/next - Preview what's coming next
+
+⚙️ **SYSTEM & DEBUG**
+/test_time - Check server & Panama time
+/status - Bot health & configuration
+/version - Current version info
+
+ℹ️ **HELP**
+/start - Welcome message
+/help - This command menu
+/about - About AI Co-Founder v3.0
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⏰ Auto-posting: Daily at 4:55 PM Panama
+🧠 AI Model: Groq Llama 3.3 70B
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+    
+    bot.reply_to(message, help_text)
+
+
+@bot.message_handler(commands=['about'])
+def show_about(message):
+    """About the AI Co-Founder"""
+    about_text = """🤖 **ESPALUZ AI MARKETING CO-FOUNDER v3.0**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**What makes this a TRUE AI Co-Founder:**
+
+🧠 **Memory System**
+Tracks all generated content. Never repeats stories.
+Remembers audiences, emotions, locations used.
+
+📅 **Strategic Calendar**
+• Monday = Motivation
+• Tuesday = Transformation  
+• Wednesday = Wisdom
+• Thursday = Throwback
+• Friday = Celebration
+• Saturday = Family
+• Sunday = Reflection
++ Holiday awareness (Valentine's, Cinco de Mayo, etc.)
+
+🔄 **Intelligent Rotation**
+Cycles through 11 audiences, 8 emotions, 14 locations.
+Weighted by day theme for relevance.
+
+✅ **Self-Review**
+AI checks its own content before posting:
+- Similarity detection
+- Length validation
+- Brand alignment
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Built by: Elena Revicheva & CTO AIPA
+Version: 3.0.0
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+    
+    bot.reply_to(message, about_text)
+
+
+@bot.message_handler(commands=['stats'])
+def show_stats(message):
+    """Show full performance statistics"""
+    total_posts = memory.memory['total_posts']
+    recent_posts = memory.memory["posts"][-30:]
+    
+    # Calculate audience distribution
+    audience_counts = {}
+    emotion_counts = {}
+    location_counts = {}
+    
+    for post in recent_posts:
+        aud = post.get("audience", "unknown")
+        audience_counts[aud] = audience_counts.get(aud, 0) + 1
+        
+        emo = post.get("emotion", "unknown")
+        emotion_counts[emo] = emotion_counts.get(emo, 0) + 1
+        
+        loc = post.get("location", "unknown")
+        location_counts[loc] = location_counts.get(loc, 0) + 1
+    
+    # Top items
+    top_audience = max(audience_counts.items(), key=lambda x: x[1])[0] if audience_counts else "N/A"
+    top_emotion = max(emotion_counts.items(), key=lambda x: x[1])[0] if emotion_counts else "N/A"
+    top_location = max(location_counts.items(), key=lambda x: x[1])[0] if location_counts else "N/A"
+    
+    stats_text = f"""📊 **PERFORMANCE STATISTICS**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 **Content Volume**
+• Total posts: {total_posts}
+• Last 30 days: {len(recent_posts)} posts
+
+👥 **Audience Distribution (last 30)**
+• Most used: {top_audience}
+• Unique audiences: {len(audience_counts)}
+
+💭 **Emotional Arcs (last 30)**
+• Most used: {top_emotion}
+• Unique emotions: {len(emotion_counts)}
+
+📍 **Locations (last 30)**
+• Most used: {top_location}
+• Unique locations: {len(location_counts)}
+
+🎯 **Variety Score**
+Audiences: {len(audience_counts)}/11
+Emotions: {len(emotion_counts)}/8
+Locations: {len(location_counts)}/14
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+    
+    bot.reply_to(message, stats_text)
+
+
+@bot.message_handler(commands=['calendar'])
+def show_calendar(message):
+    """Show upcoming themes and holidays"""
+    now = datetime.now(PANAMA_TZ)
+    
+    # Next 7 days
+    calendar_text = """📅 **CONTENT CALENDAR - NEXT 7 DAYS**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"""
+    
+    for i in range(7):
+        future = now + timedelta(days=i)
+        day_name = future.strftime("%A")
+        date_str = future.strftime("%b %d")
+        theme = StrategicCalendar.DAY_THEMES.get(day_name, {})
+        
+        # Check for special day
+        special = StrategicCalendar.SPECIAL_DAYS.get((future.month, future.day))
+        
+        if i == 0:
+            marker = "👉 TODAY"
+        else:
+            marker = f"   Day {i+1}"
+        
+        calendar_text += f"{marker}: {date_str} ({day_name})\n"
+        calendar_text += f"      🎨 {theme.get('theme', 'general').title()}: {theme.get('focus', '')[:40]}\n"
+        
+        if special:
+            calendar_text += f"      🎉 SPECIAL: {special['name']}\n"
+        
+        calendar_text += "\n"
+    
+    calendar_text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    
+    bot.reply_to(message, calendar_text)
+
+
+@bot.message_handler(commands=['next'])
+def show_next(message):
+    """Preview what content is coming next"""
+    strategy = StrategicCalendar.get_today_strategy()
+    
+    # What would be generated
+    audience = IntelligentRotation.select_audience(
+        memory.get_recent_audiences(),
+        strategy["day_theme"]
+    )
+    emotion = IntelligentRotation.select_emotion(
+        memory.get_recent_emotions(),
+        strategy["day_theme"]
+    )
+    location = IntelligentRotation.select_location(
+        memory.get_recent_locations()
+    )
+    
+    next_text = f"""🔮 **NEXT CONTENT PREVIEW**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If generated NOW, the AI would create:
+
+📅 Day Theme: {strategy['day_theme']['theme'].upper()}
+💡 Focus: {strategy['day_theme']['focus']}
+
+👥 Target Audience: {audience.replace('_', ' ').title()}
+💭 Emotional Arc: {emotion.replace('_', ' ').title()}
+📍 Location: {location}
+
+#️⃣ Hashtag Boost: {strategy['day_theme']['hashtag_boost']}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⏰ Next auto-post: {schedule.next_run()}
+
+Use /daily_promo to generate now!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+    
+    bot.reply_to(message, next_text)
+
+
+@bot.message_handler(commands=['status'])
+def show_status(message):
+    """Show bot health and configuration"""
+    panama_time = datetime.now(PANAMA_TZ)
+    
+    # Check API
+    api_status = "✅ Configured" if GROQ_API_KEY else "❌ Missing"
+    memory_status = "✅ Loaded" if memory.memory else "❌ Error"
+    
+    status_text = f"""⚙️ **BOT STATUS**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🤖 **Bot Info**
+• Version: 3.0.0 (AI Co-Founder)
+• Status: 🟢 Running
+
+🔑 **API Configuration**
+• GROQ_API_KEY: {api_status}
+• TELEGRAM_BOT_TOKEN: ✅ Active
+
+🧠 **Memory System**
+• Status: {memory_status}
+• Posts recorded: {memory.memory['total_posts']}
+
+📡 **Webhooks**
+• Make.com: ✅ Configured
+• Telegram Channel: @EspaLuz
+
+⏰ **Scheduling**
+• Current time (Panama): {panama_time.strftime('%H:%M:%S')}
+• Daily post time: 4:55 PM Panama
+• Next scheduled: {schedule.next_run()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+    
+    bot.reply_to(message, status_text)
+
+
+@bot.message_handler(commands=['version'])
+def show_version(message):
+    """Show version info"""
+    version_text = """🏷️ **VERSION INFO**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 EspaLuz AI Marketing Co-Founder
+📌 Version: 3.0.0
+📅 Released: January 2026
+
+🔄 **Changelog v3.0:**
+• Added Memory System
+• Added Strategic Calendar
+• Added Intelligent Rotation
+• Added Self-Review
+• Added 10+ new commands
+
+🔄 **Previous versions:**
+• v2.0 - AI Story Generation
+• v1.0 - Template-based content
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Built by: Elena Revicheva & CTO AIPA
+GitHub: github.com/ElenaRevicheva/EspaLuz_Influencer
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+    
+    bot.reply_to(message, version_text)
+
+
+def set_bot_commands():
+    """Set the bot command menu in Telegram"""
+    try:
+        commands = [
+            telebot.types.BotCommand("help", "📋 Show all commands"),
+            telebot.types.BotCommand("daily_promo", "📣 Generate & post promo NOW"),
+            telebot.types.BotCommand("strategy", "📅 Today's content strategy"),
+            telebot.types.BotCommand("memory", "🧠 View content memory"),
+            telebot.types.BotCommand("weekly", "📊 Weekly summary"),
+            telebot.types.BotCommand("stats", "📈 Performance statistics"),
+            telebot.types.BotCommand("calendar", "🗓️ Next 7 days themes"),
+            telebot.types.BotCommand("next", "🔮 Preview next content"),
+            telebot.types.BotCommand("test_ai", "🧪 Test AI generation"),
+            telebot.types.BotCommand("status", "⚙️ Bot health check"),
+            telebot.types.BotCommand("about", "ℹ️ About AI Co-Founder"),
+        ]
+        bot.set_my_commands(commands)
+        print("✅ Bot command menu set")
+    except Exception as e:
+        print(f"⚠️ Could not set bot commands: {e}")
 
 
 @bot.message_handler(commands=['memory'])
@@ -955,13 +1257,13 @@ if __name__ == "__main__":
     
     # Schedule daily promo
     schedule.every().day.at("21:55").do(send_automated_daily_promo)
-    print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
-    
+print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
+
     # Display current state
-    panama_tz = pytz.timezone('America/Panama')
-    current_panama_time = datetime.now(panama_tz)
-    print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
-    
+panama_tz = pytz.timezone('America/Panama')
+current_panama_time = datetime.now(panama_tz)
+print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+
     # Show memory stats
     print(f"🧠 Memory loaded: {memory.memory['total_posts']} posts recorded")
     
@@ -972,9 +1274,9 @@ if __name__ == "__main__":
         print("⚠️ GROQ_API_KEY not set - will use fallback templates")
     
     # Start scheduler
-    threading.Thread(target=schedule_checker, daemon=True).start()
-    
+threading.Thread(target=schedule_checker, daemon=True).start()
+
     print("🤖 AI Marketing Co-Founder v3.0 is running!")
     print(f"📅 Next scheduled promo: {schedule.next_run()}")
-    
-    keep_alive()
+
+keep_alive()
