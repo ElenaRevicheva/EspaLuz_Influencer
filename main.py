@@ -20,6 +20,10 @@ Version: 3.0.0 - True AI Co-Founder
 import telebot
 import os
 import random
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 import time
 import threading
 import requests
@@ -830,7 +834,7 @@ def show_help(message):
 /about - About AI Co-Founder v3.0
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⏰ Auto-posting: Daily at 4:55 PM Panama
+⏰ Auto-posting: Daily at 6:00 PM Panama
 🧠 AI Model: Groq Llama 3.3 70B
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
     
@@ -1041,7 +1045,7 @@ def show_status(message):
 
 ⏰ **Scheduling**
 • Current time (Panama): {panama_time.strftime('%H:%M:%S')}
-• Daily post time: 4:55 PM Panama
+• Daily post time: 6:00 PM Panama
 • Next scheduled: {schedule.next_run()}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
@@ -1158,7 +1162,7 @@ def test_time(message):
 🇵🇦 Panama: {now_panama.strftime('%Y-%m-%d %H:%M:%S %Z')}
 
 📅 Next scheduled promo: {schedule.next_run()}
-⏰ Scheduled for: 4:55 PM Panama (21:55 UTC)"""
+⏰ Scheduled for: 6:00 PM Panama (23:00 UTC)"""
     
     bot.reply_to(message, response)
 
@@ -1256,8 +1260,8 @@ if __name__ == "__main__":
     force_single_instance()
     
     # Schedule daily promo
-    schedule.every().day.at("21:55").do(send_automated_daily_promo)
-    print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
+    schedule.every().day.at("23:00").do(send_automated_daily_promo)
+    print("⏰ Scheduled daily promo for 6:00 PM Panama time (23:00 UTC)")
 
     # Display current state
     panama_tz = pytz.timezone('America/Panama')
