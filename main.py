@@ -1257,12 +1257,12 @@ if __name__ == "__main__":
     
     # Schedule daily promo
     schedule.every().day.at("21:55").do(send_automated_daily_promo)
-print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
+    print("⏰ Scheduled daily promo for 4:55 PM Panama time (21:55 UTC)")
 
     # Display current state
-panama_tz = pytz.timezone('America/Panama')
-current_panama_time = datetime.now(panama_tz)
-print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+    panama_tz = pytz.timezone('America/Panama')
+    current_panama_time = datetime.now(panama_tz)
+    print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %Z')}")
 
     # Show memory stats
     print(f"🧠 Memory loaded: {memory.memory['total_posts']} posts recorded")
@@ -1274,9 +1274,9 @@ print(f"🇵🇦 Panama time: {current_panama_time.strftime('%Y-%m-%d %H:%M:%S %
         print("⚠️ GROQ_API_KEY not set - will use fallback templates")
     
     # Start scheduler
-threading.Thread(target=schedule_checker, daemon=True).start()
+    threading.Thread(target=schedule_checker, daemon=True).start()
 
     print("🤖 AI Marketing Co-Founder v3.0 is running!")
     print(f"📅 Next scheduled promo: {schedule.next_run()}")
 
-keep_alive()
+    keep_alive()
