@@ -1,5 +1,5 @@
 """
-🤖 ESPALUZ AI MARKETING CO-FOUNDER v3.0
+🤖 ESPALUZ AI MARKETING CO-FOUNDER v3.1
 ========================================
 A TRUE AI Co-Founder with:
 - Memory System (tracks all posts, avoids repetition)
@@ -14,7 +14,7 @@ PRESERVED:
 - Telegram bot commands
 
 Author: Elena Revicheva & CTO AIPA
-Version: 3.0.0 - True AI Co-Founder
+Version: 3.1.0 - Dual campaign (EspaLuz + AI Marketing Engine)
 """
 
 import telebot
@@ -73,6 +73,11 @@ image_urls = [
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image3.jpg",
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image4.jpg",
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image5.jpg"
+]
+
+marketing_engine_image_urls = [
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_architecture.png",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_workflow.png",
 ]
 
 # ============================================
@@ -606,7 +611,7 @@ hashtag_sets = [
 def generate_promo_content():
     """Generate promo content with full AI Co-Founder intelligence"""
     print("=" * 50)
-    print("🤖 AI MARKETING CO-FOUNDER v3.0 - Generating Content")
+    print("🤖 AI MARKETING CO-FOUNDER v3.1 - Generating Content")
     print("=" * 50)
     
     # Get strategic context
@@ -703,6 +708,219 @@ P.S. Your 7-day FREE trial is waiting. No credit card needed to start. Just mess
     return promo, story, video_url, image_url
 
 
+def get_campaign_type_for_date(dt: datetime) -> str:
+    """
+    Odd calendar day (1,3,5,...) → classic EspaLuz tutoring content.
+    Even calendar day (2,4,6,...) → AI Marketing Engine / AIdeazz positioning content.
+    Uses the calendar day in Panama time when dt is timezone-aware.
+    """
+    if dt.tzinfo is None:
+        dt = PANAMA_TZ.localize(dt)
+    else:
+        dt = dt.astimezone(PANAMA_TZ)
+    return "espaluz" if dt.day % 2 == 1 else "marketing_engine"
+
+
+MARKETING_ENGINE_FALLBACK = [
+    {
+        "hook": "🚀 ONE ENGINE, EVERY CHANNEL — BUILT FOR FOUNDERS",
+        "story": "We kept shipping content across Telegram, WhatsApp, and the web—but nothing measured outcomes. The AI Marketing Engine ties agents, scheduling, and proof together so growth work compounds instead of evaporating.",
+        "transformation": "From scattered promos to a single orchestrated pipeline: brand voice, calendars, resilience on Oracle, and client-ready demos—without replacing your Make.com social flow.",
+        "emotion": "⚡ From busywork to **leverage**",
+        "theme": "marketing_engine",
+        "audience": "founder",
+        "emotional_state": "ambition",
+        "location": "Panama City",
+    }
+]
+
+
+def generate_ai_marketing_engine_story(strategy: Dict, audience: str, emotion: str, location: str, memory: ContentMemory) -> Optional[Dict]:
+    """Groq-generated story for the AI Marketing Engine / AIdeazz narrative."""
+    current_date = strategy["date"]
+    day_theme = strategy["day_theme"]
+
+    prompt = f"""You are the AI Marketing Co-Founder promoting the **AI Marketing Engine** behind AIdeazz: multi-agent orchestration, SEO/content pipelines, Oracle deployment, and real client outcomes (EspaLuz is the flagship case study).
+
+BRAND KNOWLEDGE (ENGINE):
+- Full-stack marketing automation: Telegram/WhatsApp agents, CTO AIPA, roadmap-driven SEO, resilience docs.
+- Differentiator: not generic "AI copy" — measured loops, deployment on Oracle, integrations (Make.com preserved for distribution).
+- CTAs: https://aideazz.xyz and the public roadmap in GitHub (AIPA_AITCF).
+
+TODAY'S CONTEXT:
+- Date: {current_date} ({strategy['day_of_week']})
+- Day Theme: {day_theme['theme'].upper()} — {day_theme['focus']}
+
+CONTENT ASSIGNMENT:
+- Audience lens: {audience.replace('_', ' ').title()}
+- Emotional arc: {emotion.replace('_', ' ').title()}
+- Setting: {location}
+
+GENERATE A SOCIAL POST STORY with:
+1. **HOOK** (1 line, emoji): bold, founder-focused
+2. **STORY** (3-5 sentences): concrete problem → how the engine solves it; mention orchestration or outcomes
+3. **TRANSFORMATION** (2-3 sentences): what changes when marketing is engine-driven (measurement, deploy, compounding)
+4. **EMOTION** (1 line, emoji): shift from chaos to clarity
+5. **THEME** (1 word): e.g. "orchestration", "leverage", "pipeline"
+
+RULES:
+- Do NOT pretend to be the Spanish tutor product; this post sells the **marketing engine** and AIdeazz capabilities.
+- You may reference EspaLuz briefly as proof.
+- Under 220 words for story+transformation combined.
+- Output valid JSON: hook, story, transformation, emotion, theme, audience, emotional_state, location"""
+
+    try:
+        response = requests.post(
+            GROQ_API_URL,
+            headers={
+                "Authorization": f"Bearer {GROQ_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "llama-3.3-70b-versatile",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.85,
+                "max_tokens": 1200,
+            },
+            timeout=30,
+        )
+        if response.status_code != 200:
+            print(f"❌ Groq API error (marketing): {response.status_code}")
+            return None
+        content = response.json()["choices"][0]["message"]["content"]
+        if "```json" in content:
+            content = content.split("```json")[1].split("```")[0]
+        elif "```" in content:
+            content = content.split("```")[1].split("```")[0]
+        story_data = json.loads(content.strip())
+        story_data["audience"] = audience
+        story_data["emotional_state"] = emotion
+        story_data["location"] = location
+        story_data["day_theme"] = day_theme["theme"]
+        story_data["hashtag_boost"] = day_theme.get("hashtag_boost", "")
+        print(f"🧠 AI marketing-engine story: {audience} / {location}")
+        return story_data
+    except Exception as e:
+        print(f"❌ AI marketing generation error: {e}")
+        return None
+
+
+def self_review_marketing_story(story_data: Dict, memory: ContentMemory) -> Dict:
+    if memory.check_similarity(story_data.get("story", "")):
+        return {"approved": False, "reason": "similarity"}
+    if len(story_data.get("story", "")) < 80:
+        return {"approved": False, "reason": "too_short"}
+    blob = (story_data.get("story", "") + story_data.get("transformation", "")).lower()
+    keywords = ("market", "engine", "ai", "brand", "content", "oracle", "autom", "client", "founder", "pipeline", "agent")
+    if sum(1 for k in keywords if k in blob) < 2:
+        return {"approved": False, "reason": "missing_engine_keywords"}
+    return {"approved": True, "reason": "passed"}
+
+
+def generate_marketing_engine_content():
+    """Promo bundle for even calendar days — AI Marketing Engine narrative (Make webhook shape unchanged)."""
+    print("=" * 50)
+    print("🎯 AI MARKETING ENGINE CAMPAIGN — Generating Content")
+    print("=" * 50)
+
+    strategy = StrategicCalendar.get_today_strategy()
+    audience = IntelligentRotation.select_audience(memory.get_recent_audiences(), strategy["day_theme"])
+    emotion = IntelligentRotation.select_emotion(memory.get_recent_emotions(), strategy["day_theme"])
+    location = IntelligentRotation.select_location(memory.get_recent_locations())
+
+    story = None
+    for attempt in range(3):
+        story = generate_ai_marketing_engine_story(strategy, audience, emotion, location, memory)
+        if story:
+            review = self_review_marketing_story(story, memory)
+            if review["approved"]:
+                break
+            print(f"🔄 Marketing retry {attempt + 1}/3: {review['reason']}")
+            story = None
+
+    if story is None:
+        print("⚠️ Marketing AI unavailable or failed review — using fallback")
+        story = dict(random.choice(MARKETING_ENGINE_FALLBACK))
+
+    memory.add_post(story)
+
+    me_benefits = [
+        {
+            "title": "🧩 ORCHESTRATED AGENTS",
+            "points": [
+                "\n   ✅ CTO AIPA + domain bots share one roadmap",
+                "\n   ✅ Scheduling, outreach, and proof in one loop",
+                "\n   ✅ Oracle-ready deployment patterns",
+            ],
+        },
+        {
+            "title": "📈 CONTENT THAT COMPOUNDS",
+            "points": [
+                "\n   ✅ SEO + sitemap pipelines (AIdeazz site)",
+                "\n   ✅ Resilience docs + health checks",
+                "\n   ✅ Case-study ready narrative (EspaLuz)",
+            ],
+        },
+    ]
+    benefits = random.sample(me_benefits, 2)
+    cta = random.choice(
+        [
+            "👉 See the stack → https://aideazz.xyz",
+            "📎 Roadmap & engine docs → GitHub **AIPA_AITCF** (AI Marketing Engine full roadmap)",
+            "🌐 AIdeazz hub → https://aideazz.xyz",
+        ]
+    )
+    proof = "💡 *Built by Elena Revicheva & CTO AIPA — shipping on Oracle alongside EspaLuz.*"
+    hashtags = "#AIdeazz #AIMarketingEngine #BuildInPublic #MLOps #FounderTools " + strategy["day_theme"].get("hashtag_boost", "")
+
+    video_url = random.choice(video_links)
+    image_url = random.choice(marketing_engine_image_urls)
+
+    promo = f"""{story['hook']} 🚨
+
+{story['story']}
+
+{story['transformation']}
+
+{story['emotion']} — That's the **AI Marketing Engine** difference. ✨
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 WHY FOUNDERS WATCH THIS STACK:
+
+{benefits[0]['title']}
+{''.join(benefits[0]['points'])}
+
+{benefits[1]['title']}
+{''.join(benefits[1]['points'])}
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+{proof}
+
+{cta}
+
+🎬 Clip: {video_url}
+
+{hashtags}
+
+🔗 *EspaLuz (live product):* https://wa.me/50766623757 — try the tutor; this post is about the **engine** behind the brand."""
+
+    print("✅ Marketing engine content generated!")
+    print("=" * 50)
+    return promo, story, video_url, image_url
+
+
+def generate_scheduled_promo_bundle():
+    """Same alternation for cron and manual /daily_promo (Panama calendar day)."""
+    now = datetime.now(PANAMA_TZ)
+    if get_campaign_type_for_date(now) == "espaluz":
+        p, s, v, i = generate_promo_content()
+        return p, s, v, i, "espaluz"
+    p, s, v, i = generate_marketing_engine_content()
+    return p, s, v, i, "marketing_engine"
+
+
 # ============================================
 # AUTOMATED POSTING (PRESERVED!)
 # ============================================
@@ -710,18 +928,23 @@ P.S. Your 7-day FREE trial is waiting. No credit card needed to start. Just mess
 def send_automated_daily_promo():
     """Automated daily promo with full intelligence"""
     try:
-        promo, story, video_url, image_url = generate_promo_content()
+        promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
         
         # Send to Telegram channel
         bot.send_message(TELEGRAM_CHAT_ID, promo)
-        print("✅ Automated promo sent to @EspaLuz channel.")
+        print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}).")
         
         # Send to Make.com webhook
+        content_type = "ai_cofounder_v3" if campaign_type == "espaluz" else "marketing_engine_v3"
         payload = {
             "text": promo,
             "videoURL": video_url,
             "imageURL": image_url,
-            "videoTitle": f"EspaLuz Success Story: {story['emotion']}",
+            "videoTitle": (
+                f"EspaLuz Success Story: {story['emotion']}"
+                if campaign_type == "espaluz"
+                else f"AI Marketing Engine: {story['emotion']}"
+            ),
             "videoDescription": story['story'][:200] + "...",
             "automated": True,
             "timestamp": datetime.now(PANAMA_TZ).isoformat(),
@@ -736,13 +959,14 @@ def send_automated_daily_promo():
             "emotional_state": story.get('emotional_state', 'general'),
             "location": story.get('location', 'unknown'),
             "day_theme": story.get('day_theme', 'general'),
-            "content_type": "ai_cofounder_v3",
+            "content_type": content_type,
+            "campaign_type": campaign_type,
             "ai_powered": True,
             "has_memory": True,
             "strategic_calendar": True
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
-        print(f"📤 Sent to Make.com webhook. Response: {response.status_code}")
+        print(f"📤 Sent to Make.com webhook ({campaign_type}). Response: {response.status_code}")
         
     except Exception as e:
         print(f"❌ Error in automated promo: {e}")
@@ -757,12 +981,13 @@ def send_daily_promo(message):
     """Manual trigger for daily promo"""
     print("📣 /daily_promo triggered manually...")
     
-    promo, story, video_url, image_url = generate_promo_content()
+    promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
     bot.reply_to(message, promo)
     bot.send_message(TELEGRAM_CHAT_ID, promo)
-    print("✅ Manual promo sent.")
+    print(f"✅ Manual promo sent ({campaign_type}).")
 
     try:
+        content_type = "ai_cofounder_v3" if campaign_type == "espaluz" else "marketing_engine_v3"
         payload = {
             "text": promo,
             "videoURL": video_url,
@@ -775,7 +1000,9 @@ def send_daily_promo(message):
             "emotional_state": story.get('emotional_state', 'general'),
             "location": story.get('location', 'unknown'),
             "ai_powered": True,
-            "has_memory": True
+            "has_memory": True,
+            "content_type": content_type,
+            "campaign_type": campaign_type,
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print("📤 Sent to Make.com webhook. Response:", response.status_code)
@@ -783,10 +1010,27 @@ def send_daily_promo(message):
         print("❌ Failed to send to Make.com webhook:", e)
 
 
+@bot.message_handler(commands=["campaign_today"])
+def campaign_today(message):
+    """Which campaign runs today (auto + /daily_promo use this rule)."""
+    now = datetime.now(PANAMA_TZ)
+    ct = get_campaign_type_for_date(now)
+    label = "**EspaLuz tutoring narrative** (classic co-founder)" if ct == "espaluz" else "**AI Marketing Engine** (AIdeazz stack, roadmap, Oracle)"
+    bot.reply_to(
+        message,
+        f"""📅 **Campaign for today** ({now.strftime('%Y-%m-%d')} Panama)
+
+• Rule: **odd** calendar day → EspaLuz · **even** calendar day → Marketing Engine
+• Today: {label}
+
+Commands `/daily_promo` and the 6:00 PM auto post follow this schedule.""",
+    )
+
+
 @bot.message_handler(commands=['start', 'hello'])
 def welcome(message):
     """Welcome message with full menu"""
-    welcome_text = """👋 ¡Hola! I'm the EspaLuz AI Marketing Co-Founder v3.0!
+    welcome_text = """👋 ¡Hola! I'm the EspaLuz AI Marketing Co-Founder v3.1!
 
 🤖 **TRUE AI CO-FOUNDER CAPABILITIES:**
 ━━━━━━━━━━━━━━━━━━━━━━━
@@ -806,11 +1050,12 @@ Type /help to see all commands!"""
 @bot.message_handler(commands=['help', 'menu', 'commands'])
 def show_help(message):
     """Show full command menu"""
-    help_text = """📋 **ESPALUZ AI CO-FOUNDER v3.0 - COMMANDS**
+    help_text = """📋 **ESPALUZ AI CO-FOUNDER v3.1 - COMMANDS**
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📣 **CONTENT GENERATION**
-/daily_promo - Generate & post AI promo NOW
+/daily_promo - Generate & post **today's** campaign (EspaLuz vs Marketing Engine by calendar day)
+/campaign_today - Which campaign runs **today** (odd=EspaLuz, even=Engine)
 /test_ai - Test AI generation (no posting)
 
 📊 **ANALYTICS & MEMORY**
@@ -831,10 +1076,11 @@ def show_help(message):
 ℹ️ **HELP**
 /start - Welcome message
 /help - This command menu
-/about - About AI Co-Founder v3.0
+/about - About AI Co-Founder v3.1
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ Auto-posting: Daily at 6:00 PM Panama
+🔀 Campaigns: **odd** day = EspaLuz · **even** day = AI Marketing Engine
 🧠 AI Model: Groq Llama 3.3 70B
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
     
@@ -844,8 +1090,10 @@ def show_help(message):
 @bot.message_handler(commands=['about'])
 def show_about(message):
     """About the AI Co-Founder"""
-    about_text = """🤖 **ESPALUZ AI MARKETING CO-FOUNDER v3.0**
+    about_text = """🤖 **ESPALUZ AI MARKETING CO-FOUNDER v3.1**
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Dual campaign (additive):** on **odd** calendar days we run classic EspaLuz tutoring stories; on **even** days we spotlight the **AI Marketing Engine** (AIdeazz stack, roadmap, Oracle). Same Make.com webhook; payload includes `campaign_type`.
 
 **What makes this a TRUE AI Co-Founder:**
 
@@ -875,7 +1123,7 @@ AI checks its own content before posting:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Built by: Elena Revicheva & CTO AIPA
-Version: 3.0.0
+Version: 3.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
     
     bot.reply_to(message, about_text)
@@ -1028,8 +1276,9 @@ def show_status(message):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🤖 **Bot Info**
-• Version: 3.0.0 (AI Co-Founder)
+• Version: 3.1.0 (Dual campaign)
 • Status: 🟢 Running
+• Today: {"EspaLuz classic" if get_campaign_type_for_date(datetime.now(PANAMA_TZ)) == "espaluz" else "AI Marketing Engine"} (odd=EspaLuz, even=Engine)
 
 🔑 **API Configuration**
 • GROQ_API_KEY: {api_status}
@@ -1060,8 +1309,12 @@ def show_version(message):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📦 EspaLuz AI Marketing Co-Founder
-📌 Version: 3.0.0
-📅 Released: January 2026
+📌 Version: 3.1.0
+📅 Dual campaign: April 2026
+
+🔄 **Changelog v3.1:**
+• Additive dual campaign: odd calendar day = EspaLuz, even = AI Marketing Engine
+• `/campaign_today`, webhook `campaign_type` + `content_type`
 
 🔄 **Changelog v3.0:**
 • Added Memory System
@@ -1087,7 +1340,8 @@ def set_bot_commands():
     try:
         commands = [
             telebot.types.BotCommand("help", "📋 Show all commands"),
-            telebot.types.BotCommand("daily_promo", "📣 Generate & post promo NOW"),
+            telebot.types.BotCommand("daily_promo", "📣 Post today's campaign (alternates)"),
+            telebot.types.BotCommand("campaign_today", "🔀 Which campaign today?"),
             telebot.types.BotCommand("strategy", "📅 Today's content strategy"),
             telebot.types.BotCommand("memory", "🧠 View content memory"),
             telebot.types.BotCommand("weekly", "📊 Weekly summary"),
@@ -1162,7 +1416,8 @@ def test_time(message):
 🇵🇦 Panama: {now_panama.strftime('%Y-%m-%d %H:%M:%S %Z')}
 
 📅 Next scheduled promo: {schedule.next_run()}
-⏰ Scheduled for: 6:00 PM Panama (23:00 UTC)"""
+⏰ Scheduled for: 6:00 PM Panama (23:00 UTC)
+🔀 Today’s campaign: {"EspaLuz" if get_campaign_type_for_date(now_panama) == "espaluz" else "AI Marketing Engine"} (odd=EspaLuz, even=Engine)"""
     
     bot.reply_to(message, response)
 
@@ -1247,7 +1502,7 @@ def keep_alive():
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("🤖 ESPALUZ AI MARKETING CO-FOUNDER v3.0")
+    print("🤖 ESPALUZ AI MARKETING CO-FOUNDER v3.1")
     print("=" * 60)
     print("✨ TRUE AI Co-Founder Capabilities:")
     print("   🧠 Memory System - Tracks all posts, avoids repetition")
@@ -1255,6 +1510,7 @@ if __name__ == "__main__":
     print("   🔄 Intelligent Rotation - Systematic audience cycling")
     print("   ✅ Self-Review - AI quality checks before posting")
     print("   📊 Performance Insights - Weekly summaries")
+    print("   🔀 Dual campaign - Odd day: EspaLuz · Even day: AI Marketing Engine")
     print("=" * 60)
     
     force_single_instance()
@@ -1280,7 +1536,7 @@ if __name__ == "__main__":
     # Start scheduler
     threading.Thread(target=schedule_checker, daemon=True).start()
 
-    print("🤖 AI Marketing Co-Founder v3.0 is running!")
+    print("🤖 AI Marketing Co-Founder v3.1 is running!")
     print(f"📅 Next scheduled promo: {schedule.next_run()}")
 
     keep_alive()

@@ -1,46 +1,46 @@
-# EspaLuz AI Influencer Co-Founder v2.0
+# EspaLuz AI Influencer Co-Founder v3.1
 
-AI-powered social media content generation for EspaLuz language tutoring service.
+AI-powered social media content for **EspaLuz** (language tutoring) **and** additive promotion of the **AI Marketing Engine** (AIdeazz stack, roadmap, Oracle deployment).
 
-## What's New in v2.0
+## What’s new in v3.1 (dual campaign)
 
-**Upgraded from template-based to AI-generated content!**
+- **Alternation by calendar day (Panama):** **odd** day (1, 3, 5…) → classic **EspaLuz** tutoring narrative (v3.0 co-founder). **Even** day (2, 4, 6…) → **AI Marketing Engine** narrative (AIdeazz, agents, SEO/resilience, case-study framing).
+- **Same pipeline:** Telegram → channel → **Make.com** webhook (extra JSON keys: `campaign_type`, `content_type`).
+- **New assets:** `marketing_engine_architecture.png`, `marketing_engine_workflow.png` (referenced in promos on engine days).
+- **Commands:** `/campaign_today` shows which campaign runs today; `/daily_promo` follows the same rule as the scheduled post.
 
-- **AI Story Generation**: Uses Groq (Llama 3.3 70B) to create fresh, unique stories daily
-- **Brand Knowledge Integration**: AI understands EspaLuz's voice, audiences, and emotional arcs
-- **Fallback System**: Graceful degradation to templates if AI is unavailable
-- **Make.com Compatibility**: Webhook interface preserved - no changes needed to Make.com scenario
+Prior behavior (v3.0 memory, calendar, rotation, Groq, Make compatibility) is unchanged for EspaLuz days.
 
 ## Architecture
 
 ```
-[Schedule] → [AI Story Generation] → [Telegram Post] → [Make.com Webhook] → [Social Platforms]
-                    ↓
-             [Groq API / Fallback Templates]
+[Schedule 6PM Panama] → [Campaign router: odd=EspaLuz / even=Engine]
+        → [Groq story + memory] → [Telegram @EspaLuz] → [Make.com webhook] → [Social platforms]
 ```
 
-## Environment Variables
+## Environment variables
 
 ```bash
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-GROQ_API_KEY=your_groq_api_key  # Required for AI generation
+GROQ_API_KEY=your_groq_api_key   # Required for AI generation (both campaigns)
 ```
 
-## Commands
+## Commands (high level)
 
-- `/daily_promo` - Generate and post AI-powered promotional content
-- `/test_ai` - Test AI story generation
-- `/test_time` - Check server and Panama time
-- `/test_emotional_ai` - Test full pipeline with webhook
+- `/daily_promo` — Generate and post **today’s** campaign (respects odd/even rule).
+- `/campaign_today` — Show whether today is EspaLuz or Marketing Engine.
+- `/test_ai` — Test EspaLuz story generation (no campaign router).
+- `/test_time` — Server vs Panama time + next schedule + today’s campaign.
+- `/help` — Full menu.
 
 ## Scheduling
 
-Daily promo posts at **4:55 PM Panama time (21:55 UTC)**.
+Daily auto-post at **6:00 PM Panama** (23:00 UTC), same as v3.0.
 
 ## Backup
 
-- **Branch**: `backup/pre-ai-cofounder-upgrade-20260108_180511`
-- **Tag**: `v1.0-template-based`
+- **Branch:** `backup/pre-ai-cofounder-upgrade-20260108_180511`
+- **Tag:** `v1.0-template-based`
 
 To restore: `git checkout v1.0-template-based`
 
