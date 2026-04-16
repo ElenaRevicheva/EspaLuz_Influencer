@@ -949,59 +949,18 @@ def send_channel_promo_with_image(promo: str, image_url: str) -> None:
         bot.send_message(TELEGRAM_CHAT_ID, promo[1024:])
 
 
-def post_marketing_engine_photo_webhook(
-    promo: str,
-    story: Dict,
-    video_url: str,
-    image_url: str,
-    *,
-    automated: bool = False,
-    batch_note: Optional[str] = None,
-) -> None:
-    """Make.com payload aligned with manual marketing posts; optional batch metadata for two-image runs."""
-    content_type = "marketing_engine_v3"
-    payload: Dict[str, Any] = {
-        "text": promo,
-        "videoURL": video_url,
-        "imageURL": image_url,
-        "hook": story["hook"],
-        "story": story["story"],
-        "emotion": story["emotion"],
-        "transformation": story["transformation"],
-        "audience": story.get("audience", "general"),
-        "emotional_state": story.get("emotional_state", "general"),
-        "location": story.get("location", "unknown"),
-        "ai_powered": True,
-        "has_memory": True,
-        "content_type": content_type,
-        "campaign_type": "marketing_engine",
-        "automated": automated,
-        "timestamp": datetime.now(PANAMA_TZ).isoformat(),
-        "videoTitle": f"AI Marketing Engine: {story['emotion']}",
-        "videoDescription": story["story"][:200] + "...",
-    }
-    if batch_note:
-        payload["batch_note"] = batch_note
-    response = requests.post(MAKE_WEBHOOK_URL, json=payload)
-    print(f"📤 Make.com webhook (marketing_engine). Response: {response.status_code}")
+def test_marketing_engine_image_assets() -> None:
+    """One-off: verify both marketing PNGs upload to Telegram (short caption, no AI, no memory, no webhook).
 
-
-def fire_two_marketing_image_posts() -> None:
-    """Two full marketing-engine posts: one per ``marketing_engine_image_urls`` entry (order preserved). Photo + webhook each."""
-    for idx, url in enumerate(marketing_engine_image_urls):
-        print(f"📸 Post {idx + 1}/2 — image: {url}")
-        promo, story, video_url, image_url = generate_marketing_engine_content(image_url_override=url)
-        send_channel_promo_with_image(promo, image_url)
-        print(f"✅ Telegram photo+caption sent ({image_url.rsplit('/', 1)[-1]}).")
-        post_marketing_engine_photo_webhook(
-            promo,
-            story,
-            video_url,
-            image_url,
-            automated=False,
-            batch_note=f"two_image_showcase_{idx + 1}_of_2",
-        )
-        time.sleep(3)
+    Scheduled posting is unchanged: odd calendar days = EspaLuz, even = marketing engine (one post/day).
+    """
+    for url in marketing_engine_image_urls:
+        name = url.rsplit("/", 1)[-1]
+        cap = f"✅ Image check: {name}\n(asset test only — not the daily schedule)"
+        print(f"📸 Sending test photo: {name}")
+        send_channel_promo_with_image(cap, url)
+        time.sleep(2)
+    print("✅ Both asset checks sent to channel.")
 
 
 # ============================================
@@ -1013,9 +972,9 @@ def send_automated_daily_promo():
     try:
         promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
         
-        # Send to Telegram channel
-        bot.send_message(TELEGRAM_CHAT_ID, promo)
-        print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}).")
+        # Channel: photo + caption so image appears (EspaLuz + marketing engine days)
+        send_channel_promo_with_image(promo, image_url)
+        print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}, photo+caption).")
         
         # Send to Make.com webhook
         content_type = "ai_cofounder_v3" if campaign_type == "espaluz" else "marketing_engine_v3"
@@ -1066,8 +1025,8 @@ def send_daily_promo(message):
     
     promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
     bot.reply_to(message, promo)
-    bot.send_message(TELEGRAM_CHAT_ID, promo)
-    print(f"✅ Manual promo sent ({campaign_type}).")
+    send_channel_promo_with_image(promo, image_url)
+    print(f"✅ Manual promo sent ({campaign_type}, photo+caption).")
 
     try:
         content_type = "ai_cofounder_v3" if campaign_type == "espaluz" else "marketing_engine_v3"
