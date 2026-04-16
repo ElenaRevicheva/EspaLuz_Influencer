@@ -963,6 +963,57 @@ def test_marketing_engine_image_assets() -> None:
     print("✅ Both asset checks sent to channel.")
 
 
+def fire_two_marketing_image_posts() -> None:
+    """Two full AI marketing-engine posts: one per ``marketing_engine_image_urls`` (order preserved).
+
+    Each run: generate copy with Groq (or fallback), ``memory`` update, Telegram **photo + caption**,
+    then **Make.com** webhook with the same rich payload shape as scheduled marketing days so your
+    scenario can post to Instagram, LinkedIn, etc.
+
+    This is a **manual one-off**. It does **not** replace or disable the daily cron: odd calendar day =
+    EspaLuz, even day = marketing engine (one post/day) — that keeps running on schedule.
+    """
+    for idx, url in enumerate(marketing_engine_image_urls):
+        print(f"📸 Full AI post {idx + 1}/2 — image: {url}")
+        promo, story, video_url, image_url = generate_marketing_engine_content(image_url_override=url)
+        send_channel_promo_with_image(promo, image_url)
+        print(f"✅ Telegram photo+caption sent ({image_url.rsplit('/', 1)[-1]}).")
+
+        payload: Dict[str, Any] = {
+            "text": promo,
+            "videoURL": video_url,
+            "imageURL": image_url,
+            "videoTitle": f"AI Marketing Engine: {story['emotion']}",
+            "videoDescription": story["story"][:200] + "...",
+            "automated": False,
+            "manual_two_marketing_post_batch": True,
+            "batch_index": idx + 1,
+            "batch_total": len(marketing_engine_image_urls),
+            "timestamp": datetime.now(PANAMA_TZ).isoformat(),
+            "hook": story["hook"],
+            "story": story["story"],
+            "emotion": story["emotion"],
+            "transformation": story["transformation"],
+            "cta": random.choice(cta_options),
+            "hashtags": " ".join(random.choice(hashtag_sets)),
+            "socialProof": random.choice(social_proof),
+            "audience": story.get("audience", "general_learner"),
+            "emotional_state": story.get("emotional_state", "general"),
+            "location": story.get("location", "unknown"),
+            "day_theme": story.get("day_theme", "general"),
+            "content_type": "marketing_engine_v3",
+            "campaign_type": "marketing_engine",
+            "ai_powered": True,
+            "has_memory": True,
+            "strategic_calendar": True,
+        }
+        response = requests.post(MAKE_WEBHOOK_URL, json=payload)
+        print(f"📤 Make.com webhook {idx + 1}/2. Response: {response.status_code}")
+        time.sleep(3)
+
+    print("✅ Done: two full marketing posts → Telegram + Make. Daily auto schedule unchanged.")
+
+
 # ============================================
 # AUTOMATED POSTING (PRESERVED!)
 # ============================================
