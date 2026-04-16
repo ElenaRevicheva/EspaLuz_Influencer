@@ -817,8 +817,11 @@ def self_review_marketing_story(story_data: Dict, memory: ContentMemory) -> Dict
     return {"approved": True, "reason": "passed"}
 
 
-def generate_marketing_engine_content():
-    """Promo bundle for even calendar days — AI Marketing Engine narrative (Make webhook shape unchanged)."""
+def generate_marketing_engine_content(image_url_override: Optional[str] = None):
+    """Promo bundle for even calendar days — AI Marketing Engine narrative (Make webhook shape unchanged).
+
+    If ``image_url_override`` is set (e.g. when firing one post per asset), that URL is used instead of random.
+    """
     print("=" * 50)
     print("🎯 AI MARKETING ENGINE CAMPAIGN — Generating Content")
     print("=" * 50)
@@ -874,7 +877,11 @@ def generate_marketing_engine_content():
     hashtags = "#AIdeazz #AIMarketingEngine #BuildInPublic #MLOps #FounderTools " + strategy["day_theme"].get("hashtag_boost", "")
 
     video_url = random.choice(video_links)
-    image_url = random.choice(marketing_engine_image_urls)
+    image_url = (
+        image_url_override
+        if image_url_override
+        else random.choice(marketing_engine_image_urls)
+    )
 
     promo = f"""{story['hook']} 🚨
 
@@ -919,6 +926,82 @@ def generate_scheduled_promo_bundle():
         return p, s, v, i, "espaluz"
     p, s, v, i = generate_marketing_engine_content()
     return p, s, v, i, "marketing_engine"
+
+
+def _local_repo_image_path(image_url: str) -> Optional[str]:
+    """If the file named in the URL exists in cwd (repo root), upload that bytes to Telegram."""
+    base = image_url.rsplit("/", 1)[-1]
+    if os.path.isfile(base):
+        return base
+    return None
+
+
+def send_channel_promo_with_image(promo: str, image_url: str) -> None:
+    """Post to @EspaLuz with the image visible (photo + caption). Continuation message if caption exceeds 1024 chars."""
+    local = _local_repo_image_path(image_url)
+    cap = promo[:1024] if len(promo) > 1024 else promo
+    if local:
+        with open(local, "rb") as f:
+            bot.send_photo(TELEGRAM_CHAT_ID, f, caption=cap)
+    else:
+        bot.send_photo(TELEGRAM_CHAT_ID, image_url, caption=cap)
+    if len(promo) > 1024:
+        bot.send_message(TELEGRAM_CHAT_ID, promo[1024:])
+
+
+def post_marketing_engine_photo_webhook(
+    promo: str,
+    story: Dict,
+    video_url: str,
+    image_url: str,
+    *,
+    automated: bool = False,
+    batch_note: Optional[str] = None,
+) -> None:
+    """Make.com payload aligned with manual marketing posts; optional batch metadata for two-image runs."""
+    content_type = "marketing_engine_v3"
+    payload: Dict[str, Any] = {
+        "text": promo,
+        "videoURL": video_url,
+        "imageURL": image_url,
+        "hook": story["hook"],
+        "story": story["story"],
+        "emotion": story["emotion"],
+        "transformation": story["transformation"],
+        "audience": story.get("audience", "general"),
+        "emotional_state": story.get("emotional_state", "general"),
+        "location": story.get("location", "unknown"),
+        "ai_powered": True,
+        "has_memory": True,
+        "content_type": content_type,
+        "campaign_type": "marketing_engine",
+        "automated": automated,
+        "timestamp": datetime.now(PANAMA_TZ).isoformat(),
+        "videoTitle": f"AI Marketing Engine: {story['emotion']}",
+        "videoDescription": story["story"][:200] + "...",
+    }
+    if batch_note:
+        payload["batch_note"] = batch_note
+    response = requests.post(MAKE_WEBHOOK_URL, json=payload)
+    print(f"📤 Make.com webhook (marketing_engine). Response: {response.status_code}")
+
+
+def fire_two_marketing_image_posts() -> None:
+    """Two full marketing-engine posts: one per ``marketing_engine_image_urls`` entry (order preserved). Photo + webhook each."""
+    for idx, url in enumerate(marketing_engine_image_urls):
+        print(f"📸 Post {idx + 1}/2 — image: {url}")
+        promo, story, video_url, image_url = generate_marketing_engine_content(image_url_override=url)
+        send_channel_promo_with_image(promo, image_url)
+        print(f"✅ Telegram photo+caption sent ({image_url.rsplit('/', 1)[-1]}).")
+        post_marketing_engine_photo_webhook(
+            promo,
+            story,
+            video_url,
+            image_url,
+            automated=False,
+            batch_note=f"two_image_showcase_{idx + 1}_of_2",
+        )
+        time.sleep(3)
 
 
 # ============================================
