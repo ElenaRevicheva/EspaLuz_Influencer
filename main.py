@@ -78,6 +78,8 @@ image_urls = [
 marketing_engine_image_urls = [
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_architecture.png",
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_workflow.png",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_architecture_1.png",
+    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_workflow_1.png",
 ]
 
 # ============================================
@@ -364,6 +366,53 @@ class IntelligentRotation:
             available = cls.ALL_LOCATIONS
         
         return random.choice(available)
+
+
+# ============================================
+# MARKETING ENGINE PERSONAS (NOT EspaLuz learner audiences)
+# ============================================
+
+class MarketingEngineRotation:
+    """B2B / builder personas for AI Marketing Engine posts only — never mix with EspaLuz tutor audiences."""
+
+    PERSONAS = [
+        "startup_founder",
+        "agency_lead",
+        "product_engineer",
+        "growth_marketer",
+        "technical_cofounder",
+        "indie_saas_builder",
+        "b2b_ops_lead",
+        "marketing_automation_lead",
+    ]
+
+    ARCS = [
+        "clarity",
+        "momentum",
+        "control",
+        "scale",
+        "proof",
+        "relief",
+        "conviction",
+        "focus",
+    ]
+
+    @classmethod
+    def select_persona(cls, memory: ContentMemory) -> str:
+        recent = memory.get_recent_audiences(14)
+        recent_m = [a for a in recent if a in cls.PERSONAS]
+        pool = [p for p in cls.PERSONAS if p not in recent_m[-5:]]
+        return random.choice(pool if pool else cls.PERSONAS)
+
+    @classmethod
+    def select_arc(cls, memory: ContentMemory) -> str:
+        recent_e: List[str] = []
+        for p in memory.memory["posts"][-14:]:
+            e = p.get("emotion")
+            if e in cls.ARCS:
+                recent_e.append(e)
+        pool = [a for a in cls.ARCS if a not in recent_e[-5:]]
+        return random.choice(pool if pool else cls.ARCS)
 
 
 # ============================================
@@ -723,51 +772,75 @@ def get_campaign_type_for_date(dt: datetime) -> str:
 
 MARKETING_ENGINE_FALLBACK = [
     {
-        "hook": "🚀 ONE ENGINE, EVERY CHANNEL — BUILT FOR FOUNDERS",
-        "story": "We kept shipping content across Telegram, WhatsApp, and the web—but nothing measured outcomes. The AI Marketing Engine ties agents, scheduling, and proof together so growth work compounds instead of evaporating.",
-        "transformation": "From scattered promos to a single orchestrated pipeline: brand voice, calendars, resilience on Oracle, and client-ready demos—without replacing your Make.com social flow.",
-        "emotion": "⚡ From busywork to **leverage**",
+        "hook": "📐 Discovery split in two: classic search still matters — generative answers are now a second front door",
+        "story": "**SEO** (search engine optimization) is the disciplined work of making your site *machine-readable and trustworthy* for crawlers: structure, sitemaps, canonical pages, helpful content, and technical health — so Google and others can rank what you actually sell. **GEO** (generative engine optimization) is the newer discipline of making your *facts, offers, and proof* easy for large language models and answer engines to retrieve and cite when users ask in ChatGPT, Copilot, Perplexity, or AI Overviews — not keyword spam, but clear entities, comparisons, and attributable truth. Neither is magic; both are **distribution mechanics**. Hype treats them as silver bullets; serious teams treat them as **measurable pipelines** tied to product reality — which is exactly what the AI Marketing Engine encodes alongside agents and Oracle deploys.",
+        "transformation": "When GEO + SEO live in the same engine as your agents and your roadmap, you stop chasing trends and start owning **two rails of discoverability** — traditional SERPs and generative surfaces — with evidence, not vibes.",
+        "emotion": "⚡ Proof beats hype when **search and answers** both work",
         "theme": "marketing_engine",
-        "audience": "founder",
-        "emotional_state": "ambition",
+        "audience": "startup_founder",
+        "emotional_state": "clarity",
         "location": "Panama City",
     }
 ]
 
 
-def generate_ai_marketing_engine_story(strategy: Dict, audience: str, emotion: str, location: str, memory: ContentMemory) -> Optional[Dict]:
-    """Groq-generated story for the AI Marketing Engine / AIdeazz narrative."""
+def generate_ai_marketing_engine_story(
+    strategy: Dict,
+    persona: str,
+    arc_emotion: str,
+    location: str,
+    memory: ContentMemory,
+) -> Optional[Dict]:
+    """Groq-generated story for the AI Marketing Engine / AIdeazz narrative (B2B — not EspaLuz learner copy)."""
     current_date = strategy["date"]
     day_theme = strategy["day_theme"]
+    persona_human = persona.replace("_", " ")
+    arc_human = arc_emotion.replace("_", " ")
 
-    prompt = f"""You are the AI Marketing Co-Founder promoting the **AI Marketing Engine** behind AIdeazz: multi-agent orchestration, SEO/content pipelines, Oracle deployment, and real client outcomes (EspaLuz is the flagship case study).
+    prompt = f"""You are the marketing voice for **AIdeazz** — the **AI Marketing Engine**: multi-agent orchestration (CTO AIPA, domain bots), **GEO + SEO as measurable pipelines**, Oracle deployment, resilience/ops docs, and Make.com for social distribution.
 
-BRAND KNOWLEDGE (ENGINE):
-- Full-stack marketing automation: Telegram/WhatsApp agents, CTO AIPA, roadmap-driven SEO, resilience docs.
-- Differentiator: not generic "AI copy" — measured loops, deployment on Oracle, integrations (Make.com preserved for distribution).
-- CTAs: https://aideazz.xyz and the public roadmap in GitHub (AIPA_AITCF).
+WHAT YOU ARE SELLING:
+- A systems layer for **measurable** growth — not hype, not a language tutor product.
 
-TODAY'S CONTEXT:
+CORE EDUCATION (weave in clearly — this post must sound **substantive**, not buzzwordy):
+
+• **SEO (search engine optimization)** — The work of making your web presence *crawlable, trustworthy, and well-structured* for search engines: technical health, sitemaps, helpful pages, internal linking, and content that matches real queries. It is **not** a trick; it is **ongoing engineering + editorial truth** so traditional SERPs can surface what you actually do.
+
+• **GEO (generative engine optimization)** — The work of making your **facts, positioning, and proof** retrievable and citable when people ask **LLMs and answer engines** (ChatGPT-style assistants, AI Overviews, Perplexity, etc.). It is **not** keyword stuffing; it is **clear entities, comparisons, FAQs, and attributable claims** so generative surfaces can quote you accurately — or you become invisible in a growing share of discovery.
+
+• **Why both matter for businesses** — Buyers now split time between **classic search** and **AI-mediated answers**. Ignoring SEO loses the crawlable web; ignoring GEO loses the generative layer. Together they are **two rails of discoverability**, not a fad cycle.
+
+• **Why this is NOT hype** — Hype promises magic from a single prompt. Real GEO + SEO tie **product truth → structured signals → measurement** (what ranks, what gets cited, what converts). The AI Marketing Engine treats them as **deployed assets and docs**, not slide filler.
+
+CTAs when natural: https://aideazz.xyz and the public roadmap (repo **AIPA_AITCF** on GitHub).
+
+TODAY:
 - Date: {current_date} ({strategy['day_of_week']})
-- Day Theme: {day_theme['theme'].upper()} — {day_theme['focus']}
+- Calendar theme: {day_theme['theme'].upper()} — {day_theme['focus']}
 
-CONTENT ASSIGNMENT:
-- Audience lens: {audience.replace('_', ' ').title()}
-- Emotional arc: {emotion.replace('_', ' ').title()}
-- Setting: {location}
+INTERNAL STORY LENS (psychographic only — DO NOT paste these labels into the hook):
+- Buyer archetype: {persona_human}
+- Narrative arc: {arc_human}
+- Optional setting detail: {location}
 
-GENERATE A SOCIAL POST STORY with:
-1. **HOOK** (1 line, emoji): bold, founder-focused
-2. **STORY** (3-5 sentences): concrete problem → how the engine solves it; mention orchestration or outcomes
-3. **TRANSFORMATION** (2-3 sentences): what changes when marketing is engine-driven (measurement, deploy, compounding)
-4. **EMOTION** (1 line, emoji): shift from chaos to clarity
-5. **THEME** (1 word): e.g. "orchestration", "leverage", "pipeline"
+OUTPUT JSON keys: hook, story, transformation, emotion, theme, audience, emotional_state, location
 
-RULES:
-- Do NOT pretend to be the Spanish tutor product; this post sells the **marketing engine** and AIdeazz capabilities.
-- You may reference EspaLuz briefly as proof.
-- Under 220 words for story+transformation combined.
-- Output valid JSON: hook, story, transformation, emotion, theme, audience, emotional_state, location"""
+STRUCTURE:
+1. **HOOK** (1 line, emoji): Bold, **insight-led** (GEO/SEO angle or business truth) — no fake greetings, no "explorer" trope.
+2. **STORY** (4-7 sentences): Explain **SEO and GEO in plain, intelligent language** — what they are, how they differ, why businesses need **both**, and how hype fails without systems. Tie to **measurable** marketing, not vibes. You may reference the engine/agents/Oracle briefly as the implementation layer.
+3. **TRANSFORMATION** (2-4 sentences): What changes when GEO + SEO are **engineered** alongside agents (proof, compounding, attribution) — still anti-hype.
+4. **EMOTION** (1 line, emoji): clarity / conviction / relief — not "language breakthrough".
+5. **THEME** (1 word): e.g. discoverability, generative_search, pipeline
+6. **audience** = "{persona}"  (exactly this slug)
+7. **emotional_state** = "{arc_emotion}"  (exactly this slug)
+8. **location** = "{location}"
+
+STRICT RULES:
+- NEVER "¡Hola … explorer!" or learner-persona salutations (retiree, expat_parent, etc.).
+- Do NOT write a Spanish-tutor learner narrative. This is **B2B systems + search economics**.
+- Mention **EspaLuz** at most once, optional proof — **not** the main lesson.
+- **story + transformation** combined: **200–360 words** (depth required).
+- Output **valid JSON only** (no markdown fences)."""
 
     try:
         response = requests.post(
@@ -779,10 +852,10 @@ RULES:
             json={
                 "model": "llama-3.3-70b-versatile",
                 "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.85,
-                "max_tokens": 1200,
+                "temperature": 0.78,
+                "max_tokens": 1800,
             },
-            timeout=30,
+            timeout=45,
         )
         if response.status_code != 200:
             print(f"❌ Groq API error (marketing): {response.status_code}")
@@ -793,12 +866,12 @@ RULES:
         elif "```" in content:
             content = content.split("```")[1].split("```")[0]
         story_data = json.loads(content.strip())
-        story_data["audience"] = audience
-        story_data["emotional_state"] = emotion
+        story_data["audience"] = persona
+        story_data["emotional_state"] = arc_emotion
         story_data["location"] = location
         story_data["day_theme"] = day_theme["theme"]
         story_data["hashtag_boost"] = day_theme.get("hashtag_boost", "")
-        print(f"🧠 AI marketing-engine story: {audience} / {location}")
+        print(f"🧠 AI marketing-engine story: {persona} / {arc_emotion} / {location}")
         return story_data
     except Exception as e:
         print(f"❌ AI marketing generation error: {e}")
@@ -808,12 +881,38 @@ RULES:
 def self_review_marketing_story(story_data: Dict, memory: ContentMemory) -> Dict:
     if memory.check_similarity(story_data.get("story", "")):
         return {"approved": False, "reason": "similarity"}
-    if len(story_data.get("story", "")) < 80:
+    combined = (story_data.get("story", "") + " " + story_data.get("transformation", "")).strip()
+    if len(combined) < 200:
         return {"approved": False, "reason": "too_short"}
-    blob = (story_data.get("story", "") + story_data.get("transformation", "")).lower()
-    keywords = ("market", "engine", "ai", "brand", "content", "oracle", "autom", "client", "founder", "pipeline", "agent")
+    hook = (story_data.get("hook") or "").lower()
+    story_lower = (story_data.get("story") or "").lower()
+    # Block EspaLuz-learner salutation pattern leaked from old rotation
+    if "explorer" in hook and ("hola" in hook or "hello" in hook):
+        return {"approved": False, "reason": "forbidden_explorer_greeting"}
+    for bad in ("expat_parent", "retiree explorer", "expat parent explorer", "¡hola, retiree", "¡hola, expat"):
+        if bad in hook or bad in story_lower[:200]:
+            return {"approved": False, "reason": "learner_persona_leak"}
+    blob = combined.lower()
+    keywords = ("market", "engine", "ai", "brand", "content", "oracle", "autom", "client", "founder", "pipeline", "agent", "orchestr", "deploy", "growth")
     if sum(1 for k in keywords if k in blob) < 2:
         return {"approved": False, "reason": "missing_engine_keywords"}
+    geo_seo = (
+        "seo",
+        "geo",
+        "search engine",
+        "generative",
+        "serp",
+        "crawl",
+        "sitemap",
+        "discover",
+        "llm",
+        "answer engine",
+        "rank",
+        "citation",
+        "query",
+    )
+    if sum(1 for k in geo_seo if k in blob) < 2:
+        return {"approved": False, "reason": "missing_geo_seo_depth"}
     return {"approved": True, "reason": "passed"}
 
 
@@ -827,13 +926,13 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
     print("=" * 50)
 
     strategy = StrategicCalendar.get_today_strategy()
-    audience = IntelligentRotation.select_audience(memory.get_recent_audiences(), strategy["day_theme"])
-    emotion = IntelligentRotation.select_emotion(memory.get_recent_emotions(), strategy["day_theme"])
+    persona = MarketingEngineRotation.select_persona(memory)
+    arc_emotion = MarketingEngineRotation.select_arc(memory)
     location = IntelligentRotation.select_location(memory.get_recent_locations())
 
     story = None
     for attempt in range(3):
-        story = generate_ai_marketing_engine_story(strategy, audience, emotion, location, memory)
+        story = generate_ai_marketing_engine_story(strategy, persona, arc_emotion, location, memory)
         if story:
             review = self_review_marketing_story(story, memory)
             if review["approved"]:
@@ -859,9 +958,17 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
         {
             "title": "📈 CONTENT THAT COMPOUNDS",
             "points": [
-                "\n   ✅ SEO + sitemap pipelines (AIdeazz site)",
+                "\n   ✅ Crawlable site truth — sitemaps, structured pages, measurable SEO loops",
                 "\n   ✅ Resilience docs + health checks",
-                "\n   ✅ Case-study ready narrative (EspaLuz)",
+                "\n   ✅ Optional: case-study proof (e.g. EspaLuz) — not the whole story",
+            ],
+        },
+        {
+            "title": "🌍 GEO + 🔎 SEO — NOT HYPE",
+            "points": [
+                "\n   ✅ **SEO**: engineering + editorial discipline for **crawlers & SERPs** — what you sell, findable",
+                "\n   ✅ **GEO**: clear entities & proof for **LLMs / AI Overviews / answer engines** — citable, not spammy",
+                "\n   ✅ Together: two discovery rails; the engine ships **pipelines + evidence**, not buzzwords",
             ],
         },
     ]
@@ -874,7 +981,10 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
         ]
     )
     proof = "💡 *Built by Elena Revicheva & CTO AIPA — shipping on Oracle alongside EspaLuz.*"
-    hashtags = "#AIdeazz #AIMarketingEngine #BuildInPublic #MLOps #FounderTools " + strategy["day_theme"].get("hashtag_boost", "")
+    hashtags = (
+        "#AIdeazz #AIMarketingEngine #SEO #GEO #GenerativeSearch #BuildInPublic "
+        + strategy["day_theme"].get("hashtag_boost", "")
+    )
 
     video_url = random.choice(video_links)
     image_url = (
