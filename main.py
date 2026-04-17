@@ -98,7 +98,10 @@ class ContentMemory:
         try:
             if os.path.exists(self.filepath):
                 with open(self.filepath, 'r') as f:
-                    return json.load(f)
+                    data = json.load(f)
+                if "marketing_image_rotation_index" not in data:
+                    data["marketing_image_rotation_index"] = 0
+                return data
         except Exception as e:
             print(f"⚠️ Memory load error: {e}")
         
@@ -110,7 +113,8 @@ class ContentMemory:
             "locations_used": [],
             "weekly_stats": {},
             "total_posts": 0,
-            "created_at": datetime.now(PANAMA_TZ).isoformat()
+            "created_at": datetime.now(PANAMA_TZ).isoformat(),
+            "marketing_image_rotation_index": 0,
         }
     
     def _save(self):
@@ -168,7 +172,19 @@ class ContentMemory:
     def get_recent_locations(self, days: int = 7) -> List[str]:
         """Get locations used in recent days"""
         return self.memory["locations_used"][-days:]
-    
+
+    def next_marketing_engine_image_url(self, urls: List[str]) -> str:
+        """Round-robin through marketing PNGs (persistent) so the same asset is not repeated randomly."""
+        if not urls:
+            return ""
+        n = len(urls)
+        idx = int(self.memory.get("marketing_image_rotation_index", 0)) % n
+        chosen = urls[idx]
+        self.memory["marketing_image_rotation_index"] = (idx + 1) % n
+        self._save()
+        print(f"🖼️ Marketing image rotation: {idx + 1}/{n} → {chosen.rsplit('/', 1)[-1]}")
+        return chosen
+
     def get_weekly_summary(self) -> str:
         """Generate a weekly summary"""
         recent_posts = self.memory["posts"][-7:]
@@ -919,7 +935,8 @@ def self_review_marketing_story(story_data: Dict, memory: ContentMemory) -> Dict
 def generate_marketing_engine_content(image_url_override: Optional[str] = None):
     """Promo bundle for even calendar days — AI Marketing Engine narrative (Make webhook shape unchanged).
 
-    If ``image_url_override`` is set (e.g. when firing one post per asset), that URL is used instead of random.
+    If ``image_url_override`` is set (e.g. when firing one post per asset), that URL is used and rotation is not advanced.
+    Otherwise images **round-robin** through all ``marketing_engine_image_urls`` (persisted in memory).
     """
     print("=" * 50)
     print("🎯 AI MARKETING ENGINE CAMPAIGN — Generating Content")
@@ -990,7 +1007,7 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
     image_url = (
         image_url_override
         if image_url_override
-        else random.choice(marketing_engine_image_urls)
+        else memory.next_marketing_engine_image_url(marketing_engine_image_urls)
     )
 
     promo = f"""{story['hook']} 🚨
