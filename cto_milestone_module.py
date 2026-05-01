@@ -226,9 +226,12 @@ def fetch_and_generate_milestone_story(marketing_engine_image_urls: list) -> Opt
         # 3. Generate caption
         caption = _groq_generate(milestone, frame) or _fallback_caption(milestone, frame)
 
-        # 4. Pick image — rotate through marketing engine images
+        # 4. Pick image — CTO milestone posts use sprinter.jpg; fall back to marketing engine pool
+        MILESTONE_IMAGE = "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/sprinter.jpg"
         import random
-        image_url = random.choice(marketing_engine_image_urls) if marketing_engine_image_urls else ""
+        image_url = MILESTONE_IMAGE if MILESTONE_IMAGE else (
+            random.choice(marketing_engine_image_urls) if marketing_engine_image_urls else ""
+        )
 
         # 5. Build story dict (same shape as existing generators)
         story = {
