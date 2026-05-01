@@ -22,6 +22,16 @@ import os
 import random
 from dotenv import load_dotenv
 
+# CTO AIPA collaboration — additive, safe import (won't break if module missing)
+try:
+    from cto_milestone_module import fetch_and_generate_milestone_story, mark_milestone_posted
+    _CTO_MODULE_OK = True
+except Exception as _cto_err:
+    _CTO_MODULE_OK = False
+    fetch_and_generate_milestone_story = None
+    mark_milestone_posted = None
+    print(f"⚠️ [CTO-Milestone] Module not available: {_cto_err}")
+
 # Load environment variables from .env file
 load_dotenv()
 import time
@@ -1148,7 +1158,24 @@ def fire_two_marketing_image_posts() -> None:
 def send_automated_daily_promo():
     """Automated daily promo with full intelligence"""
     try:
-        promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
+        # ── CTO AIPA milestone (additive — only on even days, safe fallback) ──
+        now = datetime.now(PANAMA_TZ)
+        _milestone_result = None
+        if _CTO_MODULE_OK and fetch_and_generate_milestone_story and now.day % 2 == 0:
+            try:
+                _milestone_result = fetch_and_generate_milestone_story(marketing_engine_image_urls)
+            except Exception as _me:
+                print(f"⚠️ [CTO-Milestone] fetch failed (non-critical): {_me}")
+
+        if _milestone_result:
+            promo = _milestone_result["promo"]
+            story = _milestone_result["story"]
+            video_url = _milestone_result["video_url"]
+            image_url = _milestone_result["image_url"]
+            campaign_type = _milestone_result["campaign_type"]
+            print(f"🤖 [CTO-Milestone] Using milestone: {story.get('milestone_title','')[:50]}")
+        else:
+            promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
         
         # Channel: photo + caption so image appears (EspaLuz + marketing engine days)
         send_channel_promo_with_image(promo, image_url)
@@ -1187,7 +1214,14 @@ def send_automated_daily_promo():
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print(f"📤 Sent to Make.com webhook ({campaign_type}). Response: {response.status_code}")
-        
+
+        # Mark CTO milestone as posted if one was used (non-critical)
+        if _milestone_result and response.status_code in (200, 201) and _CTO_MODULE_OK and mark_milestone_posted:
+            try:
+                mark_milestone_posted(_milestone_result["milestone"])
+            except Exception as _mark_err:
+                print(f"⚠️ [CTO-Milestone] mark failed (non-critical): {_mark_err}")
+
     except Exception as e:
         print(f"❌ Error in automated promo: {e}")
 
