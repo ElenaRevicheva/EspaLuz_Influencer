@@ -55,6 +55,10 @@ bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 MAKE_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4uadkmi9"
 EMOTIONAL_AI_WEBHOOK_URL = MAKE_WEBHOOK_URL
 
+# CTO AIPA CRM hub (HubSpot pipeline signal)
+_CRM_HUB_URL = "http://127.0.0.1:8080/api/crm-event"
+_CRM_AUTH = "Bearer 59ab31e15e29ea12f003eb3b621fb911419bc1aff2ba3296"
+
 # AI Configuration
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
@@ -1214,6 +1218,26 @@ def send_automated_daily_promo():
         }
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print(f"📤 Sent to Make.com webhook ({campaign_type}). Response: {response.status_code}")
+
+        # CRM signal: push daily content activity to HubSpot (non-blocking)
+        try:
+            today_str = datetime.now(PANAMA_TZ).strftime("%Y-%m-%d")
+            if campaign_type == "espaluz":
+                crm_name = f"[ESPALUZ] Influencer post — {today_str}"
+                crm_context = f"EspaLuz Spanish-learning content posted to @EspaLuz channel. Hook: {story.get('hook','')[:80]}"
+            else:
+                crm_name = f"[CLIENT] AIdeazz tech content — {today_str}"
+                crm_context = f"AI Marketing Engine story posted. Hook: {story.get('hook','')[:80]}"
+            crm_resp = requests.post(
+                _CRM_HUB_URL,
+                json={"source": "espaluz_influencer", "type": "engagement", "pipeline": "client",
+                      "name": crm_name, "context": crm_context, "stage": "prospected"},
+                headers={"Authorization": _CRM_AUTH, "Content-Type": "application/json"},
+                timeout=8,
+            )
+            print(f"📊 CRM signal sent ({campaign_type}). Status: {crm_resp.status_code}")
+        except Exception as _crm_err:
+            print(f"⚠️ [Influencer] CRM push non-fatal: {_crm_err}")
 
         # Mark CTO milestone as posted if one was used (non-critical)
         if _milestone_result and response.status_code in (200, 201) and _CTO_MODULE_OK and mark_milestone_posted:
