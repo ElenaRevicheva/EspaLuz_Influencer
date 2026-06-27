@@ -46,6 +46,7 @@ import requests
 import schedule
 import json
 import hashlib
+import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 import pytz
@@ -74,6 +75,74 @@ MEMORY_FILE = "content_memory.json"
 PANAMA_TZ = pytz.timezone('America/Panama')
 # Even-day slots: marketing-engine image rotation is primary; milestone max once per N days.
 MILESTONE_MIN_DAYS_BETWEEN = int(os.getenv("MILESTONE_MIN_DAYS_BETWEEN", "7"))
+PORTFOLIO_URL = "https://aideazz.xyz/portfolio"
+
+
+def sanitize_social_post(text: str) -> str:
+    """LinkedIn/Instagram show markdown literally — strip **/* and normalize hub URL."""
+    if not text:
+        return text
+    text = text.replace("**", "").replace("*", "")
+    text = re.sub(r"https://aideazz\.xyz(?=/portfolio\b)", "https://aideazz.xyz/portfolio", text)
+    text = text.replace("https://aideazz.xyz", PORTFOLIO_URL)
+    return text
+
+
+def build_make_webhook_payload(
+    promo: str,
+    story: Dict,
+    video_url: str,
+    image_url: str,
+    campaign_type: str,
+    *,
+    automated: bool = True,
+    **extra: Any,
+) -> Dict[str, Any]:
+    """Make.com payload — marketing/milestone posts use plain text (no EspaLuz explorer wrapper)."""
+    clean = sanitize_social_post(promo)
+    plain = campaign_type in ("marketing_engine", "cto_milestone")
+    content_type = (
+        "ai_cofounder_v3" if campaign_type == "espaluz" else "marketing_engine_v3"
+    )
+    if campaign_type == "cto_milestone":
+        content_type = "marketing_engine_v3"
+    payload: Dict[str, Any] = {
+        "text": clean,
+        "linkedinBody": clean,
+        "plainSocialPost": plain,
+        "videoURL": video_url,
+        "imageURL": image_url,
+        "videoTitle": (
+            f"EspaLuz Success Story: {story['emotion']}"
+            if campaign_type == "espaluz"
+            else f"AI Marketing Engine: {story.get('emotion', 'insight')}"
+        ),
+        "videoDescription": sanitize_social_post(story.get("story", "")[:200] + "..."),
+        "automated": automated,
+        "timestamp": datetime.now(PANAMA_TZ).isoformat(),
+        "hook": sanitize_social_post(story.get("hook", "")),
+        "story": sanitize_social_post(story.get("story", "")),
+        "emotion": story.get("emotion", ""),
+        "transformation": sanitize_social_post(story.get("transformation", "")),
+        "cta": random.choice(cta_options),
+        "hashtags": " ".join(random.choice(hashtag_sets)),
+        "socialProof": random.choice(social_proof),
+        "audience": (
+            "general_professional"
+            if plain
+            else story.get("audience", "general_learner")
+        ),
+        "emotional_state": story.get("emotional_state", "general"),
+        "location": story.get("location", "unknown"),
+        "day_theme": story.get("day_theme", "general"),
+        "content_type": content_type,
+        "campaign_type": campaign_type,
+        "ai_powered": True,
+        "has_memory": True,
+        "strategic_calendar": True,
+    }
+    payload.update(extra)
+    return payload
 
 # ============================================
 # MEDIA ASSETS
@@ -882,9 +951,9 @@ def should_post_cto_milestone_today(now: datetime, mem: ContentMemory) -> bool:
 MARKETING_ENGINE_FALLBACK = [
     {
         "hook": "📐 Discovery split in two: classic search still matters — generative answers are now a second front door",
-        "story": "**SEO** (search engine optimization) is the disciplined work of making your site *machine-readable and trustworthy* for crawlers: structure, sitemaps, canonical pages, helpful content, and technical health — so Google and others can rank what you actually sell. **GEO** (generative engine optimization) is the newer discipline of making your *facts, offers, and proof* easy for large language models and answer engines to retrieve and cite when users ask in ChatGPT, Copilot, Perplexity, or AI Overviews — not keyword spam, but clear entities, comparisons, and attributable truth. Neither is magic; both are **distribution mechanics**. Hype treats them as silver bullets; serious teams treat them as **measurable pipelines** tied to product reality — which is exactly what the AI Marketing Engine encodes alongside agents and Oracle deploys.",
-        "transformation": "When GEO + SEO live in the same engine as your agents and your roadmap, you stop chasing trends and start owning **two rails of discoverability** — traditional SERPs and generative surfaces — with evidence, not vibes.",
-        "emotion": "⚡ Proof beats hype when **search and answers** both work",
+        "story": "SEO (search engine optimization) is the disciplined work of making your site machine-readable and trustworthy for crawlers: structure, sitemaps, canonical pages, helpful content, and technical health — so Google and others can rank what you actually sell. GEO (generative engine optimization) is the newer discipline of making your facts, offers, and proof easy for large language models and answer engines to retrieve and cite when users ask in ChatGPT, Copilot, Perplexity, or AI Overviews — not keyword spam, but clear entities, comparisons, and attributable truth. Neither is magic; both are distribution mechanics. Hype treats them as silver bullets; serious teams treat them as measurable pipelines tied to product reality — which is exactly what the AI Marketing Engine encodes alongside agents and Oracle deploys.",
+        "transformation": "When GEO + SEO live in the same engine as your agents and your roadmap, you stop chasing trends and start owning two rails of discoverability — traditional SERPs and generative surfaces — with evidence, not vibes.",
+        "emotion": "⚡ Proof beats hype when search and answers both work",
         "theme": "marketing_engine",
         "audience": "startup_founder",
         "emotional_state": "clarity",
@@ -931,7 +1000,7 @@ CORE EDUCATION (weave in clearly — this post must sound **substantive**, not b
 
 • **Why this is NOT hype** — Hype promises magic from a single prompt. Real GEO + SEO tie **product truth → structured signals → measurement** (what ranks, what gets cited, what converts). The AI Marketing Engine treats them as **deployed assets and docs**, not slide filler.
 
-CTAs when natural: https://aideazz.xyz and the public roadmap (repo **AIPA_AITCF** on GitHub).
+CTAs when natural: https://aideazz.xyz/portfolio and the public roadmap (repo AIPA_AITCF on GitHub).
 
 TODAY:
 - Date: {current_date} ({strategy['day_of_week']})
@@ -959,7 +1028,7 @@ STRICT RULES:
 - Do NOT write a Spanish-tutor learner narrative. This is **B2B systems + search economics**.
 - Mention **EspaLuz** at most once, optional proof — **not** the main lesson.
 - **story + transformation** combined: **200–360 words** (depth required).
-- Output **valid JSON only** (no markdown fences)."""
+- Output valid JSON only (no markdown fences). No asterisk bold/italic in hook, story, or transformation — plain text only for social."""
 
     try:
         response = requests.post(
@@ -1098,21 +1167,21 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
         {
             "title": "🌍 GEO + 🔎 SEO — NOT HYPE",
             "points": [
-                "\n   ✅ **SEO**: engineering + editorial discipline for **crawlers & SERPs** — what you sell, findable",
-                "\n   ✅ **GEO**: clear entities & proof for **LLMs / AI Overviews / answer engines** — citable, not spammy",
-                "\n   ✅ Together: two discovery rails; the engine ships **pipelines + evidence**, not buzzwords",
+                "\n   ✅ SEO: engineering + editorial discipline for crawlers & SERPs — what you sell, findable",
+                "\n   ✅ GEO: clear entities & proof for LLMs / AI Overviews / answer engines — citable, not spammy",
+                "\n   ✅ Together: two discovery rails; the engine ships pipelines + evidence, not buzzwords",
             ],
         },
     ]
     benefits = random.sample(me_benefits, 2)
     cta = random.choice(
         [
-            "👉 See the stack → https://aideazz.xyz",
-            "📎 Roadmap & engine docs → GitHub **AIPA_AITCF** (AI Marketing Engine full roadmap)",
-            "🌐 AIdeazz hub → https://aideazz.xyz",
+            "👉 See the stack → https://aideazz.xyz/portfolio",
+            "📎 Roadmap & engine docs → GitHub AIPA_AITCF (AI Marketing Engine full roadmap)",
+            "🌐 Portfolio & live agents → https://aideazz.xyz/portfolio",
         ]
     )
-    proof = "💡 *Built by Elena Revicheva & CTO AIPA — shipping on Oracle alongside EspaLuz.*"
+    proof = "💡 Built by Elena Revicheva & CTO AIPA — shipping on Oracle alongside EspaLuz."
     hashtags = (
         "#AIdeazz #AIMarketingEngine #SEO #GEO #GenerativeSearch #BuildInPublic "
         + strategy["day_theme"].get("hashtag_boost", "")
@@ -1124,7 +1193,7 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
 
 {story['transformation']}
 
-{story['emotion']} — That's the **AI Marketing Engine** difference. ✨
+{story['emotion']} — That's the AI Marketing Engine difference. ✨
 
 ━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -1146,7 +1215,7 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
 
 {hashtags}
 
-🔗 *EspaLuz (live product):* https://wa.me/50766623757 — try the tutor; this post is about the **engine** behind the brand."""
+🔗 EspaLuz (live product): https://wa.me/50766623757 — try the tutor; this post is about the engine behind the brand."""
 
     print("✅ Marketing engine content generated!")
     print("=" * 50)
@@ -1173,6 +1242,7 @@ def _local_repo_image_path(image_url: str) -> Optional[str]:
 
 def send_channel_promo_with_image(promo: str, image_url: str) -> None:
     """Post to @EspaLuz with the image visible (photo + caption). Continuation message if caption exceeds 1024 chars."""
+    promo = sanitize_social_post(promo)
     local = _local_repo_image_path(image_url)
     cap = promo[:1024] if len(promo) > 1024 else promo
     if local:
@@ -1279,41 +1349,14 @@ def send_automated_daily_promo():
         else:
             promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
         
+        promo = sanitize_social_post(promo)
         # Channel: photo + caption so image appears (EspaLuz + marketing engine days)
         send_channel_promo_with_image(promo, image_url)
         print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}, photo+caption).")
         
-        # Send to Make.com webhook
-        content_type = "ai_cofounder_v3" if campaign_type == "espaluz" else "marketing_engine_v3"
-        payload = {
-            "text": promo,
-            "videoURL": video_url,
-            "imageURL": image_url,
-            "videoTitle": (
-                f"EspaLuz Success Story: {story['emotion']}"
-                if campaign_type == "espaluz"
-                else f"AI Marketing Engine: {story['emotion']}"
-            ),
-            "videoDescription": story['story'][:200] + "...",
-            "automated": True,
-            "timestamp": datetime.now(PANAMA_TZ).isoformat(),
-            "hook": story['hook'],
-            "story": story['story'],
-            "emotion": story['emotion'],
-            "transformation": story['transformation'],
-            "cta": random.choice(cta_options),
-            "hashtags": " ".join(random.choice(hashtag_sets)),
-            "socialProof": random.choice(social_proof),
-            "audience": story.get('audience', 'general_learner'),
-            "emotional_state": story.get('emotional_state', 'general'),
-            "location": story.get('location', 'unknown'),
-            "day_theme": story.get('day_theme', 'general'),
-            "content_type": content_type,
-            "campaign_type": campaign_type,
-            "ai_powered": True,
-            "has_memory": True,
-            "strategic_calendar": True
-        }
+        payload = build_make_webhook_payload(
+            promo, story, video_url, image_url, campaign_type, automated=True
+        )
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print(f"📤 Sent to Make.com webhook ({campaign_type}). Response: {response.status_code}")
 
@@ -1360,28 +1403,15 @@ def send_daily_promo(message):
     print("📣 /daily_promo triggered manually...")
     
     promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
+    promo = sanitize_social_post(promo)
     bot.reply_to(message, promo)
     send_channel_promo_with_image(promo, image_url)
     print(f"✅ Manual promo sent ({campaign_type}, photo+caption).")
 
     try:
-        content_type = "ai_cofounder_v3" if campaign_type == "espaluz" else "marketing_engine_v3"
-        payload = {
-            "text": promo,
-            "videoURL": video_url,
-            "imageURL": image_url,
-            "hook": story['hook'],
-            "story": story['story'],
-            "emotion": story['emotion'],
-            "transformation": story['transformation'],
-            "audience": story.get('audience', 'general'),
-            "emotional_state": story.get('emotional_state', 'general'),
-            "location": story.get('location', 'unknown'),
-            "ai_powered": True,
-            "has_memory": True,
-            "content_type": content_type,
-            "campaign_type": campaign_type,
-        }
+        payload = build_make_webhook_payload(
+            promo, story, video_url, image_url, campaign_type, automated=False
+        )
         response = requests.post(MAKE_WEBHOOK_URL, json=payload)
         print("📤 Sent to Make.com webhook. Response:", response.status_code)
     except Exception as e:

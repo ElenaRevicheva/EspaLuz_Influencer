@@ -17,7 +17,13 @@ function formatAudienceName(audience) {
     'retiree': 'fellow adventurer',
     'teacher': 'fellow educator',
     'immigrant': 'fellow newcomer',
-    'general_learner': 'language learner'
+    'general_learner': 'language learner',
+    'startup_founder': 'founder',
+    'agency_lead': 'agency leader',
+    'product_engineer': 'product engineer',
+    'growth_marketer': 'growth marketer',
+    'technical_cofounder': 'technical co-founder',
+    'general_professional': 'founder or builder'
   };
   return audienceNames[audience] || 'amazing human';
 }
@@ -341,6 +347,38 @@ const rawHashtags = inputData.hashtags || "";
 const videoURL = inputData.videoURL || "https://youtube.com/shorts/4l9B4Rc1SxY";
 const imageURL = inputData.imageURL || "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg";
 const audience = inputData.audience || "general_learner";
+const campaignType = inputData.campaign_type || "";
+const plainSocialPost = inputData.plainSocialPost === true
+  || campaignType === "marketing_engine"
+  || campaignType === "cto_milestone";
+
+// Marketing Engine / milestone: use bot text as-is (no EspaLuz explorer greeting, no **)
+if (plainSocialPost) {
+  const plain = (inputData.linkedinBody || inputData.text || "").trim();
+  const plainHook = (inputData.hook || plain.split("\n")[0] || "").trim();
+  output = {
+    originalStory: plain,
+    originalEmotion: rawEmotion,
+    videoURL: videoURL,
+    imageURL: imageURL,
+    detectedEmotion: "general",
+    lifeContext: "professional",
+    culturalContext: "latam_general",
+    optimalDelay: 0,
+    friendlyAudience: "founders and technical leaders",
+    instagramContent: plain.slice(0, 2200),
+    linkedinTitle: plainHook.slice(0, 200),
+    linkedinBody: plain.slice(0, 2950),
+    tiktokContent: plain.slice(0, 145),
+    youtubeTitle: plainHook.slice(0, 95),
+    youtubeDescription: plain.slice(0, 4900),
+    twitterContent: plain.slice(0, 270),
+    facebookContent: plain.slice(0, 2200),
+    mediaStrategy: { linkedin: imageURL, instagram: imageURL, twitter: imageURL },
+    plainSocialPost: true,
+    campaign_type: campaignType
+  };
+} else {
 
 // Format audience for display
 const friendlyAudience = formatAudienceName(audience);
@@ -512,3 +550,4 @@ output = {
   communityMessage: contextMsg.community,
   culturalGreeting: culturalMsg.greeting
 };
+}

@@ -21,9 +21,7 @@ import random
 import requests
 from datetime import datetime
 
-import main  # noqa: E402
-
-# First new agent card — override only; scheduled even-day rotation stays at current index.
+import main  # noqa: E402 — override only; scheduled even-day rotation stays at current index.
 ME_IMAGE = (
     "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/"
     "marketing_engine_images/me_01.jpg"
@@ -39,32 +37,15 @@ def fire_one_marketing_image_post() -> None:
     main.send_channel_promo_with_image(promo, image_url)
     print(f"✅ Telegram photo+caption sent ({asset}).")
 
-    payload = {
-        "text": promo,
-        "videoURL": video_url,
-        "imageURL": image_url,
-        "videoTitle": f"AI Marketing Engine: {story['emotion']}",
-        "videoDescription": story["story"][:200] + "...",
-        "automated": False,
-        "manual_marketing_image_post": True,
-        "timestamp": datetime.now(main.PANAMA_TZ).isoformat(),
-        "hook": story["hook"],
-        "story": story["story"],
-        "emotion": story["emotion"],
-        "transformation": story["transformation"],
-        "cta": random.choice(main.cta_options),
-        "hashtags": " ".join(random.choice(main.hashtag_sets)),
-        "socialProof": random.choice(main.social_proof),
-        "audience": story.get("audience", "startup_founder"),
-        "emotional_state": story.get("emotional_state", "general"),
-        "location": story.get("location", "unknown"),
-        "day_theme": story.get("day_theme", "general"),
-        "content_type": "marketing_engine_v3",
-        "campaign_type": "marketing_engine",
-        "ai_powered": True,
-        "has_memory": True,
-        "strategic_calendar": True,
-    }
+    payload = main.build_make_webhook_payload(
+        promo,
+        story,
+        video_url,
+        image_url,
+        "marketing_engine",
+        automated=False,
+        manual_marketing_image_post=True,
+    )
     resp = requests.post(main.MAKE_WEBHOOK_URL, json=payload, timeout=30)
     print(f"📤 Make.com webhook (marketing_engine, {asset}). Response: {resp.status_code}")
     idx = main.memory.memory.get("marketing_image_rotation_index")
