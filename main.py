@@ -109,6 +109,7 @@ def build_make_webhook_payload(
     payload: Dict[str, Any] = {
         "text": clean,
         "linkedinBody": clean,
+        "bufferPostText": clean,
         "plainSocialPost": plain,
         "videoURL": video_url,
         "imageURL": image_url,
