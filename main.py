@@ -32,6 +32,12 @@ except Exception as _cto_err:
     mark_milestone_posted = None
     print(f"⚠️ [CTO-Milestone] Module not available: {_cto_err}")
 
+try:
+    from marketing_engine_image_meta import focus_for_image_url
+except Exception as _meta_err:
+    focus_for_image_url = None  # type: ignore
+    print(f"⚠️ [Marketing-Images] Meta module not available: {_meta_err}")
+
 # Load environment variables from .env file
 load_dotenv()
 import time
@@ -66,6 +72,8 @@ GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 # Memory file
 MEMORY_FILE = "content_memory.json"
 PANAMA_TZ = pytz.timezone('America/Panama')
+# Even-day slots: marketing-engine image rotation is primary; milestone max once per N days.
+MILESTONE_MIN_DAYS_BETWEEN = int(os.getenv("MILESTONE_MIN_DAYS_BETWEEN", "7"))
 
 # ============================================
 # MEDIA ASSETS
@@ -232,6 +240,25 @@ class ContentMemory:
         self._save()
         print(f"🖼️ Marketing image rotation: {idx + 1}/{n} → {chosen.rsplit('/', 1)[-1]}")
         return chosen
+
+    def record_milestone_influencer_post(self, when: Optional[datetime] = None) -> None:
+        """Track last CTO milestone on @EspaLuz so even days can rotate me_* images."""
+        ts = (when or datetime.now(PANAMA_TZ)).isoformat()
+        self.memory["last_milestone_influencer_post"] = ts
+        self._save()
+
+    def days_since_last_milestone_influencer_post(self, now: Optional[datetime] = None) -> Optional[int]:
+        last = self.memory.get("last_milestone_influencer_post")
+        if not last:
+            return None
+        try:
+            ref = now or datetime.now(PANAMA_TZ)
+            last_dt = datetime.fromisoformat(last)
+            if last_dt.tzinfo is None:
+                last_dt = PANAMA_TZ.localize(last_dt)
+            return (ref.astimezone(PANAMA_TZ) - last_dt.astimezone(PANAMA_TZ)).days
+        except Exception:
+            return None
 
     def get_weekly_summary(self) -> str:
         """Generate a weekly summary"""
@@ -834,6 +861,24 @@ def get_campaign_type_for_date(dt: datetime) -> str:
     return "espaluz" if dt.day % 2 == 1 else "marketing_engine"
 
 
+def should_post_cto_milestone_today(now: datetime, mem: ContentMemory) -> bool:
+    """Even days: prefer marketing-engine image rotation; milestone at most once per week."""
+    if now.tzinfo is None:
+        now = PANAMA_TZ.localize(now)
+    else:
+        now = now.astimezone(PANAMA_TZ)
+    if now.day % 2 != 0:
+        return False
+    since = mem.days_since_last_milestone_influencer_post(now)
+    if since is not None and since < MILESTONE_MIN_DAYS_BETWEEN:
+        print(
+            f"⏭️ [CTO-Milestone] Skipped ({since}d since last; min {MILESTONE_MIN_DAYS_BETWEEN}d) "
+            "— marketing engine + image rotation runs instead."
+        )
+        return False
+    return True
+
+
 MARKETING_ENGINE_FALLBACK = [
     {
         "hook": "📐 Discovery split in two: classic search still matters — generative answers are now a second front door",
@@ -854,12 +899,22 @@ def generate_ai_marketing_engine_story(
     arc_emotion: str,
     location: str,
     memory: ContentMemory,
+    image_focus: Optional[Dict[str, Any]] = None,
 ) -> Optional[Dict]:
     """Groq-generated story for the AI Marketing Engine / AIdeazz narrative (B2B — not EspaLuz learner copy)."""
     current_date = strategy["date"]
     day_theme = strategy["day_theme"]
     persona_human = persona.replace("_", " ")
     arc_human = arc_emotion.replace("_", " ")
+
+    visual_block = ""
+    if image_focus:
+        visual_block = f"""
+TODAY'S PROMO VISUAL (must align copy with this card — name it in the hook or first sentence):
+- Asset: {image_focus.get('asset', 'marketing_engine')}
+- Spotlight: {image_focus.get('label', 'AI Marketing Engine')}
+- Angle: {image_focus.get('focus', '')}
+"""
 
     prompt = f"""You are the marketing voice for **AIdeazz** — the **AI Marketing Engine**: multi-agent orchestration (CTO AIPA, domain bots), **GEO + SEO as measurable pipelines**, Oracle deployment, resilience/ops docs, and Make.com for social distribution.
 
@@ -881,7 +936,7 @@ CTAs when natural: https://aideazz.xyz and the public roadmap (repo **AIPA_AITCF
 TODAY:
 - Date: {current_date} ({strategy['day_of_week']})
 - Calendar theme: {day_theme['theme'].upper()} — {day_theme['focus']}
-
+{visual_block}
 INTERNAL STORY LENS (psychographic only — DO NOT paste these labels into the hook):
 - Buyer archetype: {persona_human}
 - Narrative arc: {arc_human}
@@ -995,9 +1050,21 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
     arc_emotion = MarketingEngineRotation.select_arc(memory)
     location = IntelligentRotation.select_location(memory.get_recent_locations())
 
+    video_url = random.choice(video_links)
+    image_url = (
+        image_url_override
+        if image_url_override
+        else memory.next_marketing_engine_image_url(marketing_engine_image_urls)
+    )
+    image_focus = focus_for_image_url(image_url) if focus_for_image_url else None
+    if image_focus:
+        print(f"🎯 Image focus: {image_focus.get('label')} ({image_focus.get('asset')})")
+
     story = None
     for attempt in range(3):
-        story = generate_ai_marketing_engine_story(strategy, persona, arc_emotion, location, memory)
+        story = generate_ai_marketing_engine_story(
+            strategy, persona, arc_emotion, location, memory, image_focus=image_focus
+        )
         if story:
             review = self_review_marketing_story(story, memory)
             if review["approved"]:
@@ -1049,13 +1116,6 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
     hashtags = (
         "#AIdeazz #AIMarketingEngine #SEO #GEO #GenerativeSearch #BuildInPublic "
         + strategy["day_theme"].get("hashtag_boost", "")
-    )
-
-    video_url = random.choice(video_links)
-    image_url = (
-        image_url_override
-        if image_url_override
-        else memory.next_marketing_engine_image_url(marketing_engine_image_urls)
     )
 
     promo = f"""{story['hook']} 🚨
@@ -1199,7 +1259,11 @@ def send_automated_daily_promo():
         # ── CTO AIPA milestone (additive — only on even days, safe fallback) ──
         now = datetime.now(PANAMA_TZ)
         _milestone_result = None
-        if _CTO_MODULE_OK and fetch_and_generate_milestone_story and now.day % 2 == 0:
+        if (
+            _CTO_MODULE_OK
+            and fetch_and_generate_milestone_story
+            and should_post_cto_milestone_today(now, memory)
+        ):
             try:
                 _milestone_result = fetch_and_generate_milestone_story(marketing_engine_image_urls)
             except Exception as _me:
@@ -1274,11 +1338,13 @@ def send_automated_daily_promo():
             print(f"⚠️ [Influencer] CRM push non-fatal: {_crm_err}")
 
         # Mark CTO milestone as posted if one was used (non-critical)
-        if _milestone_result and response.status_code in (200, 201) and _CTO_MODULE_OK and mark_milestone_posted:
-            try:
-                mark_milestone_posted(_milestone_result["milestone"])
-            except Exception as _mark_err:
-                print(f"⚠️ [CTO-Milestone] mark failed (non-critical): {_mark_err}")
+        if _milestone_result and response.status_code in (200, 201):
+            memory.record_milestone_influencer_post(now)
+            if _CTO_MODULE_OK and mark_milestone_posted:
+                try:
+                    mark_milestone_posted(_milestone_result["milestone"])
+                except Exception as _mark_err:
+                    print(f"⚠️ [CTO-Milestone] mark failed (non-critical): {_mark_err}")
 
     except Exception as e:
         print(f"❌ Error in automated promo: {e}")
