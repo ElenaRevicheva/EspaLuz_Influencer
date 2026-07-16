@@ -62,8 +62,10 @@ bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 MAKE_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4uadkmi9"
 EMOTIONAL_AI_WEBHOOK_URL = MAKE_WEBHOOK_URL
 
-# CTO AIPA CRM hub (HubSpot pipeline signal)
-_CRM_HUB_URL = "http://127.0.0.1:8080/api/crm-event"
+# CTO AIPA CRM hub (HubSpot pipeline signal). Found July 16 2026: this pointed at :8080
+# (VJH's web port) instead of cto-aipa's actual port -- every daily push 404'd silently
+# for at least 14 days straight (evidence: "CRM signal sent ... Status: 404" every night).
+_CRM_HUB_URL = "http://127.0.0.1:3000/api/crm-event"
 _CRM_AUTH = "Bearer 59ab31e15e29ea12f003eb3b621fb911419bc1aff2ba3296"
 
 # AI Configuration
