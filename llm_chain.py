@@ -29,6 +29,7 @@ real post at the real budget.
 """
 import json
 import os
+import urllib.error
 import urllib.request
 from typing import Iterable, List, Tuple
 
@@ -81,18 +82,44 @@ def call_provider(provider: str, system: str | None, prompt: str, max_tokens: in
     model = _model(provider)
 
     if provider == "gemini":
-        body: dict = {
-            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-            "generationConfig": {"maxOutputTokens": max_tokens, "temperature": 0.7},
-        }
-        if system:
-            body["systemInstruction"] = {"parts": [{"text": system}]}
-        url = (f"https://generativelanguage.googleapis.com/v1beta/models/{model}"
-               f":generateContent?key={key}")
-        data = _post(url, {}, body)
-        cands = data.get("candidates") or [{}]
-        parts = (cands[0].get("content") or {}).get("parts") or [{}]
-        return parts[0].get("text") or ""
+        # thinkingBudget:0 is REQUIRED here, and it is also the thing that breaks
+        # plain models — so try it, then retry without.
+        #
+        # gemini-2.5-flash is a REASONING model. Without this it spends the token
+        # budget thinking privately and returns a post truncated mid-sentence:
+        #     "...our new AI tutor! Familias de"
+        # 85 characters out of a 500-token budget, cut off in the middle of the
+        # Spanish half. Caught by eval_llm_chain.py's "no Spanish detected" check,
+        # which is exactly what a fitness test is for — the reply was non-empty,
+        # so a naive "did it answer?" test would have passed it.
+        #
+        # But a PLAIN model (gemini-3.5-flash-lite) has no thinking to disable and
+        # answers 400 INVALID_ARGUMENT. Rather than maintain a list of which
+        # models are plain — it would rot at the next release — ask the API.
+        def _gemini_call(with_thinking: bool) -> str:
+            body: dict = {
+                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "maxOutputTokens": max_tokens,
+                    "temperature": 0.7,
+                    **({"thinkingConfig": {"thinkingBudget": 0}} if with_thinking else {}),
+                },
+            }
+            if system:
+                body["systemInstruction"] = {"parts": [{"text": system}]}
+            url = (f"https://generativelanguage.googleapis.com/v1beta/models/{model}"
+                   f":generateContent?key={key}")
+            data = _post(url, {}, body)
+            cands = data.get("candidates") or [{}]
+            parts = (cands[0].get("content") or {}).get("parts") or [{}]
+            return parts[0].get("text") or ""
+
+        try:
+            return _gemini_call(True)
+        except urllib.error.HTTPError as e:
+            if e.code != 400:
+                raise
+            return _gemini_call(False)
 
     if provider == "claude":
         body = {"model": model, "max_tokens": max_tokens,
