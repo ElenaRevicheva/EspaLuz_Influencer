@@ -39,7 +39,11 @@ X_UPDATES_SECRET = os.environ.get("X_UPDATES_SECRET", "")
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = "llama-3.3-70b-versatile"
+# Models are rented, not owned. Groq retired llama-3.3-70b-versatile on
+# 2026-08-16, so the id lives in an env var and the default is only a fallback:
+# the next retirement is one variable on Oracle, not a code change and a deploy.
+# Same GROQ_MODEL switch as cto-aipa, VibeJobHunter and EspaLuzFamilybot.
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "").strip() or "openai/gpt-oss-120b"
 
 PORTFOLIO_URL = "https://aideazz.xyz/portfolio"
 
@@ -159,29 +163,22 @@ WRITE AN INSTAGRAM CAPTION:
 
 Generate the caption now:"""
 
-    payload = json.dumps({
-        "model": GROQ_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.75,
-        "max_tokens": 500,
-    }).encode()
+    # Five providers, not one (Aug 16 2026).
+    #
+    # This was a single hard-wired Groq call. Groq retired llama-3.3-70b that
+    # day, and a one-provider content bot fails SILENTLY: no caption, no post,
+    # and "no post today" looks exactly like "quiet day". The bulk chain tries
+    # gemini → groq → openai → grok → claude, free first because nobody is
+    # waiting on a scheduled post.
+    from llm_chain import PROFILE_BULK, complete
 
-    req = urllib.request.Request(
-        GROQ_API_URL,
-        data=payload,
-        headers={
-            "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            data = json.loads(resp.read())
-            return data["choices"][0]["message"]["content"].strip()
-    except Exception as e:
-        logger.warning(f"[CTO-Milestone] Groq generation failed: {e}")
-        return None
+    text, errors = complete(prompt, max_tokens=500, order=PROFILE_BULK)
+    if text.strip():
+        return text.strip()
+    # Returning None still hands off to _fallback_caption() below — but now the
+    # log says which five providers failed instead of just "Groq failed".
+    logger.warning(f"[CTO-Milestone] all providers failed: {'; '.join(errors)[:200]}")
+    return None
 
 
 def _fallback_caption(milestone: Dict, frame: Dict) -> str:

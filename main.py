@@ -71,6 +71,10 @@ _CRM_AUTH = "Bearer 59ab31e15e29ea12f003eb3b621fb911419bc1aff2ba3296"
 # AI Configuration
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+# One switch for every Groq call in this file. Groq retired llama-3.3-70b-versatile
+# on 2026-08-16; naming the id here (and reading GROQ_MODEL) makes the next
+# retirement an env change rather than a hunt through the code.
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "").strip() or "openai/gpt-oss-120b"
 
 # Memory file
 MEMORY_FILE = "content_memory.json"
@@ -664,24 +668,14 @@ RULES:
 Output as valid JSON with keys: hook, story, transformation, emotion, theme, audience, emotional_state, location"""
 
     try:
-        response = requests.post(
-            GROQ_API_URL,
-            headers={
-                "Authorization": f"Bearer {GROQ_API_KEY}",
-                "Content-Type": "application/json"
-            },
-            json={
-                "model": "llama-3.3-70b-versatile",
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.9,
-                "max_tokens": 1200
-            },
-            timeout=30
-        )
-        
-        if response.status_code == 200:
-            content = response.json()['choices'][0]['message']['content']
-            
+        # Five providers, not one (Aug 16 2026) — see llm_chain.py. Groq retired
+        # llama-3.3-70b that day and this bot had no fallback, so a Groq outage
+        # meant no post and no alert.
+        from llm_chain import PROFILE_BULK, complete
+
+        content, _chain_errors = complete(prompt, max_tokens=1200, order=PROFILE_BULK)
+        if content.strip():
+
             # Parse JSON
             if "```json" in content:
                 content = content.split("```json")[1].split("```")[0]
@@ -698,7 +692,9 @@ Output as valid JSON with keys: hook, story, transformation, emotion, theme, aud
             print(f"🧠 AI generated story: {audience} in {location} ({emotion})")
             return story_data
         else:
-            print(f"❌ Groq API error: {response.status_code}")
+            # Every provider returned nothing — say which, so a silent no-post day
+            # is a readable log line rather than a mystery.
+            print(f"❌ all providers failed: {'; '.join(_chain_errors)[:200]}")
             return None
             
     except Exception as e:
@@ -1034,24 +1030,13 @@ STRICT RULES:
 - Output valid JSON only (no markdown fences). No asterisk bold/italic in hook, story, or transformation — plain text only for social."""
 
     try:
-        response = requests.post(
-            GROQ_API_URL,
-            headers={
-                "Authorization": f"Bearer {GROQ_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": "llama-3.3-70b-versatile",
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.78,
-                "max_tokens": 1800,
-            },
-            timeout=45,
-        )
-        if response.status_code != 200:
-            print(f"❌ Groq API error (marketing): {response.status_code}")
+        # Five providers, not one (Aug 16 2026) — see llm_chain.py.
+        from llm_chain import PROFILE_BULK, complete
+
+        content, _chain_errors = complete(prompt, max_tokens=1800, order=PROFILE_BULK)
+        if not content.strip():
+            print(f"❌ all providers failed (marketing): {'; '.join(_chain_errors)[:200]}")
             return None
-        content = response.json()["choices"][0]["message"]["content"]
         if "```json" in content:
             content = content.split("```json")[1].split("```")[0]
         elif "```" in content:
