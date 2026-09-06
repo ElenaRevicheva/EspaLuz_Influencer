@@ -22,3 +22,6 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# superseded v2 entrypoint kept on disk only — holds an old live webhook URL
+main_BACKUP.py

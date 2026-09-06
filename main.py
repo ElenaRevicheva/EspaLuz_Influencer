@@ -59,14 +59,21 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = "@EspaLuz"
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
-MAKE_WEBHOOK_URL = "https://hook.us2.make.com/ecv7x7innu2g1r3olsqi12ca4uadkmi9"
+# Live inbound webhook: anyone holding this URL can post into the automation, so it
+# is configuration, not source. Set MAKE_WEBHOOK_URL in .env (added 2026-09-06).
+MAKE_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "").strip()
+if not MAKE_WEBHOOK_URL:
+    print("⚠️ MAKE_WEBHOOK_URL is not set - Make.com posts will be skipped.")
 EMOTIONAL_AI_WEBHOOK_URL = MAKE_WEBHOOK_URL
 
 # CTO AIPA CRM hub (HubSpot pipeline signal). Found July 16 2026: this pointed at :8080
 # (VJH's web port) instead of cto-aipa's actual port -- every daily push 404'd silently
 # for at least 14 days straight (evidence: "CRM signal sent ... Status: 404" every night).
 _CRM_HUB_URL = "http://127.0.0.1:3000/api/crm-event"
-_CRM_AUTH = "Bearer 59ab31e15e29ea12f003eb3b621fb911419bc1aff2ba3296"
+# Shared secret for cto-aipa's outreachAuth. Read from the environment; never a
+# literal in source (moved out 2026-09-06).
+_OUTREACH_SECRET = os.getenv("OUTREACH_SECRET", "").strip()
+_CRM_AUTH = f"Bearer {_OUTREACH_SECRET}" if _OUTREACH_SECRET else ""
 
 # AI Configuration
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -606,7 +613,7 @@ EspaLuz is an AI-powered bilingual tutor on WhatsApp that uses emotional intelli
 - 💰 **$7.77/month via PayPal** - BONUS: 1 extra week FREE after subscription!
 
 ## Contact:
-WhatsApp: +507 6662 3757
+WhatsApp: https://wa.me/50766623757
 Website: https://espaluz-ai-language-tutor.lovable.app
 """
 
@@ -1357,6 +1364,8 @@ def send_automated_daily_promo():
             else:
                 crm_name = f"[CLIENT] AIdeazz tech content — {today_str}"
                 crm_context = f"AI Marketing Engine story posted. Hook: {story.get('hook','')[:80]}"
+            if not _CRM_AUTH:
+                raise RuntimeError("OUTREACH_SECRET not set - CRM signal skipped")
             crm_resp = requests.post(
                 _CRM_HUB_URL,
                 json={"source": "espaluz_influencer", "type": "engagement", "pipeline": "client",
