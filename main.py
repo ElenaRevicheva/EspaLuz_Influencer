@@ -172,53 +172,53 @@ video_links = [
 ]
 
 image_urls = [
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/espaluz_qr_4x5.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image1.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image2.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image3.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image4.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/image5.jpg"
+    "https://webhook.aideazz.xyz/influencer-images/espaluz_qr_4x5.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/image1.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/image2.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/image3.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/image4.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/image5.jpg"
 ]
 
 marketing_engine_image_urls = [
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_architecture.png",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_workflow.png",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_architecture_1.png",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_workflow_1.png",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_architecture.png",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_workflow.png",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_architecture_1.png",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_workflow_1.png",
     # --- 32 new agents / marketing-engine promo images (added 2026-06-23). The round-robin
     #     (next_marketing_engine_image_url, idx % n) extends automatically — no logic change. ---
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_01.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_02.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_03.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_04.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_05.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_06.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_07.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_08.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_09.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_10.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_11.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_12.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_13.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_14.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_15.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_16.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_17.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_18.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_19.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_20.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_21.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_22.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_23.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_24.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_25.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_26.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_27.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_28.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_29.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_30.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_31.jpg",
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/marketing_engine_images/me_32.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_01.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_02.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_03.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_04.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_05.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_06.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_07.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_08.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_09.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_10.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_11.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_12.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_13.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_14.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_15.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_16.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_17.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_18.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_19.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_20.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_21.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_22.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_23.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_24.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_25.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_26.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_27.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_28.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_29.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_30.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_31.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/marketing_engine_images/me_32.jpg",
 ]
 
 # ============================================
@@ -1228,12 +1228,25 @@ def generate_scheduled_promo_bundle():
 
 
 def _local_repo_image_path(image_url: str) -> Optional[str]:
-    """If the file named in the URL exists in cwd (repo root), upload that bytes to Telegram."""
-    base = image_url.rsplit("/", 1)[-1]
-    if os.path.isfile(base):
-        return base
-    return None
+    """Resolve a promo image to a file on disk.
 
+    GitHub raw URLs 404 now that this repo is private. Telegram can upload a
+    local file; Buffer/Make still need a public HTTP URL (see PUBLIC prefix).
+    """
+    if not image_url:
+        return None
+    base = image_url.rstrip("/").rsplit("/", 1)[-1]
+    if not base or "/" in base or ".." in base:
+        return None
+    here = os.path.dirname(os.path.abspath(__file__))
+    for candidate in (
+        os.path.join(here, base),
+        os.path.join(here, "marketing_engine_images", base),
+        os.path.join(here, "assets", base),
+    ):
+        if os.path.isfile(candidate):
+            return candidate
+    return None
 
 def send_channel_promo_with_image(promo: str, image_url: str) -> None:
     """Post to @EspaLuz with the image visible (photo + caption). Continuation message if caption exceeds 1024 chars."""
@@ -1307,7 +1320,7 @@ def fire_two_marketing_image_posts() -> None:
             "has_memory": True,
             "strategic_calendar": True,
         }
-        response = requests.post(MAKE_WEBHOOK_URL, json=payload)
+        response = requests.post(MAKE_WEBHOOK_URL, json=payload, timeout=20)
         print(f"📤 Make.com webhook {idx + 1}/2. Response: {response.status_code}")
         time.sleep(3)
 
@@ -1346,13 +1359,16 @@ def send_automated_daily_promo():
         
         promo = sanitize_social_post(promo)
         # Channel: photo + caption so image appears (EspaLuz + marketing engine days)
-        send_channel_promo_with_image(promo, image_url)
-        print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}, photo+caption).")
+        try:
+            send_channel_promo_with_image(promo, image_url)
+            print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}, photo+caption).")
+        except Exception as _tg_err:
+            print(f"⚠️ Telegram photo failed (non-fatal, Make webhook still fires): {_tg_err}")
         
         payload = build_make_webhook_payload(
             promo, story, video_url, image_url, campaign_type, automated=True
         )
-        response = requests.post(MAKE_WEBHOOK_URL, json=payload)
+        response = requests.post(MAKE_WEBHOOK_URL, json=payload, timeout=20)
         print(f"📤 Sent to Make.com webhook ({campaign_type}). Response: {response.status_code}")
 
         # CRM signal: push daily content activity to HubSpot (non-blocking)
@@ -1402,14 +1418,17 @@ def send_daily_promo(message):
     promo, story, video_url, image_url, campaign_type = generate_scheduled_promo_bundle()
     promo = sanitize_social_post(promo)
     bot.reply_to(message, promo)
-    send_channel_promo_with_image(promo, image_url)
-    print(f"✅ Manual promo sent ({campaign_type}, photo+caption).")
+    try:
+        send_channel_promo_with_image(promo, image_url)
+        print(f"✅ Manual promo sent ({campaign_type}, photo+caption).")
+    except Exception as _tg_err:
+        print(f"⚠️ Telegram photo failed (non-fatal, Make webhook still fires): {_tg_err}")
 
     try:
         payload = build_make_webhook_payload(
             promo, story, video_url, image_url, campaign_type, automated=False
         )
-        response = requests.post(MAKE_WEBHOOK_URL, json=payload)
+        response = requests.post(MAKE_WEBHOOK_URL, json=payload, timeout=20)
         print("📤 Sent to Make.com webhook. Response:", response.status_code)
     except Exception as e:
         print("❌ Failed to send to Make.com webhook:", e)
