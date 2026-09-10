@@ -50,6 +50,7 @@ import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 import pytz
+from geo_api_promo import apply_lane, maybe_geo_copy
 
 # ============================================
 # CONFIGURATION
@@ -181,6 +182,13 @@ image_urls = [
 ]
 
 marketing_engine_image_urls = [
+    "https://webhook.aideazz.xyz/influencer-images/geo-api/geo-grapes-citation.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/geo-api/geo-passionfruit-crawlers.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/geo-api/geo-pomegranate-audit-hand.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/geo-api/geo-visibility-score-ui.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/geo-api/geo-pomegranate-100-vs-72.jpg",
+    "https://webhook.aideazz.xyz/influencer-images/geo-api/geo-pomegranate-dashboard-2026.jpg",
+
     "https://webhook.aideazz.xyz/influencer-images/marketing_engine_architecture.png",
     "https://webhook.aideazz.xyz/influencer-images/marketing_engine_workflow.png",
     "https://webhook.aideazz.xyz/influencer-images/marketing_engine_architecture_1.png",
@@ -924,17 +932,18 @@ P.S. Your 7-day FREE trial is waiting. No credit card needed to start. Just mess
 
 
 def get_campaign_type_for_date(dt: datetime) -> str:
-    """
-    Odd calendar day (1,3,5,...) → classic EspaLuz tutoring content.
-    Even calendar day (2,4,6,...) → AI Marketing Engine / AIdeazz positioning content.
-    Uses the calendar day in Panama time when dt is timezone-aware.
+    """2/3 GEO/AEO/Tech SEO (marketing_engine payload) · 1/3 EspaLuz.
+
+    Panama calendar ordinal % 3: 0 and 1 → marketing_engine (GEO copy+images
+    applied at send time), 2 → espaluz. Replaces odd/even 50/50.
     """
     if dt.tzinfo is None:
-        dt = PANAMA_TZ.localize(dt)
-    else:
-        dt = dt.astimezone(PANAMA_TZ)
-    return "espaluz" if dt.day % 2 == 1 else "marketing_engine"
-
+        dt = dt.replace(tzinfo=timezone.utc)
+    try:
+        day = dt.astimezone(PANAMA_TZ).date()
+    except Exception:
+        day = dt.date()
+    return "espaluz" if day.toordinal() % 3 == 2 else "marketing_engine"
 
 def should_post_cto_milestone_today(now: datetime, mem: ContentMemory) -> bool:
     """Even days: prefer marketing-engine image rotation; milestone at most once per week."""
@@ -1243,6 +1252,7 @@ def _local_repo_image_path(image_url: str) -> Optional[str]:
         os.path.join(here, base),
         os.path.join(here, "marketing_engine_images", base),
         os.path.join(here, "assets", base),
+        os.path.join(here, "geo_api_images", base),
     ):
         if os.path.isfile(candidate):
             return candidate
@@ -1360,6 +1370,8 @@ def send_automated_daily_promo():
         promo = sanitize_social_post(promo)
         # Channel: photo + caption so image appears (EspaLuz + marketing engine days)
         try:
+            campaign_type, image_url = apply_lane(campaign_type, image_url)
+            promo = maybe_geo_copy(campaign_type, image_url, promo)
             send_channel_promo_with_image(promo, image_url)
             print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}, photo+caption).")
         except Exception as _tg_err:
@@ -1419,6 +1431,8 @@ def send_daily_promo(message):
     promo = sanitize_social_post(promo)
     bot.reply_to(message, promo)
     try:
+        campaign_type, image_url = apply_lane(campaign_type, image_url)
+        promo = maybe_geo_copy(campaign_type, image_url, promo)
         send_channel_promo_with_image(promo, image_url)
         print(f"✅ Manual promo sent ({campaign_type}, photo+caption).")
     except Exception as _tg_err:
@@ -1479,7 +1493,7 @@ def show_help(message):
 
 📣 **CONTENT GENERATION**
 /daily_promo - Generate & post **today's** campaign (EspaLuz vs Marketing Engine by calendar day)
-/campaign_today - Which campaign runs **today** (odd=EspaLuz, even=Engine)
+/campaign_today - Which campaign runs **today** (2/3 GEO-API, 1/3 EspaLuz)
 /test_ai - Test AI generation (no posting)
 
 📊 **ANALYTICS & MEMORY**
@@ -1517,7 +1531,7 @@ def show_about(message):
     about_text = """🤖 **ESPALUZ AI MARKETING CO-FOUNDER v3.1**
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**Dual campaign (additive):** on **odd** calendar days we run classic EspaLuz tutoring stories; on **even** days we spotlight the **AI Marketing Engine** (AIdeazz stack, roadmap, Oracle). Same Make.com webhook; payload includes `campaign_type`.
+**Dual campaign (additive):** on **two of every three** calendar days we spotlight GEO/AEO/Tech-SEO (aideazz.xyz/api); the remaining day we run classic EspaLuz tutoring stories (AIdeazz stack, roadmap, Oracle). Same Make.com webhook; payload includes `campaign_type`.
 
 **What makes this a TRUE AI Co-Founder:**
 
@@ -1702,7 +1716,7 @@ def show_status(message):
 🤖 **Bot Info**
 • Version: 3.1.0 (Dual campaign)
 • Status: 🟢 Running
-• Today: {"EspaLuz classic" if get_campaign_type_for_date(datetime.now(PANAMA_TZ)) == "espaluz" else "AI Marketing Engine"} (odd=EspaLuz, even=Engine)
+• Today: {"EspaLuz classic" if get_campaign_type_for_date(datetime.now(PANAMA_TZ)) == "espaluz" else "AI Marketing Engine"} (2/3 GEO-API, 1/3 EspaLuz)
 
 🔑 **API Configuration**
 • GROQ_API_KEY: {api_status}
@@ -1841,7 +1855,7 @@ def test_time(message):
 
 📅 Next scheduled promo: {schedule.next_run()}
 ⏰ Scheduled for: 6:00 PM Panama (23:00 UTC)
-🔀 Today’s campaign: {"EspaLuz" if get_campaign_type_for_date(now_panama) == "espaluz" else "AI Marketing Engine"} (odd=EspaLuz, even=Engine)"""
+🔀 Today’s campaign: {"EspaLuz" if get_campaign_type_for_date(now_panama) == "espaluz" else "AI Marketing Engine"} (2/3 GEO-API, 1/3 EspaLuz)"""
     
     bot.reply_to(message, response)
 

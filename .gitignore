@@ -25,3 +25,6 @@ Thumbs.db
 
 # superseded v2 entrypoint kept on disk only — holds an old live webhook URL
 main_BACKUP.py
+geo_api_images/
+geo_api_rotation.json
+*.bak-pre-geo-lane
