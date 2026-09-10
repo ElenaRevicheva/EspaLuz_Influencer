@@ -50,7 +50,7 @@ import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 import pytz
-from geo_api_promo import apply_lane, maybe_geo_copy
+from geo_api_promo import apply_lane, maybe_geo_copy, canonicalize_aideazz_urls
 
 # ============================================
 # CONFIGURATION
@@ -1372,6 +1372,7 @@ def send_automated_daily_promo():
         try:
             campaign_type, image_url = apply_lane(campaign_type, image_url)
             promo = maybe_geo_copy(campaign_type, image_url, promo)
+            promo = canonicalize_aideazz_urls(promo)
             send_channel_promo_with_image(promo, image_url)
             print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}, photo+caption).")
         except Exception as _tg_err:
@@ -1433,6 +1434,7 @@ def send_daily_promo(message):
     try:
         campaign_type, image_url = apply_lane(campaign_type, image_url)
         promo = maybe_geo_copy(campaign_type, image_url, promo)
+        promo = canonicalize_aideazz_urls(promo)
         send_channel_promo_with_image(promo, image_url)
         print(f"✅ Manual promo sent ({campaign_type}, photo+caption).")
     except Exception as _tg_err:
