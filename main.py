@@ -50,7 +50,7 @@ import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 import pytz
-from geo_api_promo import apply_lane, maybe_geo_copy, canonicalize_aideazz_urls
+from geo_api_promo import apply_lane, maybe_geo_copy, canonicalize_aideazz_urls, stamp_make_payload, drop_leftover_story
 
 # ============================================
 # CONFIGURATION
@@ -1373,6 +1373,7 @@ def send_automated_daily_promo():
             campaign_type, image_url = apply_lane(campaign_type, image_url)
             promo = maybe_geo_copy(campaign_type, image_url, promo)
             promo = canonicalize_aideazz_urls(promo)
+            story = drop_leftover_story(campaign_type, image_url, story)
             send_channel_promo_with_image(promo, image_url)
             print(f"✅ Automated promo sent to @EspaLuz channel ({campaign_type}, photo+caption).")
         except Exception as _tg_err:
@@ -1381,6 +1382,7 @@ def send_automated_daily_promo():
         payload = build_make_webhook_payload(
             promo, story, video_url, image_url, campaign_type, automated=True
         )
+        payload = stamp_make_payload(payload, promo=promo, image_url=image_url)
         response = requests.post(MAKE_WEBHOOK_URL, json=payload, timeout=20)
         print(f"📤 Sent to Make.com webhook ({campaign_type}). Response: {response.status_code}")
 
@@ -1435,6 +1437,7 @@ def send_daily_promo(message):
         campaign_type, image_url = apply_lane(campaign_type, image_url)
         promo = maybe_geo_copy(campaign_type, image_url, promo)
         promo = canonicalize_aideazz_urls(promo)
+        story = drop_leftover_story(campaign_type, image_url, story)
         send_channel_promo_with_image(promo, image_url)
         print(f"✅ Manual promo sent ({campaign_type}, photo+caption).")
     except Exception as _tg_err:
@@ -1444,6 +1447,7 @@ def send_daily_promo(message):
         payload = build_make_webhook_payload(
             promo, story, video_url, image_url, campaign_type, automated=False
         )
+        payload = stamp_make_payload(payload, promo=promo, image_url=image_url)
         response = requests.post(MAKE_WEBHOOK_URL, json=payload, timeout=20)
         print("📤 Sent to Make.com webhook. Response:", response.status_code)
     except Exception as e:
