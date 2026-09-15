@@ -224,7 +224,9 @@ def fetch_and_generate_milestone_story(marketing_engine_image_urls: list) -> Opt
         caption = _groq_generate(milestone, frame) or _fallback_caption(milestone, frame)
 
         # 4. Pick image — CTO milestone posts use sprinter.jpg; fall back to marketing engine pool
-        MILESTONE_IMAGE = "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/sprinter.jpg"
+        # The repo went private for the HUD licence, so raw.githubusercontent 404s and Buffer
+        # rejects the post as "image not valid". Served from Oracle like every other asset.
+        MILESTONE_IMAGE = "https://webhook.aideazz.xyz/influencer-images/sprinter.jpg"
         import random
         image_url = MILESTONE_IMAGE if MILESTONE_IMAGE else (
             random.choice(marketing_engine_image_urls) if marketing_engine_image_urls else ""

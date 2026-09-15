@@ -23,7 +23,7 @@ from datetime import datetime
 
 import main  # noqa: E402 — override only; scheduled even-day rotation stays at current index.
 ME_IMAGE = (
-    "https://raw.githubusercontent.com/ElenaRevicheva/EspaLuz_Influencer/main/"
+    "https://webhook.aideazz.xyz/influencer-images/"
     "marketing_engine_images/me_01.jpg"
 )
 
