@@ -35,7 +35,9 @@ from typing import Iterable, List, Tuple
 
 MIN_TOKENS = 300
 
-PROFILE_BULK: Tuple[str, ...] = ("gemini", "groq", "openai", "grok", "claude")
+# 26 Oct 2026 ORDER RULE (Elena): all five providers wired; free ones first (Gemini, Groq), then Grok, then OpenAI — no
+# regular money to top it up, it refuses in ~0.1 s without credit — and Claude by money. Nothing switched off.
+PROFILE_BULK: Tuple[str, ...] = ("gemini", "groq", "grok", "openai", "claude")
 
 PROVIDER_KEYS = {
     "gemini": "GEMINI_API_KEY",
