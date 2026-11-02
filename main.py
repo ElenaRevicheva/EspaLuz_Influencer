@@ -605,11 +605,18 @@ class MarketingEngineRotation:
 # ============================================
 
 ESPALUZ_BRAND_KNOWLEDGE = """
-# ESPALUZ - AI Spanish/English Tutor
-## Brand Identity
-EspaLuz is an AI-powered bilingual tutor on WhatsApp that uses emotional intelligence to help people learn Spanish and English.
+# ESPALUZ - live your new country in Spanish
+## Brand Identity (Elena, 2 Nov 2026)
+EspaLuz: live your new country in Spanish. The words people really say, the customs nobody explains, the everyday
+moments from the hospital and public offices to the school gate, experienced with your family across 21
+Spanish-speaking countries. And while you focus on what matters most in the moment, Pere and Titi keep the kids
+learning along the way.
+NOT "an AI tutor" and NOT "an AI companion": people are tired of both. Sell the lived moment, not lessons.
 
 ## ACTUAL PRODUCT FEATURES (as stated on https://aideazz.xyz/espaluz — use nothing else):
+🌎 **Local expressions with their meanings for 21 Spanish-speaking countries**, plus customs (one page per country: aideazz.xyz/espaluz/<country>)
+🏥🏛️🏫 **Guides for everyday moments** (doctor, public offices/migration, school, bank) where the country has one — fullest for Panama
+🎧 **Voice interpreter for appointments** - say it in English, it says it in Spanish, their answer comes back in English
 🦥🐒 **Kids classroom with Pere the sloth and Titi the monkey** - children talk, trace letters/numbers/short sentences on a tablet, and show a photo; the heroes answer in their own voices
 🧠 **Remembers** - sentences a child says come back in later lessons
 🗣️ **Grown-ups learn in a normal chat** - text or voice messages in Spanish or English, clear answers with the lesson inside
@@ -675,8 +682,10 @@ GENERATE A SOCIAL MEDIA STORY with these components:
 RULES:
 - Make it SPECIFIC to {location}
 - Include local cultural details
-- Show a real everyday difficulty, then what EspaLuz does about it
-- Mention only features listed in BRAND KNOWLEDGE (Pere and Titi, tracing, photo, voice, parent report)
+- Show ONE real everyday moment of local life (the doctor, a public office, the school gate, a neighbour's slang word,
+  a custom nobody explained) and how the family lives it in Spanish with EspaLuz
+- Mention only features listed in BRAND KNOWLEDGE (local words, guides, voice interpreter, photo, Pere and Titi, parent report)
+- Never call EspaLuz "an AI tutor" or "an AI companion"
 - Never invent users, numbers of users, reviews, results or prices
 - Keep total length under 250 words
 - CTA: https://aideazz.xyz/espaluz?utm_source=influencer
@@ -750,10 +759,10 @@ def self_review_story(story_data: Dict, memory: ContentMemory) -> Dict:
 
 FALLBACK_STORIES = [
     {
-        "hook": "🦥🐒 A SPANISH LESSON THAT STARTS WITH YOUR CHILD'S OWN WORDS",
-        "story": "Picture a new family in Panama City: school starts next week, and the child only knows a few words of Spanish. A worksheet sits on the table, a tablet next to it. The child taps one big button and says 'hola' a little shyly.",
-        "transformation": "In EspaLuz, Pere the sloth and Titi the monkey answer in their own voices, ask the child to trace 'Te quiero / I love you' on the tablet, then say it out loud. The words the child says come back in the next lesson, and the parent gets a short report of what was practised.",
-        "emotion": "🤖 From robotic apps to EMOTIONAL AI",
+        "hook": "🏥 LIVE YOUR NEW COUNTRY IN SPANISH — EVEN AT THE PEDIATRICIAN",
+        "story": "Picture a family three weeks into Panama City. The little one has a fever, and the pediatrician speaks fast Panamanian Spanish. The parent holds up a phone between them; the child sits on a lap, tracing letters on a tablet.",
+        "transformation": "EspaLuz's voice interpreter says the parent's words in Spanish and brings the doctor's answer back in English. Meanwhile Pere the sloth and Titi the monkey keep the child learning, and later the parent gets a short report of what was practised.",
+        "emotion": "🌎 From lost in the waiting room to understood",
         "theme": "parenting",
         "audience": "expat_parent",
         "emotional_state": "frustration",
@@ -766,6 +775,14 @@ FALLBACK_STORIES = [
 # ============================================
 
 benefit_sections = [
+    {
+        "title": "🌎 LIVE YOUR NEW COUNTRY IN SPANISH",
+        "points": [
+            "\n   ✅ The words people really say, in 21 countries",
+            "\n   ✅ The customs nobody explains",
+            "\n   ✅ From the hospital and public offices to the school gate"
+        ]
+    },
     {
         "title": "🦥🐒 PERE & TITI FOR KIDS",
         "points": [
@@ -809,6 +826,7 @@ benefit_sections = [
 ]
 
 cta_options = [
+    f"🌎 Live your new country in Spanish → {ESPALUZ_URL}",
     f"👉 Start 14 days free → {ESPALUZ_URL}",
     f"🦥🐒 Meet Pere and Titi → {ESPALUZ_URL}",
     f"💬 Web, WhatsApp or Telegram — pick yours → {ESPALUZ_URL}",
@@ -883,7 +901,8 @@ def generate_promo_content():
     memory.add_post(story)
     
     # Assemble final content
-    benefits = random.sample(benefit_sections, 2)
+    # The new line always leads (2 Nov 2026); one more section rotates.
+    benefits = [benefit_sections[0]] + random.sample(benefit_sections[1:], 1)
     cta = random.choice(cta_options)
     proof = random.choice(social_proof)
     base_hashtags = random.choice(hashtag_sets)
@@ -901,7 +920,7 @@ def generate_promo_content():
 
 {story['transformation']}
 
-{story['emotion']} — That's the EspaLuz difference! ✨
+{story['emotion']} — And while you focus on what matters most, Pere and Titi keep the kids learning. ✨
 
 ━━━━━━━━━━━━━━━━━━━━━━━
 
