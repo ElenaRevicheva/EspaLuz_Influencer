@@ -1472,11 +1472,11 @@ VIDEO_LINKS = ("🌎 EspaLuz — live your new country in Spanish\n"
 # Instagram captions and YouTube Shorts descriptions never make links tappable (Elena's screenshots, 2 Nov 2026), so
 # those two point to the place that is tappable - the profile / channel link - instead of printing dead URLs.
 VIDEO_LINKS_INSTAGRAM = ("🌎 EspaLuz — live your new country in Spanish\n"
-                         "🔗 Link in bio · Enlace en el perfil\n"
+                         "🔗 Link in bio, or type espaluz.lat · Enlace en el perfil, o escribe espaluz.lat\n"
                          "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n"
                          "People in this video are AI-generated.")
 VIDEO_LINKS_YOUTUBE = ("🌎 EspaLuz — live your new country in Spanish\n"
-                       "👆 Tap the channel name above for the EspaLuz link · Toca el nombre del canal para el enlace\n"
+                       "👆 Tap the channel name above, or type espaluz.lat · Toca el nombre del canal, o escribe espaluz.lat\n"
                        "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n"
                        "People in this video are AI-generated.")
 
