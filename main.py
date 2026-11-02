@@ -1469,6 +1469,16 @@ VIDEO_LINKS = ("🌎 EspaLuz — live your new country in Spanish\n"
                "💬 WhatsApp: https://wa.me/50766623757\n"
                "✈️ Telegram: https://t.me/EspaLuzFamily_bot\n"
                "14 days free · People in this video are AI-generated.")
+# Instagram captions and YouTube Shorts descriptions never make links tappable (Elena's screenshots, 2 Nov 2026), so
+# those two point to the place that is tappable - the profile / channel link - instead of printing dead URLs.
+VIDEO_LINKS_INSTAGRAM = ("🌎 EspaLuz — live your new country in Spanish\n"
+                         "🔗 Link in bio · Enlace en el perfil\n"
+                         "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n"
+                         "People in this video are AI-generated.")
+VIDEO_LINKS_YOUTUBE = ("🌎 EspaLuz — live your new country in Spanish\n"
+                       "👆 Tap the channel name above for the EspaLuz link · Toca el nombre del canal para el enlace\n"
+                       "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n"
+                       "People in this video are AI-generated.")
 
 
 def _prune_old_videos():
@@ -1480,19 +1490,20 @@ def _prune_old_videos():
 
 
 def build_video_payload(file_name: str, user_caption: str) -> Dict[str, Any]:
-    caption = (user_caption.strip() + "\n\n" if user_caption.strip() else "") + VIDEO_LINKS
+    story = user_caption.strip() + "\n\n" if user_caption.strip() else ""
+    caption = story + VIDEO_LINKS  # Facebook: links in a post are tappable
     first = (user_caption.strip().splitlines() or ["EspaLuz — live your new country in Spanish"])[0]
     title = (first[:88] + " #Shorts").strip()
     video_url = f"{VIDEO_BASE_URL}/{file_name}"
     buffer_body = {
         "query": "mutation($input: CreatePostInput!) { createPost(input: $input) { ... on PostActionSuccess { post { id status } } "
                  "... on MutationError { message } } }",
-        "variables": {"input": {"channelId": BUFFER_INSTAGRAM_CHANNEL, "text": caption, "schedulingType": "automatic", "mode": "shareNow",
+        "variables": {"input": {"channelId": BUFFER_INSTAGRAM_CHANNEL, "text": story + VIDEO_LINKS_INSTAGRAM, "schedulingType": "automatic", "mode": "shareNow",
                                 "assets": [{"video": {"url": video_url}}],
                                 "metadata": {"instagram": {"type": "reel", "shouldShareToFeed": True, "isAiGenerated": True}}}},
     }
     return {"videoURL": video_url, "fileName": file_name, "caption": caption, "youtubeTitle": title,
-            "bufferBody": json.dumps(buffer_body, ensure_ascii=False)}
+            "youtubeDescription": story + VIDEO_LINKS_YOUTUBE, "bufferBody": json.dumps(buffer_body, ensure_ascii=False)}
 
 
 @bot.message_handler(content_types=["video", "document"])
