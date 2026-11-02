@@ -66,6 +66,8 @@ MAKE_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "").strip()
 if not MAKE_WEBHOOK_URL:
     print("⚠️ MAKE_WEBHOOK_URL is not set - Make.com posts will be skipped.")
 EMOTIONAL_AI_WEBHOOK_URL = MAKE_WEBHOOK_URL
+# EspaLuz Facebook Page: its own Make scenario + webhook (set in .env when the scenario exists).
+MAKE_FACEBOOK_WEBHOOK_URL = os.getenv("MAKE_FACEBOOK_WEBHOOK_URL", "").strip()
 
 # CTO AIPA CRM hub (HubSpot pipeline signal). Found July 16 2026: this pointed at :8080
 # (VJH's web port) instead of cto-aipa's actual port -- every daily push 404'd silently
@@ -1404,6 +1406,15 @@ def send_automated_daily_promo():
         payload = stamp_make_payload(payload, promo=promo, image_url=image_url)
         response = requests.post(MAKE_WEBHOOK_URL, json=payload, timeout=20)
         print(f"📤 Sent to Make.com webhook ({campaign_type}). Response: {response.status_code}")
+
+        # 2 Nov 2026 (Elena: EspaLuz posts on the EspaLuz Facebook Page): a SEPARATE Make scenario with its own webhook,
+        # so the Instagram/LinkedIn scenario is never edited. EspaLuz days only; empty env = off; never blocks the post.
+        if campaign_type == "espaluz" and MAKE_FACEBOOK_WEBHOOK_URL:
+            try:
+                fb = requests.post(MAKE_FACEBOOK_WEBHOOK_URL, json=payload, timeout=20)
+                print(f"📘 Sent to Facebook Page scenario. Response: {fb.status_code}")
+            except Exception as _fb_err:
+                print(f"⚠️ Facebook Page webhook non-fatal: {_fb_err}")
 
         # CRM signal: push daily content activity to HubSpot (non-blocking)
         try:
