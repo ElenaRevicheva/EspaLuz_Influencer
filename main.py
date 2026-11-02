@@ -1452,6 +1452,82 @@ def send_automated_daily_promo():
 
 
 # ============================================
+# ESPALUZ VIDEO PUBLISHER (2 Nov 2026)
+# ============================================
+# Elena: "a scenario that publishes my Grok videos to the EspaLuz Facebook Page, Instagram and YouTube Shorts". She sends
+# the video to this bot from her phone; the bot puts it at a short-lived public URL and hands it to Make scenario 6869112
+# (webhook -> get file -> Facebook Page video | YouTube Short | Instagram Reel via Buffer). Only Elena's Telegram id can
+# publish. Telegram's Bot API downloads files up to 20 MB, which covers a 15-60 s vertical clip.
+MAKE_VIDEO_WEBHOOK_URL = os.getenv("MAKE_VIDEO_WEBHOOK_URL", "").strip()
+ELENA_TELEGRAM_ID = os.getenv("ELENA_TELEGRAM_ID", "").strip()
+VIDEO_DIR = os.getenv("ESPALUZ_VIDEO_DIR", "/var/www/influencer-images/espaluz-videos")
+VIDEO_BASE_URL = os.getenv("ESPALUZ_VIDEO_BASE_URL", "https://webhook.aideazz.xyz/influencer-images/espaluz-videos")
+VIDEO_KEEP_DAYS = 3  # Buffer fetches the Instagram copy later; after that the server keeps nothing
+BUFFER_INSTAGRAM_CHANNEL = os.getenv("BUFFER_INSTAGRAM_CHANNEL_ID", "68389b15d6d25b49a1d75b8e")
+VIDEO_LINKS = ("🌎 EspaLuz — live your new country in Spanish\n"
+               "📱 App: https://espaluz-ai-language-tutor.lovable.app/?utm_source=video\n"
+               "💬 WhatsApp: https://wa.me/50766623757\n"
+               "✈️ Telegram: https://t.me/EspaLuzFamily_bot\n"
+               "14 days free · People in this video are AI-generated.")
+
+
+def _prune_old_videos():
+    cutoff = time.time() - VIDEO_KEEP_DAYS * 86400
+    for name in os.listdir(VIDEO_DIR):
+        path = os.path.join(VIDEO_DIR, name)
+        if name.endswith(".mp4") and os.path.getmtime(path) < cutoff:
+            os.remove(path)
+
+
+def build_video_payload(file_name: str, user_caption: str) -> Dict[str, Any]:
+    caption = (user_caption.strip() + "\n\n" if user_caption.strip() else "") + VIDEO_LINKS
+    first = (user_caption.strip().splitlines() or ["EspaLuz — live your new country in Spanish"])[0]
+    title = (first[:88] + " #Shorts").strip()
+    video_url = f"{VIDEO_BASE_URL}/{file_name}"
+    buffer_body = {
+        "query": "mutation($input: CreatePostInput!) { createPost(input: $input) { ... on PostActionSuccess { post { id status } } "
+                 "... on MutationError { message } } }",
+        "variables": {"input": {"channelId": BUFFER_INSTAGRAM_CHANNEL, "text": caption, "schedulingType": "automatic", "mode": "shareNow",
+                                "assets": [{"video": {"url": video_url}}],
+                                "metadata": {"instagram": {"type": "reel", "shouldShareToFeed": True, "isAiGenerated": True}}}},
+    }
+    return {"videoURL": video_url, "fileName": file_name, "caption": caption, "youtubeTitle": title,
+            "bufferBody": json.dumps(buffer_body, ensure_ascii=False)}
+
+
+@bot.message_handler(content_types=["video", "document"])
+def publish_espaluz_video(message):
+    """Elena sends a video -> Facebook Page, Instagram Reel and YouTube Short via Make."""
+    if not ELENA_TELEGRAM_ID or str(message.from_user.id) != ELENA_TELEGRAM_ID:
+        return
+    media = message.video or message.document
+    if message.document and not str(message.document.mime_type or "").startswith("video/"):
+        bot.reply_to(message, "Send a video file (mp4), please.")
+        return
+    if not MAKE_VIDEO_WEBHOOK_URL:
+        bot.reply_to(message, "⚠️ Video publishing is not configured (MAKE_VIDEO_WEBHOOK_URL).")
+        return
+    if (media.file_size or 0) > 20 * 1024 * 1024:
+        bot.reply_to(message, "⚠️ Telegram lets bots download up to 20 MB. Please send a shorter or lighter clip.")
+        return
+    try:
+        os.makedirs(VIDEO_DIR, exist_ok=True)
+        _prune_old_videos()
+        data = bot.download_file(bot.get_file(media.file_id).file_path)
+        file_name = f"espaluz-{datetime.now(PANAMA_TZ).strftime('%Y%m%d-%H%M%S')}-{hashlib.sha256(data).hexdigest()[:10]}.mp4"
+        with open(os.path.join(VIDEO_DIR, file_name), "wb") as f:
+            f.write(data)
+        payload = build_video_payload(file_name, message.caption or "")
+        r = requests.post(MAKE_VIDEO_WEBHOOK_URL, json=payload, timeout=30)
+        print(f"🎬 EspaLuz video {file_name} ({len(data)} bytes) -> Make: {r.status_code}")
+        bot.reply_to(message, ("🎬 Publishing now to the EspaLuz Facebook Page, Instagram (Reel) and YouTube (Short).\n"
+                               f"Title: {payload['youtubeTitle']}") if r.ok else f"⚠️ Make answered {r.status_code}. Nothing was published.")
+    except Exception as e:
+        print(f"❌ EspaLuz video publish failed: {e}")
+        bot.reply_to(message, f"⚠️ Could not publish: {str(e)[:200]}")
+
+
+# ============================================
 # TELEGRAM BOT COMMANDS
 # ============================================
 
