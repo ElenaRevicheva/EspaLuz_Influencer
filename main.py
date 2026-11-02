@@ -90,6 +90,8 @@ PANAMA_TZ = pytz.timezone('America/Panama')
 # Even-day slots: marketing-engine image rotation is primary; milestone max once per N days.
 MILESTONE_MIN_DAYS_BETWEEN = int(os.getenv("MILESTONE_MIN_DAYS_BETWEEN", "7"))
 PORTFOLIO_URL = "https://aideazz.xyz/portfolio"
+# 2 Nov 2026 (Elena: one funnel): every EspaLuz post sends families to the EspaLuz page, tagged so arrivals can be counted.
+ESPALUZ_URL = "https://aideazz.xyz/espaluz?utm_source=influencer"
 
 
 def sanitize_social_post(text: str) -> str:
@@ -98,7 +100,8 @@ def sanitize_social_post(text: str) -> str:
         return text
     text = text.replace("**", "").replace("*", "")
     text = re.sub(r"https://aideazz\.xyz(?=/portfolio\b)", "https://aideazz.xyz/portfolio", text)
-    text = text.replace("https://aideazz.xyz", PORTFOLIO_URL)
+    # Only a bare domain goes to the hub; a real path (/espaluz, /api) is kept (2 Nov 2026).
+    text = re.sub(r"https://aideazz\.xyz(?![/\w.])", PORTFOLIO_URL, text)
     return text
 
 
@@ -606,23 +609,20 @@ ESPALUZ_BRAND_KNOWLEDGE = """
 ## Brand Identity
 EspaLuz is an AI-powered bilingual tutor on WhatsApp that uses emotional intelligence to help people learn Spanish and English.
 
-## ACTUAL PRODUCT FEATURES:
-🗣️ **CONVERSATION MODE** - Type "conversation" for intelligent family conversation practice
-🧠 **Emotional AI** - Analyzes emotions (frustrated, excited, homesick) and adapts
-🎤 **Voice Messages** - Send voice in any language, get audio responses back
-📸 **Photo Translation** - Send photos of menus, signs, documents for instant translation
-🎥 **Personalized Video Responses** - Custom video explanations
-👨‍👩‍👧‍👦 **Family Personalization** - Learns family names, preferences, dynamics
-🌍 **19 Countries** - Cultural context for all Spanish-speaking countries
-🌐 **Trilingual** - Russian, Spanish, AND English support
+## ACTUAL PRODUCT FEATURES (as stated on https://aideazz.xyz/espaluz — use nothing else):
+🦥🐒 **Kids classroom with Pere the sloth and Titi the monkey** - children talk, trace letters/numbers/short sentences on a tablet, and show a photo; the heroes answer in their own voices
+🧠 **Remembers** - sentences a child says come back in later lessons
+🗣️ **Grown-ups learn in a normal chat** - text or voice messages in Spanish or English, clear answers with the lesson inside
+📸 **Photos of real life** - a menu, a sign or a school note is read and explained (images are not kept)
+📋 **Parent report** after a child's lessons
+🌐 **Web, WhatsApp and Telegram** - one family memory on all three
 
 ## PRICING:
-- 🆓 **7-DAY FREE TRIAL** - Full access to all features
-- 💰 **$7.77/month via PayPal** - BONUS: 1 extra week FREE after subscription!
+- 🆓 **14 days free** on every channel
+- 💰 **$11/month with PayPal**, or $11 for 30 days with PágueloFácil (Panama)
 
-## Contact:
-WhatsApp: https://wa.me/50766623757
-Website: https://espaluz-ai-language-tutor.lovable.app
+## Contact (ONE link for every post):
+https://aideazz.xyz/espaluz?utm_source=influencer
 """
 
 # ============================================
@@ -667,18 +667,19 @@ CONTENT ASSIGNMENT:
 GENERATE A SOCIAL MEDIA STORY with these components:
 
 1. **HOOK** (1 line with emoji): Attention-grabbing opening aligned with {day_theme['theme']} theme
-2. **STORY** (3-5 sentences): Specific, relatable scenario in {location}. First-person. Sensory details.
+2. **STORY** (3-5 sentences): A relatable everyday SCENE in {location}, told in second person ("You're at...") or third person about "a parent"/"a child". Sensory details. NEVER first person, NEVER a named customer, NEVER a quote from a user — it is an illustration, not a testimonial.
 3. **TRANSFORMATION** (2-3 sentences): How EspaLuz helped. Be specific about features used.
 4. **EMOTION** (1 line with emoji): The {emotion} → breakthrough emotional shift
 5. **THEME** (1 word): Main theme of the story (e.g., "parenting", "career", "travel", "healthcare")
 
 RULES:
-- Make it feel REAL and SPECIFIC to {location}
+- Make it SPECIFIC to {location}
 - Include local cultural details
-- Show genuine vulnerability then triumph
-- Mention specific EspaLuz features (conversation mode, voice messages, photo translation)
+- Show a real everyday difficulty, then what EspaLuz does about it
+- Mention only features listed in BRAND KNOWLEDGE (Pere and Titi, tracing, photo, voice, parent report)
+- Never invent users, numbers of users, reviews, results or prices
 - Keep total length under 250 words
-- CTA: https://wa.me/50766623757
+- CTA: https://aideazz.xyz/espaluz?utm_source=influencer
 
 Output as valid JSON with keys: hook, story, transformation, emotion, theme, audience, emotional_state, location"""
 
@@ -749,9 +750,9 @@ def self_review_story(story_data: Dict, memory: ContentMemory) -> Dict:
 
 FALLBACK_STORIES = [
     {
-        "hook": "🧠 AI THAT ACTUALLY GETS IT",
-        "story": "I was having a meltdown trying to discipline my toddler in Spanish. I sent a frustrated voice message to EspaLuz: 'I don't know how to be firm but loving in Spanish!' The AI didn't just translate—it UNDERSTOOD I was a stressed parent and coached me through it.",
-        "transformation": "EspaLuz analyzed my emotional state, gave me gentle parenting phrases in Spanish, and helped me through conversation mode. Now my daughter responds better, and I feel confident as a bilingual parent!",
+        "hook": "🦥🐒 A SPANISH LESSON THAT STARTS WITH YOUR CHILD'S OWN WORDS",
+        "story": "Picture a new family in Panama City: school starts next week, and the child only knows a few words of Spanish. A worksheet sits on the table, a tablet next to it. The child taps one big button and says 'hola' a little shyly.",
+        "transformation": "In EspaLuz, Pere the sloth and Titi the monkey answer in their own voices, ask the child to trace 'Te quiero / I love you' on the tablet, then say it out loud. The words the child says come back in the next lesson, and the parent gets a short report of what was practised.",
         "emotion": "🤖 From robotic apps to EMOTIONAL AI",
         "theme": "parenting",
         "audience": "expat_parent",
@@ -766,62 +767,61 @@ FALLBACK_STORIES = [
 
 benefit_sections = [
     {
-        "title": "🗣️ CONVERSATION MODE",
+        "title": "🦥🐒 PERE & TITI FOR KIDS",
         "points": [
-            "\n   ✅ Practice real family conversations",
-            "\n   ✅ AI adapts to your emotional state",
-            "\n   ✅ Perfect for expat families"
+            "\n   ✅ Your child talks, and the heroes answer in their own voices",
+            "\n   ✅ Trace letters, numbers and short sentences on a tablet",
+            "\n   ✅ Words your child says come back in later lessons"
         ]
     },
     {
-        "title": "🎤 VOICE & PHOTO MAGIC",
+        "title": "🎤 VOICE & PHOTO",
         "points": [
-            "\n   ✅ Send voice messages, get audio back",
-            "\n   ✅ Snap photos of menus for instant translation",
-            "\n   ✅ Video responses for complex topics"
+            "\n   ✅ Write or send a voice message in Spanish or English",
+            "\n   ✅ Photo of a menu, a sign or a school note — read and explained",
+            "\n   ✅ Photos are not stored"
         ]
     },
     {
-        "title": "🧠 EMOTIONALLY INTELLIGENT",
+        "title": "🧠 MADE FOR FAMILIES",
         "points": [
-            "\n   ✅ Senses when you're frustrated and adapts",
-            "\n   ✅ Understands homesickness & culture shock",
-            "\n   ✅ Celebrates your wins with you"
+            "\n   ✅ Kids learn by playing, grown-ups in a normal chat",
+            "\n   ✅ A report after your child's lessons",
+            "\n   ✅ Built from one family's arrival in Panama"
         ]
     },
     {
         "title": "👨‍👩‍👧‍👦 FAMILY PERSONALIZATION",
         "points": [
-            "\n   ✅ Learns your family's names",
-            "\n   ✅ Understands parent/child dynamics",
-            "\n   ✅ Cultural context for 19 countries"
+            "\n   ✅ One family memory on web, WhatsApp and Telegram",
+            "\n   ✅ Spanish and English, both ways",
+            "\n   ✅ Start on whichever app your family already uses"
         ]
     },
     {
         "title": "💰 TRY FREE, STAY CHEAP",
         "points": [
-            "\n   ✅ 7-DAY FREE TRIAL - full access!",
-            "\n   ✅ Only $7.77/month after",
-            "\n   ✅ +1 BONUS week when you subscribe!"
+            "\n   ✅ 14 days free on every channel",
+            "\n   ✅ Then $11/month with PayPal",
+            "\n   ✅ Or $11 for 30 days with PágueloFácil (Panama)"
         ]
     }
 ]
 
 cta_options = [
-    "👉 Start your FREE 7-day trial → https://wa.me/50766623757",
-    "🚀 Try FREE for 7 days → https://wa.me/50766623757",
-    "💬 Message EspaLuz now (FREE trial!) → https://wa.me/50766623757",
-    "✨ Get your FREE trial today → https://wa.me/50766623757",
-    "🆓 7 days FREE, then just $7.77/mo → https://wa.me/50766623757"
+    f"👉 Start 14 days free → {ESPALUZ_URL}",
+    f"🦥🐒 Meet Pere and Titi → {ESPALUZ_URL}",
+    f"💬 Web, WhatsApp or Telegram — pick yours → {ESPALUZ_URL}",
+    f"✨ Try it free for 14 days → {ESPALUZ_URL}",
+    f"🆓 14 days free, then $11/month → {ESPALUZ_URL}"
 ]
 
+# 2 Nov 2026: these used to be six named customer quotes that no customer ever said. Facts only now.
 social_proof = [
-    "💬 \"The conversation mode is AMAZING. It's like having a patient tutor 24/7!\" — Sarah, Panama City",
-    "🌟 \"I just snap photos of menus and EspaLuz translates instantly!\" — Mike, Medellín",
-    "🚀 \"Voice messages back and forth - it's like texting a bilingual friend.\" — Jennifer, Mexico City",
-    "💼 \"My whole family uses it. It learns our names and everything!\" — David, Digital Nomad",
-    "❤️ \"The emotional AI actually gets when I'm frustrated and helps me calm down.\" — Amanda, Costa Rica",
-    "🆓 \"Started with the free trial, been subscribed for 6 months now. Worth every penny!\" — Carlos, Miami"
+    "🇵🇦 Made in Panama by AIdeazz AI Lab, from one family's own arrival here.",
+    "📷 A photo is described in one sentence for the lesson — the image itself is not kept.",
+    "📋 After your child's lesson, you get a short report of what was practised.",
+    "🌐 Start on the web, WhatsApp or Telegram — the family memory is the same on all three.",
 ]
 
 hashtag_sets = [
@@ -905,7 +905,7 @@ def generate_promo_content():
 
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-🔥 WHY 2,000+ PEOPLE CHOOSE ESPALUZ:
+🔥 WHAT YOUR FAMILY GETS:
 
 {benefits[0]['title']}
 {''.join([f"   {point}" for point in benefits[0]['points']])}
@@ -919,11 +919,11 @@ def generate_promo_content():
 
 {cta}
 
-🎬 WATCH: See this transformation in action → {video_url}
+🎬 WATCH: EspaLuz in action → {video_url}
 
 {hashtags}
 
-P.S. Your 7-day FREE trial is waiting. No credit card needed to start. Just message EspaLuz on WhatsApp and say "hi"—you'll be practicing conversations in minutes! 💕"""
+P.S. 14 days free on the web, WhatsApp or Telegram. Pick yours here → {ESPALUZ_URL} 💕"""
 
     print("✅ Content generated successfully!")
     print("=" * 50)
@@ -1219,7 +1219,7 @@ def generate_marketing_engine_content(image_url_override: Optional[str] = None):
 
 {hashtags}
 
-🔗 EspaLuz (live product): https://wa.me/50766623757 — try the tutor; this post is about the engine behind the brand."""
+🔗 EspaLuz (live product): {ESPALUZ_URL} — try the tutor; this post is about the engine behind the brand."""
 
     print("✅ Marketing engine content generated!")
     print("=" * 50)
