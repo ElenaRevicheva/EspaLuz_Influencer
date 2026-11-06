@@ -1489,9 +1489,25 @@ def _prune_old_videos():
             os.remove(path)
 
 
+def film_id(file_name: str) -> str:
+    """6 Nov 2026 (Elena: track who clicks): f<date><hash>, the name of one film in every link and report."""
+    found = re.search(r"(\d{8}).*-([0-9a-f]{10})\.mp4$", file_name)
+    return f"f{found.group(1)}{found.group(2)[:4]}" if found else "f" + re.sub(r"\W", "", file_name)[:20]
+
+
+def facebook_links(film: str) -> str:
+    """Facebook is the one channel with tappable caption links, so each door names the film."""
+    hello = requests.utils.quote(f"Hola EspaLuz, vi tu video / I saw your video (ref {film}-fb)")
+    return (VIDEO_LINKS
+            .replace("https://espaluz-ai-language-tutor.lovable.app/?utm_source=video",
+                     f"https://app.espaluz.lat/?utm_source=facebook&utm_medium=video&utm_campaign={film}")
+            .replace("https://wa.me/50766623757", f"https://wa.me/50766623757?text={hello}")
+            .replace("https://t.me/EspaLuzFamily_bot", f"https://t.me/EspaLuzFamily_bot?start={film}_fb"))
+
+
 def build_video_payload(file_name: str, user_caption: str) -> Dict[str, Any]:
     story = user_caption.strip() + "\n\n" if user_caption.strip() else ""
-    caption = story + VIDEO_LINKS  # Facebook: links in a post are tappable
+    caption = story + facebook_links(film_id(file_name))  # Facebook: links in a post are tappable
     first = (user_caption.strip().splitlines() or ["EspaLuz — live your new country in Spanish"])[0]
     title = (first[:88] + " #Shorts").strip()
     video_url = f"{VIDEO_BASE_URL}/{file_name}"
