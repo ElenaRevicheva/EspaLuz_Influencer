@@ -1464,13 +1464,16 @@ VIDEO_DIR = os.getenv("ESPALUZ_VIDEO_DIR", "/var/www/influencer-images/espaluz-v
 VIDEO_BASE_URL = os.getenv("ESPALUZ_VIDEO_BASE_URL", "https://webhook.aideazz.xyz/influencer-images/espaluz-videos")
 VIDEO_KEEP_DAYS = 3  # Buffer fetches the Instagram copy later; after that the server keeps nothing
 BUFFER_INSTAGRAM_CHANNEL = os.getenv("BUFFER_INSTAGRAM_CHANNEL_ID", "68389b15d6d25b49a1d75b8e")
-# 20 Nov 2026 (Elena): every video post also says the Android app is in Google Play beta and invites free testers.
-# True today: closed testing track lat.espaluz.app; testers get free access (play_testers table). "Comment" works on all 3.
-PLAY_BETA_LINE = ("\n🤖 New: the EspaLuz Android app is in beta on Google Play. Free beta testers welcome! "
-                  "Comment \"Android\" and help us shape it.\n"
-                  "🤖 Nuevo: la app de EspaLuz para Android está en beta en Google Play. ¡Buscamos testers, gratis! "
-                  "Comenta \"Android\" y ayúdanos a mejorarla.\n\n")
-VIDEO_LINKS = ("🌎 EspaLuz — live your new country in Spanish\n"
+# 20 Nov 2026 (Elena): every video post invites Android testers. Elena: "nobody tests for nothing" -> lead with what THEY get.
+# True today: closed testing track lat.espaluz.app; testers get full family access free until 31 Dec 2026 (play_testers
+# table, access_until 2026-12-31) vs the usual 14 days, then $11/month (src/config/paypal.ts). Google needs 12 testers.
+PLAY_BETA_LINE = ("\n📱 On Android? Get the EspaLuz app before everyone else, and your whole family uses it FREE until "
+                  "31 December (normally $11/month). We're in beta on Google Play and looking for 12 families. "
+                  "Comment \"Android\" and we'll send you the invite.\n"
+                  "📱 ¿Tienes Android? Ten la app de EspaLuz antes que nadie, y toda tu familia la usa GRATIS hasta el "
+                  "31 de diciembre (normalmente $11 al mes). Estamos en beta en Google Play y buscamos 12 familias. "
+                  "Comenta \"Android\" y te mandamos la invitación.\n\n")
+VIDEO_LINKS = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                "📱 App: https://espaluz-ai-language-tutor.lovable.app/?utm_source=video\n"
                "💬 WhatsApp: https://wa.me/50766623757\n"
                "✈️ Telegram: https://t.me/EspaLuzFamily_bot\n"
@@ -1478,11 +1481,11 @@ VIDEO_LINKS = ("🌎 EspaLuz — live your new country in Spanish\n"
                "People in this video are AI-generated.")
 # Instagram captions and YouTube Shorts descriptions never make links tappable (Elena's screenshots, 2 Nov 2026), so
 # those two point to the place that is tappable - the profile / channel link - instead of printing dead URLs.
-VIDEO_LINKS_INSTAGRAM = ("🌎 EspaLuz — live your new country in Spanish\n"
+VIDEO_LINKS_INSTAGRAM = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                          "🔗 Link in bio, or type espaluz.lat · Enlace en el perfil, o escribe espaluz.lat\n"
                          "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n" + PLAY_BETA_LINE +
                          "People in this video are AI-generated.")
-VIDEO_LINKS_YOUTUBE = ("🌎 EspaLuz — live your new country in Spanish\n"
+VIDEO_LINKS_YOUTUBE = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                        "👆 Tap the channel name above, or type espaluz.lat · Toca el nombre del canal, o escribe espaluz.lat\n"
                        "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n" + PLAY_BETA_LINE +
                        "People in this video are AI-generated.")
@@ -1515,7 +1518,7 @@ def facebook_links(film: str) -> str:
 def build_video_payload(file_name: str, user_caption: str) -> Dict[str, Any]:
     story = user_caption.strip() + "\n\n" if user_caption.strip() else ""
     caption = story + facebook_links(film_id(file_name))  # Facebook: links in a post are tappable
-    first = (user_caption.strip().splitlines() or ["EspaLuz — live your new country in Spanish"])[0]
+    first = (user_caption.strip().splitlines() or ["EspaLuz — your new life in Latin America, in Spanish"])[0]
     title = (first[:88] + " #Shorts").strip()
     video_url = f"{VIDEO_BASE_URL}/{file_name}"
     buffer_body = {
