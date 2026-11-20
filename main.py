@@ -1467,12 +1467,13 @@ BUFFER_INSTAGRAM_CHANNEL = os.getenv("BUFFER_INSTAGRAM_CHANNEL_ID", "68389b15d6d
 # 20 Nov 2026 (Elena): every video post invites Android testers. Elena: "nobody tests for nothing" -> lead with what THEY get.
 # True today: closed testing track lat.espaluz.app; testers get full family access free until 31 Dec 2026 (play_testers
 # table, access_until 2026-12-31) vs the usual 14 days, then $11/month (src/config/paypal.ts). Google needs 12 testers.
-PLAY_BETA_LINE = ("\n📱 On Android? Get the EspaLuz app before everyone else, and your whole family uses it FREE until "
-                  "31 December (normally $11/month). We're in beta on Google Play and looking for 12 families. "
-                  "Comment \"Android\" and we'll send you the invite.\n"
-                  "📱 ¿Tienes Android? Ten la app de EspaLuz antes que nadie, y toda tu familia la usa GRATIS hasta el "
-                  "31 de diciembre (normalmente $11 al mes). Estamos en beta en Google Play y buscamos 12 familias. "
-                  "Comenta \"Android\" y te mandamos la invitación.\n\n")
+# Elena, 20 Nov: no number in public, and make it scarce ("not endless"): a few free spots, first come.
+PLAY_BETA_LINE = ("\n📱 On Android? Get the EspaLuz app before everyone else. Only a few free beta spots are left on "
+                  "Google Play: families who grab one use it FREE until 31 December (normally $11/month). "
+                  "Comment \"Android\" to claim your spot and we'll send you the invite.\n"
+                  "📱 ¿Tienes Android? Ten la app de EspaLuz antes que nadie. Quedan pocos cupos gratis en la beta de "
+                  "Google Play: las familias que entran la usan GRATIS hasta el 31 de diciembre (normalmente $11 al mes). "
+                  "Comenta \"Android\" para apartar tu cupo y te mandamos la invitación.\n\n")
 VIDEO_LINKS = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                "📱 App: https://espaluz-ai-language-tutor.lovable.app/?utm_source=video\n"
                "💬 WhatsApp: https://wa.me/50766623757\n"
