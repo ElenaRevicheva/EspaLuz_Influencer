@@ -1470,15 +1470,21 @@ BUFFER_INSTAGRAM_CHANNEL = os.getenv("BUFFER_INSTAGRAM_CHANNEL_ID", "68389b15d6d
 # Elena, 20 Nov: no number in public, and make it scarce ("not endless"): a few free spots, first come.
 PLAY_BETA_LINE = ("\n📱 On Android? Get the EspaLuz app before everyone else. Only a few free beta spots are left on "
                   "Google Play: families who grab one use it FREE until 31 December (normally $11/month). "
-                  "Comment \"Android\" to claim your spot and we'll send you the invite.\n"
+                  "Write ANDROID to EspaLuz on WhatsApp {wa} to claim your spot: she sends you the 3 steps.\n"
                   "📱 ¿Tienes Android? Ten la app de EspaLuz antes que nadie. Quedan pocos cupos gratis en la beta de "
                   "Google Play: las familias que entran la usan GRATIS hasta el 31 de diciembre (normalmente $11 al mes). "
-                  "Comenta \"Android\" para apartar tu cupo y te mandamos la invitación.\n\n")
+                  "Escribe ANDROID a EspaLuz por WhatsApp {wa} para apartar tu cupo: ella te manda los 3 pasos.\n\n")
+# 20 Nov 2026 (promo audit: a comment cannot be caught - YouTube has no private messages, nobody reads comments): the
+# Android ask is a WhatsApp door. The bots answer ANDROID with the tester steps and keep the Gmail (espaluz_catch.py).
+# Instagram / YouTube print the number (links are not tappable there); Facebook gets a link that names the film.
+WA_NUMBER_TEXT = "+507 6662 3757"
+PLAY_BETA_LINE_FB = PLAY_BETA_LINE  # {wa} is filled per film in facebook_links()
+PLAY_BETA_LINE = PLAY_BETA_LINE.replace("{wa}", WA_NUMBER_TEXT)
 VIDEO_LINKS = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                "📱 App: https://espaluz-ai-language-tutor.lovable.app/?utm_source=video\n"
                "💬 WhatsApp: https://wa.me/50766623757\n"
                "✈️ Telegram: https://t.me/EspaLuzFamily_bot\n"
-               "14 days free\n" + PLAY_BETA_LINE +
+               "14 days free\n" + "{beta}" +
                "People in this video are AI-generated.")
 # Instagram captions and YouTube Shorts descriptions never make links tappable (Elena's screenshots, 2 Nov 2026), so
 # those two point to the place that is tappable - the profile / channel link - instead of printing dead URLs.
@@ -1509,11 +1515,13 @@ def film_id(file_name: str) -> str:
 def facebook_links(film: str) -> str:
     """Facebook is the one channel with tappable caption links, so each door names the film."""
     hello = requests.utils.quote(f"Hola EspaLuz, vi tu video / I saw your video (ref {film}-fb)")
+    android = "https://wa.me/50766623757?text=" + requests.utils.quote(f"ANDROID ({film}-fb)")
     return (VIDEO_LINKS
             .replace("https://espaluz-ai-language-tutor.lovable.app/?utm_source=video",
                      f"https://app.espaluz.lat/?utm_source=facebook&utm_medium=video&utm_campaign={film}")
             .replace("https://wa.me/50766623757", f"https://wa.me/50766623757?text={hello}")
-            .replace("https://t.me/EspaLuzFamily_bot", f"https://t.me/EspaLuzFamily_bot?start={film}_fb"))
+            .replace("https://t.me/EspaLuzFamily_bot", f"https://t.me/EspaLuzFamily_bot?start={film}_fb")
+            .replace("{beta}", PLAY_BETA_LINE_FB.replace("{wa}", android)))  # last: the WhatsApp rewrite above must not touch it
 
 
 def build_video_payload(file_name: str, user_caption: str) -> Dict[str, Any]:
