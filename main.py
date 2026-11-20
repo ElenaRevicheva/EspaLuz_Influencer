@@ -1464,20 +1464,27 @@ VIDEO_DIR = os.getenv("ESPALUZ_VIDEO_DIR", "/var/www/influencer-images/espaluz-v
 VIDEO_BASE_URL = os.getenv("ESPALUZ_VIDEO_BASE_URL", "https://webhook.aideazz.xyz/influencer-images/espaluz-videos")
 VIDEO_KEEP_DAYS = 3  # Buffer fetches the Instagram copy later; after that the server keeps nothing
 BUFFER_INSTAGRAM_CHANNEL = os.getenv("BUFFER_INSTAGRAM_CHANNEL_ID", "68389b15d6d25b49a1d75b8e")
+# 20 Nov 2026 (Elena): every video post also says the Android app is in Google Play beta and invites free testers.
+# True today: closed testing track lat.espaluz.app; testers get free access (play_testers table). "Comment" works on all 3.
+PLAY_BETA_LINE = ("\n🤖 New: the EspaLuz Android app is in beta on Google Play. Free beta testers welcome! "
+                  "Comment \"Android\" and help us shape it.\n"
+                  "🤖 Nuevo: la app de EspaLuz para Android está en beta en Google Play. ¡Buscamos testers, gratis! "
+                  "Comenta \"Android\" y ayúdanos a mejorarla.\n\n")
 VIDEO_LINKS = ("🌎 EspaLuz — live your new country in Spanish\n"
                "📱 App: https://espaluz-ai-language-tutor.lovable.app/?utm_source=video\n"
                "💬 WhatsApp: https://wa.me/50766623757\n"
                "✈️ Telegram: https://t.me/EspaLuzFamily_bot\n"
-               "14 days free · People in this video are AI-generated.")
+               "14 days free\n" + PLAY_BETA_LINE +
+               "People in this video are AI-generated.")
 # Instagram captions and YouTube Shorts descriptions never make links tappable (Elena's screenshots, 2 Nov 2026), so
 # those two point to the place that is tappable - the profile / channel link - instead of printing dead URLs.
 VIDEO_LINKS_INSTAGRAM = ("🌎 EspaLuz — live your new country in Spanish\n"
                          "🔗 Link in bio, or type espaluz.lat · Enlace en el perfil, o escribe espaluz.lat\n"
-                         "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n"
+                         "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n" + PLAY_BETA_LINE +
                          "People in this video are AI-generated.")
 VIDEO_LINKS_YOUTUBE = ("🌎 EspaLuz — live your new country in Spanish\n"
                        "👆 Tap the channel name above, or type espaluz.lat · Toca el nombre del canal, o escribe espaluz.lat\n"
-                       "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n"
+                       "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n" + PLAY_BETA_LINE +
                        "People in this video are AI-generated.")
 
 
