@@ -1480,22 +1480,26 @@ PLAY_BETA_LINE = ("\n📱 On Android? Get the EspaLuz app before everyone else. 
 WA_NUMBER_TEXT = "+507 6662 3757"
 PLAY_BETA_LINE_FB = PLAY_BETA_LINE  # {wa} is filled per film in facebook_links()
 PLAY_BETA_LINE = PLAY_BETA_LINE.replace("{wa}", WA_NUMBER_TEXT)
+# 21 Nov 2026 (Elena: "add that the product is live - it sounds trustworthy", as in the AI Growth Operator films): the
+# people are AI, the product is not. True: every screen in the films is a real capture of the live product.
+AI_NOTE = ("People in this video are AI-generated. Every product screen is real - EspaLuz is live today.\n"
+           "Las personas del video son IA. Cada pantalla del producto es real: EspaLuz ya funciona hoy.")
 VIDEO_LINKS = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                "📱 App: https://espaluz-ai-language-tutor.lovable.app/?utm_source=video\n"
                "💬 WhatsApp: https://wa.me/50766623757\n"
                "✈️ Telegram: https://t.me/EspaLuzFamily_bot\n"
                "14 days free\n" + "{beta}" +
-               "People in this video are AI-generated.")
+               AI_NOTE)
 # Instagram captions and YouTube Shorts descriptions never make links tappable (Elena's screenshots, 2 Nov 2026), so
 # those two point to the place that is tappable - the profile / channel link - instead of printing dead URLs.
 VIDEO_LINKS_INSTAGRAM = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                          "🔗 Link in bio, or type espaluz.lat · Enlace en el perfil, o escribe espaluz.lat\n"
                          "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n" + PLAY_BETA_LINE +
-                         "People in this video are AI-generated.")
+                         AI_NOTE)
 VIDEO_LINKS_YOUTUBE = ("🌎 EspaLuz — your new life in Latin America, in Spanish · tu nueva vida en Latinoamérica\n"
                        "👆 Tap the channel name above, or type espaluz.lat · Toca el nombre del canal, o escribe espaluz.lat\n"
                        "App · WhatsApp · Telegram — 14 days free · 14 días gratis\n" + PLAY_BETA_LINE +
-                       "People in this video are AI-generated.")
+                       AI_NOTE)
 
 
 def _prune_old_videos():
