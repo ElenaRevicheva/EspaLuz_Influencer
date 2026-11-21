@@ -1420,8 +1420,10 @@ def send_automated_daily_promo():
         try:
             today_str = datetime.now(PANAMA_TZ).strftime("%Y-%m-%d")
             if campaign_type == "espaluz":
-                crm_name = f"[ESPALUZ] Influencer post — {today_str}"
-                crm_context = f"EspaLuz Spanish-learning content posted to @EspaLuz channel. Hook: {story.get('hook','')[:80]}"
+                # 21 Nov 2026 (Elena: "HubSpot EspaLuz should contain only data that makes sense - no noise"): a post is not
+                # a person. The EspaLuz stream keeps only real people (trials, film arrivals, web sign-ups); posts are
+                # counted by the film report and content_memory.json. AIdeazz tech-content deals below are unchanged.
+                raise RuntimeError("EspaLuz post - no HubSpot deal by design (21 Nov 2026)")
             else:
                 crm_name = f"[CLIENT] AIdeazz tech content — {today_str}"
                 crm_context = f"AI Marketing Engine story posted. Hook: {story.get('hook','')[:80]}"
