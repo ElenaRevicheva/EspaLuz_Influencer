@@ -1512,21 +1512,41 @@ def film_id(file_name: str) -> str:
     return f"f{found.group(1)}{found.group(2)[:4]}" if found else "f" + re.sub(r"\W", "", file_name)[:20]
 
 
-def facebook_links(film: str) -> str:
-    """Facebook is the one channel with tappable caption links, so each door names the film."""
-    hello = requests.utils.quote(f"Hola EspaLuz, vi tu video / I saw your video (ref {film}-fb)")
-    android = "https://wa.me/50766623757?text=" + requests.utils.quote(f"ANDROID ({film}-fb)")
+def tagged_links(film: str, source: str, tag: str) -> str:
+    """Every door names the film + platform, so an arrival becomes a promo_arrival / HubSpot deal (bots' FILM_RE)."""
+    hello = requests.utils.quote(f"Hola EspaLuz, vi tu video / I saw your video (ref {film}-{tag})")
+    android = "https://wa.me/50766623757?text=" + requests.utils.quote(f"ANDROID ({film}-{tag})")
     return (VIDEO_LINKS
             .replace("https://espaluz-ai-language-tutor.lovable.app/?utm_source=video",
-                     f"https://app.espaluz.lat/?utm_source=facebook&utm_medium=video&utm_campaign={film}")
+                     f"https://app.espaluz.lat/?utm_source={source}&utm_medium=video&utm_campaign={film}")
             .replace("https://wa.me/50766623757", f"https://wa.me/50766623757?text={hello}")
-            .replace("https://t.me/EspaLuzFamily_bot", f"https://t.me/EspaLuzFamily_bot?start={film}_fb")
+            .replace("https://t.me/EspaLuzFamily_bot", f"https://t.me/EspaLuzFamily_bot?start={film}_{tag}")
             .replace("{beta}", PLAY_BETA_LINE_FB.replace("{wa}", android)))  # last: the WhatsApp rewrite above must not touch it
+
+
+def facebook_links(film: str) -> str:
+    """Facebook is the one channel with tappable caption links on phones, so each door names the film."""
+    return tagged_links(film, "facebook", "fb")
+
+
+# 21 Nov 2026 (Elena, live audit of the 6 Nov Short: zero URLs under it): YouTube description links are not tappable in
+# the PHONE Shorts player, but they ARE clickable on a computer / TV watch page. Removing them (2 Nov) left desktop viewers
+# nothing to click. So YouTube gets the same tagged links as Facebook (tag -yt) AND the hint for phone viewers.
+YT_PHONE_HINT = "👆 On a phone? Tap the channel name above · En el móvil, toca el nombre del canal\n"
+
+
+def youtube_links(film: str) -> str:
+    # Phone viewers cannot tap the URL, so the WhatsApp doors also show what to TYPE (same as the film's end card).
+    return YT_PHONE_HINT + (tagged_links(film, "youtube", "yt")
+                            .replace("💬 WhatsApp: https://wa.me/", f"💬 WhatsApp @espaluz · {WA_NUMBER_TEXT}: https://wa.me/")
+                            .replace("WhatsApp https://wa.me/50766623757?text=ANDROID",
+                                     f"WhatsApp {WA_NUMBER_TEXT} · https://wa.me/50766623757?text=ANDROID"))
 
 
 def build_video_payload(file_name: str, user_caption: str) -> Dict[str, Any]:
     story = user_caption.strip() + "\n\n" if user_caption.strip() else ""
-    caption = story + facebook_links(film_id(file_name))  # Facebook: links in a post are tappable
+    film = film_id(file_name)
+    caption = story + facebook_links(film)  # Facebook: links in a post are tappable
     first = (user_caption.strip().splitlines() or ["EspaLuz — your new life in Latin America, in Spanish"])[0]
     title = (first[:88] + " #Shorts").strip()
     video_url = f"{VIDEO_BASE_URL}/{file_name}"
@@ -1538,7 +1558,7 @@ def build_video_payload(file_name: str, user_caption: str) -> Dict[str, Any]:
                                 "metadata": {"instagram": {"type": "reel", "shouldShareToFeed": True, "isAiGenerated": True}}}},
     }
     return {"videoURL": video_url, "fileName": file_name, "caption": caption, "youtubeTitle": title,
-            "youtubeDescription": story + VIDEO_LINKS_YOUTUBE, "bufferBody": json.dumps(buffer_body, ensure_ascii=False)}
+            "youtubeDescription": story + youtube_links(film),"bufferBody": json.dumps(buffer_body, ensure_ascii=False)}
 
 
 @bot.message_handler(content_types=["video", "document"])
