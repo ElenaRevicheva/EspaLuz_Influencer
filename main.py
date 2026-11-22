@@ -880,25 +880,13 @@ def generate_promo_content():
     
     print(f"👥 Selected: {audience} | 💭 {emotion} | 📍 {location}")
     
-    # Generate with AI (with retry)
-    story = None
-    for attempt in range(3):
-        story = generate_ai_story(strategy, audience, emotion, location, memory)
-        
-        if story:
-            # Self-review
-            review = self_review_story(story, memory)
-            if review["approved"]:
-                break
-            else:
-                print(f"🔄 Retry {attempt + 1}/3: {review['reason']}")
-                story = None
-    
-    # Fallback if AI fails
-    if story is None:
-        print("⚠️ AI unavailable, using fallback template")
-        story = random.choice(FALLBACK_STORIES)
-    
+    # 21 Nov 2026 (Elena: "only truth - no AI theater, no AI-generated simulated facts"): the EspaLuz night is built
+    # from verified facts (espaluz_true_posts.py: real product features + the bots' own 21-country data), never from a
+    # model-invented scene. generate_ai_story / FALLBACK_STORIES stay in the file for /test_ai, unused on EspaLuz nights.
+    import espaluz_true_posts
+    story = espaluz_true_posts.build_story(datetime.now(PANAMA_TZ))
+    print(f"✅ True EspaLuz post: {story['theme']} | {story['hook'][:60]}")
+
     # Record in memory
     memory.add_post(story)
     
@@ -907,13 +895,11 @@ def generate_promo_content():
     benefits = [benefit_sections[0]] + random.sample(benefit_sections[1:], 1)
     cta = random.choice(cta_options)
     proof = random.choice(social_proof)
-    base_hashtags = random.choice(hashtag_sets)
-    
-    # Add day-themed hashtags
-    day_hashtags = strategy["day_theme"].get("hashtag_boost", "")
-    hashtags = " ".join(base_hashtags) + " " + day_hashtags
-    
-    video_url = random.choice(video_links)
+    # 21 Nov 2026: EspaLuz-only hashtags (family adaptation), the current film, and the tracked link below. The shared
+    # hashtag_sets / video_links / ESPALUZ_URL stay as they are for the AI Marketing Engine lane.
+    hashtags = " ".join(espaluz_true_posts.TRUE_HASHTAGS)
+
+    video_url = espaluz_true_posts.TRUE_VIDEO
     image_url = random.choice(image_urls)
     
     promo = f"""{story['hook']} 🚨
@@ -945,6 +931,7 @@ def generate_promo_content():
 {hashtags}
 
 P.S. 14 days free on the web, WhatsApp or Telegram. Pick yours here → {ESPALUZ_URL} 💕"""
+    promo = promo.replace(ESPALUZ_URL, espaluz_true_posts.TRUE_URL)   # tracked door, EspaLuz post only
 
     print("✅ Content generated successfully!")
     print("=" * 50)
